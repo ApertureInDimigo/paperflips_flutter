@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
+import 'request.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -12,10 +13,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String dirname;
+  static String dirname;
 
   _MainPageState() {
-    dirname = "172.31.99.194";   //CMD창에 ipconfig 쳐보고 자기 Ipv4 주소 적어서 해보세요..
+    dirname = "192.168.5.1"; //CMD창에 ipconfig 쳐보고 자기 Ipv4 주소 적어서 해보세요..
+
+    request p = new request(dirname);
+    //p.register("idtest11", "pwdtest", "홍길동");
+    p.postyou();
+    //p.createPost();
   }
 
   @override
@@ -335,7 +341,8 @@ class _MainPageState extends State<MainPage> {
               alignment: Alignment.center,
               padding:
                   EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 20),
-              child: Image.network("http://" + dirname + ":3000" + recipe["iconPath"] + ".png"),
+              child: Image.network(
+                  "http://" + dirname + ":3000" + recipe["iconPath"] + ".png"),
             ),
             Flexible(
               child: Container(

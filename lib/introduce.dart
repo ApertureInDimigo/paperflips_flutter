@@ -22,24 +22,13 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           centerTitle: true,
           title: FractionallySizedBox(
-              widthFactor: 2 / 5, child: Image.asset("images/nav_logo.png")),
-          elevation: 0.0,
-          flexibleSpace: Container(
-            decoration: BoxDecoration(),
+              child: Text("\"학\" 소개",
+                style: TextStyle(fontSize: 18, fontFamily: Font.bold))
           ),
           actions: <Widget>[
-            IconButton(
-              icon: new Icon(Icons.person_outline),
-              tooltip: 'Wow',
-              onPressed: () => {},
-            ),
-            SizedBox(
-              width: 30,
-            )
+
           ],
         ),
      );

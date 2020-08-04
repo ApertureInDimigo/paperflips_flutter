@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './common/color.dart';
@@ -9,11 +11,13 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-
-
-
-
 class _MainPageState extends State<MainPage> {
+  String dirname;
+
+  _MainPageState() {
+    dirname = "172.31.99.194";   //CMD창에 ipconfig 쳐보고 자기 Ipv4 주소 적어서 해보세요..
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +47,6 @@ class _MainPageState extends State<MainPage> {
             _buildUpperMenu(),
             _buildBottomMenu(),
             _buildSearchBar(),
-
           ],
         ));
   }
@@ -127,9 +130,10 @@ class _MainPageState extends State<MainPage> {
           ),
           InkWell(
             child: Container(
-
                 padding: EdgeInsets.only(left: 10), child: Icon(Icons.search)),
-            onTap: () {print("SFD");},
+            onTap: () {
+              print("SFD");
+            },
           )
         ],
       ),
@@ -139,10 +143,10 @@ class _MainPageState extends State<MainPage> {
   Widget _buildMVPCard() {
     return Material(
       color: primaryColor,
-      borderRadius:  BorderRadius.all(Radius.circular(20)),
+      borderRadius: BorderRadius.all(Radius.circular(20)),
       child: InkWell(
-        borderRadius:  BorderRadius.all(Radius.circular(20)),
-        onTap: (){},
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        onTap: () {},
         splashColor: Colors.white,
         child: Container(
 //            margin: EdgeInsets.only(top: 5),
@@ -166,7 +170,8 @@ class _MainPageState extends State<MainPage> {
                   alignment: Alignment.center,
                   padding:
                       EdgeInsets.only(left: 10, right: 20, top: 20, bottom: 20),
-                  child: Image.asset(IconPath.boat),
+                  child:
+                      Image.network("http://172.31.99.194:3000/image/boat.png"),
                 ),
                 Flexible(
                   child: Container(
@@ -192,8 +197,8 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
                 Container(
-                    padding:
-                        EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
+                    padding: EdgeInsets.only(
+                        top: 20, bottom: 20, left: 12, right: 12),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -201,8 +206,8 @@ class _MainPageState extends State<MainPage> {
                         Row(
                           children: <Widget>[
                             Text("클릭하여 구경해보세요",
-                                style:
-                                    TextStyle(fontSize: 13, fontFamily: Font.bold)),
+                                style: TextStyle(
+                                    fontSize: 13, fontFamily: Font.bold)),
                             Icon(
                               Icons.arrow_forward,
                               size: 13,
@@ -276,7 +281,7 @@ class _MainPageState extends State<MainPage> {
             "summary": "배경을 클릭해 종이배의 소개를 들어봐요!"
           },
           {
-            "recipeName": "종이",
+            "recipeName": "종이배",
             "rarity": "normal",
             "iconPath": IconPath.boat,
             "summary": "배경을 클릭해 종이의 소개를 들어봐요!"
@@ -284,7 +289,7 @@ class _MainPageState extends State<MainPage> {
           {
             "recipeName": "P",
             "rarity": "legend",
-            "iconPath": IconPath.letter_p,
+            "iconPath": IconPath.boat,
             "summary": "배경을 클릭해 P의 소개를 들어봐요!"
           }
         ].map((x) => _buildRecommendRecipe(x)).toList(),
@@ -330,7 +335,7 @@ class _MainPageState extends State<MainPage> {
               alignment: Alignment.center,
               padding:
                   EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 20),
-              child: Image.asset(recipe["iconPath"]),
+              child: Image.network("http://" + dirname + ":3000" + recipe["iconPath"] + ".png"),
             ),
             Flexible(
               child: Container(

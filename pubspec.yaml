@@ -46,10 +46,8 @@ flutter:
 
   assets:
     - images/nav_logo.png
-    - images/p_icon.png
-    - images/elephant_icon.png
     - images/fold_icon.png
-    - images/boat_icon.png
+    - images/p_icon.png
   fonts:
     - family: a고딕12
       fonts:

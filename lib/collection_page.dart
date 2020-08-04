@@ -162,8 +162,8 @@ Widget _rarityBox(String rarity) {
   switch (rarity) {
     case "normal":
       return Container(
-        width: 40,
-        height: 20,
+        width: 45,
+        height: 25,
         decoration: BoxDecoration(
           color: normalRecipeColor,
           shape: BoxShape.rectangle,
@@ -173,7 +173,7 @@ Widget _rarityBox(String rarity) {
           child: Text(
             "보통",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -183,8 +183,8 @@ Widget _rarityBox(String rarity) {
       );
     case "rare":
       return Container(
-        width: 40,
-        height: 20,
+        width: 45,
+        height: 25,
         decoration: BoxDecoration(
           color: rareRecipeColor,
           shape: BoxShape.rectangle,
@@ -194,7 +194,7 @@ Widget _rarityBox(String rarity) {
           child: Text(
             "희귀",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -204,8 +204,8 @@ Widget _rarityBox(String rarity) {
       );
     case "legend":
       return Container(
-        width: 40,
-        height: 20,
+        width: 45,
+        height: 25,
         decoration: BoxDecoration(
           color: legendRecipeColor,
           shape: BoxShape.rectangle,
@@ -215,7 +215,7 @@ Widget _rarityBox(String rarity) {
           child: Text(
             "전설",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -225,8 +225,8 @@ Widget _rarityBox(String rarity) {
       );
     case "limited":
       return Container(
-        width: 40,
-        height: 20,
+        width: 45,
+        height: 25,
         decoration: BoxDecoration(
           color: limitedRecipeColor,
           shape: BoxShape.rectangle,
@@ -236,7 +236,7 @@ Widget _rarityBox(String rarity) {
           child: Text(
             "한정",
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,

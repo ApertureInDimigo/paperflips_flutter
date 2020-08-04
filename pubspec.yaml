@@ -44,8 +44,22 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  assets: 
-    - images/
+  assets:
+    - images/nav_logo.png
+    - images/p_icon.png
+    - images/elephant_icon.png
+    - images/fold_icon.png
+    - images/boat_icon.png
+  fonts:
+    - family: a고딕12
+      fonts:
+        - asset: fonts/a고딕12.ttf
+    - family: a고딕18
+      fonts:
+        - asset: fonts/a고딕18.ttf
+    - family: a고딕15
+      fonts:
+        - asset: fonts/a고딕15.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

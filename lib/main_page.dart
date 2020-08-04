@@ -236,7 +236,7 @@ class _MainPageState extends State<MainPage> {
       ),
       height: 60,
       child: Row(
-        children: ["레시피공유", "방 꾸미기", "스토리모드", "커뮤니티"]
+        children: ["레시피공유", "컬렉션", "스토리모드", "커뮤니티"]
             .map(
               (x) => Expanded(
                   flex: 1,

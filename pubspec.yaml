@@ -50,6 +50,7 @@ flutter:
     - images/elephant_icon.png
     - images/fold_icon.png
     - images/boat_icon.png
+    - images/golden_frog_icon.png
   fonts:
     - family: a고딕12
       fonts:

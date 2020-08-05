@@ -1,12 +1,22 @@
+
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/search_page.dart';
 import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
+
 import 'common/widgets/appbar.dart';
 import 'common/widgets/recipe_card.dart';
 import 'common/data_class.dart';
+
+import 'request.dart';
+import './common/ip.dart';
+
 
 class MainPage extends StatefulWidget {
   @override
@@ -14,12 +24,20 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  _MainPageState() {
+    request p = new request(IP.address);
+    //p.register("idtest11", "pwdtest", "홍길동");
+    p.register("mamakd", "djkdfjl", "홍길동");
+    //p.createPost();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: buildDefaultAppbar(),
         body: Column(
           children: <Widget>[
+
             _buildUpperMenu(), //앱바 아래 메뉴까지
             _buildBottomMenu(), //MVP 카드 추천 종이접기
             _buildSearchBar(), //클릭 시 검색바 열림림
@@ -124,14 +142,18 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
+
             )
           ],
         ),
+
+
       ),
     );
   }
 
   Widget _buildMVPCard() {
+
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -210,6 +232,7 @@ class _MainPageState extends State<MainPage> {
                 ],
               )),
         ),
+
       ),
     );
   }
@@ -222,7 +245,7 @@ class _MainPageState extends State<MainPage> {
       ),
       height: 60,
       child: Row(
-        children: ["레시피공유", "방 꾸미기", "스토리모드", "커뮤니티"]
+        children: ["레시피공유", "컬렉션", "스토리모드", "커뮤니티"]
             .map(
               (x) => Expanded(
                   flex: 1,
@@ -251,6 +274,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildRecommendRecipeList() {
+
     return Column(
       children: [
         RecipeCard(
@@ -279,6 +303,7 @@ class _MainPageState extends State<MainPage> {
             iconPath: IconPath.boat,
             summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
       ].map((x) => buildRecipeCard(x)).toList(),
+
     );
   }
 
@@ -290,6 +315,8 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
+  
 
 //페이지 이동 디졸브 트랜지션
 class FadeRoute extends PageRouteBuilder {
@@ -314,4 +341,5 @@ class FadeRoute extends PageRouteBuilder {
             child: child,
           ),
         );
+
 }

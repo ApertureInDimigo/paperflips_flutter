@@ -4,7 +4,7 @@ import '../../common/font.dart';
 import '../../common/asset_path.dart';
 import '../../common/data_class.dart';
 import '../../common/ip.dart';
-
+import 'package:intl/intl.dart';
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
 Widget _buildRarityText(rarity) {
@@ -114,3 +114,165 @@ Widget buildRecipeCard(RecipeCard recipe) {
         ],
       ));
 }
+
+
+Widget _buildRarityBox(String rarity) {
+  Widget rarityBoxWidget;
+  switch (rarity) {
+    case "normal":
+      rarityBoxWidget = Container(
+        width: 45,
+        height: 25,
+        decoration: BoxDecoration(
+          color: normalRecipeColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        child: Center(
+          child: Text(
+            "보통",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: Font.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+      break;
+    case "rare":
+      rarityBoxWidget = Container(
+        width: 45,
+        height: 25,
+        decoration: BoxDecoration(
+          color: rareRecipeColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        child: Center(
+          child: Text(
+            "희귀",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: Font.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+      break;
+    case "legend":
+      rarityBoxWidget = Container(
+        width: 45,
+        height: 25,
+        decoration: BoxDecoration(
+          color: legendRecipeColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        child: Center(
+          child: Text(
+            "전설",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: Font.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+      break;
+    case "limited":
+      rarityBoxWidget = Container(
+        width: 45,
+        height: 25,
+        decoration: BoxDecoration(
+          color: limitedRecipeColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        ),
+        child: Center(
+          child: Text(
+            "한정",
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontFamily: Font.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+      break;
+  }
+  return rarityBoxWidget;
+}
+
+Widget buildRecipeCollection(collection) {
+  return Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.3),
+          spreadRadius: 1,
+          blurRadius: 2,
+          offset: Offset(0, 3),
+        ),
+      ],
+    ),
+    child: Material(
+      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+      color: collectionContainerColor,
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+        onTap: () {},
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            decoration: BoxDecoration(
+
+              shape: BoxShape.rectangle,
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+
+                Image.network(
+                    collection.iconPath,
+                    width: 80,
+                    height: 80
+                ),
+                _buildRarityBox(collection.rarity),
+                Text(
+                  collection.recipeName,
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: Font.bold,
+                  ),
+                ),
+                Text(
+                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: Font.normal,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+

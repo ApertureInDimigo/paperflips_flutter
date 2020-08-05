@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/search_page.dart';
+import 'package:flutter_front/collection_page.dart';
 import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
@@ -16,7 +16,6 @@ import 'common/data_class.dart';
 
 import 'request.dart';
 import './common/ip.dart';
-
 
 class MainPage extends StatefulWidget {
   @override
@@ -37,7 +36,6 @@ class _MainPageState extends State<MainPage> {
         appBar: buildDefaultAppbar(),
         body: Column(
           children: <Widget>[
-
             _buildUpperMenu(), //앱바 아래 메뉴까지
             _buildBottomMenu(), //MVP 카드 추천 종이접기
             _buildSearchBar(), //클릭 시 검색바 열림림
@@ -48,7 +46,7 @@ class _MainPageState extends State<MainPage> {
   Widget _buildBottomMenu() {
     return Flexible(
       child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        padding: EdgeInsets.symmetric(horizontal: 12),
         children: <Widget>[
           SizedBox(height: 10),
           Container(
@@ -142,18 +140,14 @@ class _MainPageState extends State<MainPage> {
                   },
                 ),
               ),
-
             )
           ],
         ),
-
-
       ),
     );
   }
 
   Widget _buildMVPCard() {
-
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -232,49 +226,144 @@ class _MainPageState extends State<MainPage> {
                 ],
               )),
         ),
-
       ),
     );
   }
 
   Widget _buildUpperMenu() {
     return Container(
-      padding: EdgeInsets.only(bottom: 8, top: 8),
+//      padding: EdgeInsets.only(bottom: 8, top: 8),
       decoration: BoxDecoration(
         color: navColor,
       ),
       height: 60,
-      child: Row(
-        children: ["레시피공유", "컬렉션", "스토리모드", "커뮤니티"]
-            .map(
-              (x) => Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
+      child: Row(children: [
+        Expanded(
+            flex: 1,
+            child: Material(
+              color: navColor,
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                        ),
-                    child: Column(
-                      children: <Widget>[
+                  ),
+                  child: Column(
+                    children: <Widget>[
 //                      SizedBox(height: 1),
-                        Flexible(
-                          child: Image.asset(IconPath.letter_p),
-                        ),
-                        SizedBox(height: 2),
-                        Text(
-                          x,
-                          style: TextStyle(fontSize: 12),
-                        )
-                      ],
-                    ),
-                  )),
+                      SizedBox(height: 8),
+                      Flexible(
+                        child: Image.asset(IconPath.letter_p),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "레시피공유",
+                        style: TextStyle(fontSize: 12),
+
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
             )
-            .toList(),
-      ),
+        ),
+        Expanded(
+            flex: 1,
+            child: Material(
+              color: navColor,
+              child: InkWell(
+                onTap: () {goCollectionPage();},
+                child: Container(
+                  decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+//                      SizedBox(height: 1),
+                      SizedBox(height: 8),
+                      Flexible(
+                        child: Image.asset(IconPath.letter_p),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "컬렉션",
+                        style: TextStyle(fontSize: 12),
+
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
+            )
+        ),
+        Expanded(
+            flex: 1,
+            child: Material(
+              color: navColor,
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+//                      SizedBox(height: 1),
+                      SizedBox(height: 8),
+                      Flexible(
+                        child: Image.asset(IconPath.letter_p),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "스토리모드",
+                        style: TextStyle(fontSize: 12),
+
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
+            )
+        ),
+        Expanded(
+            flex: 1,
+            child: Material(
+              color: navColor,
+              child: InkWell(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+//                      SizedBox(height: 1),
+                      SizedBox(height: 8),
+                      Flexible(
+                        child: Image.asset(IconPath.letter_p),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        "커뮤니티",
+                        style: TextStyle(fontSize: 12),
+
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ),
+            )
+        ),
+
+      ]),
     );
   }
 
   Widget _buildRecommendRecipeList() {
-
     return Column(
       children: [
         RecipeCard(
@@ -298,7 +387,6 @@ class _MainPageState extends State<MainPage> {
             iconPath: IconPath.boat,
             summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
       ].map((x) => buildRecipeCard(x)).toList(),
-
     );
   }
 
@@ -309,9 +397,16 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: SearchPage()),
     );
   }
-}
 
-  
+  //검색 페이지로 이동
+  void goCollectionPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: CollectionPage()),
+    );
+  }
+
+}
 
 //페이지 이동 디졸브 트랜지션
 class FadeRoute extends PageRouteBuilder {
@@ -336,5 +431,4 @@ class FadeRoute extends PageRouteBuilder {
             child: child,
           ),
         );
-
 }

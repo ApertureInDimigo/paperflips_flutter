@@ -19,8 +19,7 @@ class SearchPage extends StatefulWidget {
 
 
 class _SearchPageState extends State<SearchPage> {
-  static final GlobalKey<FormFieldState<String>> _searchFormKey =
-      GlobalKey<FormFieldState<String>>();
+
 
   String _searchQuery; //사용자 입력 검색 쿼리
   List<RecipeCard> _officialRecipeList; //공식 레시피 리스트

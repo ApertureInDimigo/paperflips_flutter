@@ -6,6 +6,7 @@ import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
 import 'request.dart';
+import './common/ip.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -13,14 +14,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  static String dirname;
-
   _MainPageState() {
-    dirname = "192.168.5.1"; //CMD창에 ipconfig 쳐보고 자기 Ipv4 주소 적어서 해보세요..
-
-    request p = new request(dirname);
+    request p = new request(IP.address);
     //p.register("idtest11", "pwdtest", "홍길동");
-    p.postyou();
+    p.register("mamakd", "djkdfjl", "홍길동");
     //p.createPost();
   }
 
@@ -176,8 +173,8 @@ class _MainPageState extends State<MainPage> {
                   alignment: Alignment.center,
                   padding:
                       EdgeInsets.only(left: 10, right: 20, top: 20, bottom: 20),
-                  child:
-                      Image.network("http://172.31.99.194:3000/image/boat.png"),
+                  child: Image.network(
+                      'http://' + IP.address + ':3000/image/boat.png'),
                 ),
                 Flexible(
                   child: Container(
@@ -342,7 +339,7 @@ class _MainPageState extends State<MainPage> {
               padding:
                   EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 20),
               child: Image.network(
-                  "http://" + dirname + ":3000" + recipe["iconPath"] + ".png"),
+                  "http://" + IP.address + ":3000" + recipe["iconPath"] + ".png"),
             ),
             Flexible(
               child: Container(

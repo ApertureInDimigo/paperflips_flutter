@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './common/font.dart';
 import './common/color.dart';
 import './common/asset_path.dart';
+import 'main_page.dart';
+import './common/ip.dart';
 
 class CollectionPage extends StatefulWidget {
   @override
@@ -130,10 +132,11 @@ Widget _collectionCard(collection) {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Image.asset(
-            collection["iconPath"],
+
+          Image.network(
+            "http://" + IP.address + ":3000" + collection["iconPath"] + '.png',
             width: 80,
-            height: 80,
+            height: 80
           ),
           _rarityBox(collection["rarity"]),
           Text(

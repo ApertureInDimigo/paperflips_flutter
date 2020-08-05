@@ -8,35 +8,38 @@ class request {
   request(String dirname) {
     this.dirname = dirname;
   }
-
-  register(String id, String pwd, String name) async {
+  
+   register(String id, String pwd, String name) async {
     var apiUrl = Uri.parse('http://' + dirname + ':3000/AddUser'); //URL
     var client = HttpClient(); // `new` keyword optional
 
     // 1. Create request
     HttpClientRequest request = await client.postUrl(apiUrl);
+    String n = "누구세요";
     // 2. Add payload to request
-    var payload = {'id': id, 'password': pwd, 'name': name};
+    var payload = {
+      'id': id,
+      'password': pwd,
+      'name': name
+    };
     json.encode(payload);
     request.headers
         .set(HttpHeaders.contentTypeHeader, "application/json; charset=utf-8");
     request.write(json.encode(payload));
-    print(json.encode(payload));
     // 3. Send the request
     HttpClientResponse response = await request.close();
 
     // 4. Handle the response
     var resStream = response.transform(Utf8Decoder());
-    print(resStream);
-
-    String a;
+    String d;
     await for (var data in resStream) {
-      print('Received data: $data');
-      a = data;
+      d = data.toString();
     }
 
-    print(a);
-  }
+    print(d);
+    parsing(d);
+   }
+
 
   postyou() async {
     var apiUrl = Uri.parse('http://' + dirname + ':3000/AddUser'); //URL
@@ -66,7 +69,6 @@ class request {
     }
 
     print(d);
-
     parsing(d);
   }
 

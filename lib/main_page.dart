@@ -183,7 +183,7 @@ class _MainPageState extends State<MainPage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
                         left: 10, right: 20, top: 20, bottom: 20),
-                    child: Image.asset(IconPath.boat),
+                    child: Image.network(IconPath.boat),
                   ),
                   Flexible(
                     child: Container(
@@ -292,11 +292,6 @@ class _MainPageState extends State<MainPage> {
             rarity: "legend",
             iconPath: IconPath.elephant,
             summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
-        RecipeCard(
-            recipeName: "P",
-            rarity: "rare",
-            iconPath: IconPath.letter_p,
-            summary: "배경을 클릭해 P의 소개를 들어봐요!"),
         RecipeCard(
             recipeName: "종이배",
             rarity: "normal",

@@ -3,6 +3,7 @@ import '../../common/color.dart';
 import '../../common/font.dart';
 import '../../common/asset_path.dart';
 import '../../common/data_class.dart';
+import '../../common/ip.dart';
 
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
@@ -62,7 +63,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(
                           left: 20, right: 15, top: 20, bottom: 20),
-                      child: Image.asset(recipe.iconPath),
+                      child: Image.network(recipe.iconPath),
                     ),
                     Flexible(
                       child: Container(

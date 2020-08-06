@@ -68,7 +68,7 @@ class _MainPageState extends State<MainPage> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 12),
         children: <Widget>[
-          SizedBox(height: 10),
+          SizedBox(height: 25),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),
@@ -80,9 +80,9 @@ class _MainPageState extends State<MainPage> {
                   fontFamily: Font.extraBold),
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           _buildMVPCard(),
-          SizedBox(height: 20),
+          SizedBox(height: 40),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),
@@ -212,7 +212,7 @@ class _MainPageState extends State<MainPage> {
                                 TextStyle(fontFamily: Font.bold, fontSize: 12),
                             textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 2),
+                          SizedBox(height: 5),
                           Text("종이배",
                               style: TextStyle(
                                 fontFamily: Font.extraBold,
@@ -269,12 +269,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "레시피공유",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -299,12 +299,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "컬렉션",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -327,12 +327,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "스토리모드",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -355,12 +355,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "커뮤니티",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -388,12 +388,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "로그인",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -418,12 +418,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "회원가입",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -502,7 +502,7 @@ class _MainPageState extends State<MainPage> {
       decoration: BoxDecoration(
         color: navColor,
       ),
-      height : 60,
+      height : 70,
       child: _isLogined ? _buildLoginUpperMenu() : _buildGuestUpperMenu(),
     );
   }

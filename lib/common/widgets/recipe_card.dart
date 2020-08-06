@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_front/size.dart';
 import '../../common/color.dart';
 import '../../common/font.dart';
 import '../../common/asset_path.dart';
@@ -121,8 +122,8 @@ Widget _buildRarityBox(String rarity) {
   switch (rarity) {
     case "normal":
       rarityBoxWidget = Container(
-        width: 45,
-        height: 25,
+        width: 40,
+        height: 24,
         decoration: BoxDecoration(
           color: normalRecipeColor,
           shape: BoxShape.rectangle,
@@ -132,7 +133,7 @@ Widget _buildRarityBox(String rarity) {
           child: Text(
             "보통",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -143,8 +144,8 @@ Widget _buildRarityBox(String rarity) {
       break;
     case "rare":
       rarityBoxWidget = Container(
-        width: 45,
-        height: 25,
+        width: 40,
+        height: 24,
         decoration: BoxDecoration(
           color: rareRecipeColor,
           shape: BoxShape.rectangle,
@@ -154,7 +155,7 @@ Widget _buildRarityBox(String rarity) {
           child: Text(
             "희귀",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -165,8 +166,8 @@ Widget _buildRarityBox(String rarity) {
       break;
     case "legend":
       rarityBoxWidget = Container(
-        width: 45,
-        height: 25,
+        width: 40,
+        height: 24,
         decoration: BoxDecoration(
           color: legendRecipeColor,
           shape: BoxShape.rectangle,
@@ -176,7 +177,7 @@ Widget _buildRarityBox(String rarity) {
           child: Text(
             "전설",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -187,8 +188,8 @@ Widget _buildRarityBox(String rarity) {
       break;
     case "limited":
       rarityBoxWidget = Container(
-        width: 45,
-        height: 25,
+        width: 40,
+        height: 24,
         decoration: BoxDecoration(
           color: limitedRecipeColor,
           shape: BoxShape.rectangle,
@@ -198,7 +199,7 @@ Widget _buildRarityBox(String rarity) {
           child: Text(
             "한정",
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
               fontFamily: Font.bold,
               color: Colors.white,
@@ -217,9 +218,9 @@ Widget buildRecipeCollection(collection) {
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
       boxShadow: [
         BoxShadow(
-          color: Colors.grey.withOpacity(0.3),
-          spreadRadius: 1,
-          blurRadius: 2,
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 0.5,
+          blurRadius: 1,
           offset: Offset(0, 3),
         ),
       ],
@@ -250,22 +251,25 @@ Widget buildRecipeCollection(collection) {
                     height: 80
                 ),
                 _buildRarityBox(collection.rarity),
+                SizedBox(height: 3),
                 Text(
                   collection.recipeName,
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: 25,
                     fontWeight: FontWeight.normal,
                     fontFamily: Font.bold,
                   ),
                 ),
+                SizedBox(height: 2),
                 Text(
                   DateFormat('yyyy/MM/dd').format(collection.obtainDate),
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.normal,
                     fontFamily: Font.normal,
                   ),
                 ),
+                SizedBox(height: 5),
               ],
             ),
           ),

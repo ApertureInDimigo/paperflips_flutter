@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
           ),
           SizedBox(height: 10),
           _buildMVPCard(),
-          SizedBox(height: 40),
+          SizedBox(height: 30),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),

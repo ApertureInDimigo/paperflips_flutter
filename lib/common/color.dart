@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+
+
+//Appbar 색상
 Map<int, Color> color =
 {
   50:Color.fromRGBO(210,210,210, .1),
@@ -23,6 +26,8 @@ Color rareRecipeColor = Color(0xFF00AD45);
 Color legendRecipeColor = Color(0xFF0048FF);
 Color limitedRecipeColor = Color(0xFF0ABFB3);
 
+
 Color primaryColor = Color(0xFFFFD917);
 
 Color collectionContainerColor = Color(0xFFF8F8F8);
+

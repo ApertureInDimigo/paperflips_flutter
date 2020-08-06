@@ -23,6 +23,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  bool _isUserButtonToggle;
+  bool _isLogined;
+
   _MainPageState() {
     request p = new request(IP.address);
     //p.register("idtest11", "pwdtest", "홍길동");
@@ -31,9 +34,25 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _isUserButtonToggle = false;
+    _isLogined = false;
+  }
+
+  int result;
+
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: buildDefaultAppbar(),
+        appBar: DefaultAppBar(onActionButtonPressed: () {
+          setState(() {
+            _isUserButtonToggle = !_isUserButtonToggle;
+//            print(_isUserButtonToggle);
+          });
+        }),
         body: Column(
           children: <Widget>[
             _buildUpperMenu(), //앱바 아래 메뉴까지
@@ -230,136 +249,260 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  Widget _buildMapMenu() {
+    return Row(children: [
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "레시피공유",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {
+                goCollectionPage();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "컬렉션",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "스토리모드",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "커뮤니티",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+    ]);
+  }
+
+  Widget _buildLoginMenu() {
+    return Row(children: [
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {},
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "로그인",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+      Expanded(
+          flex: 1,
+          child: Material(
+            color: navColor,
+            child: InkWell(
+              onTap: () {
+                goCollectionPage();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+//                    border: Border.all(width: 0.1),
+                ),
+                child: Column(
+                  children: <Widget>[
+//                      SizedBox(height: 1),
+                    SizedBox(height: 8),
+                    Flexible(
+                      child: Image.asset(IconPath.letter_p),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      "회원가입",
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
+            ),
+          )),
+
+    ]);
+  }
+
+  Widget _buildMyInfoMenu(){
+    return Container(
+//      width : 400,
+//      decoration:BoxDecoration(
+//        color : Colors.red,
+//      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: Text("홍길동", style : TextStyle(fontFamily: Font.bold, fontSize: 19)),
+          ),
+
+        ],
+      ),
+
+    );
+  }
+
+
+  Widget _buildLoginUpperMenu() {
+    return AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+//        return RotationTransition(child: child, turns: animation,);
+          return FadeTransition(child: child, opacity: animation,);
+        },
+
+        child: Container(
+          child: _isUserButtonToggle ? _buildMyInfoMenu() : _buildMapMenu(),
+          key: ValueKey<bool>(_isUserButtonToggle),
+        )
+    );
+//    return AnimatedCrossFade(
+//      duration: const Duration(milliseconds: 400),
+//      firstChild: _buildLoginMenu(),
+//      secondChild: _buildMapMenu(),
+//      crossFadeState: _isUserButtonToggle ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+//    );
+  }
+
+  Widget _buildGuestUpperMenu() {
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+//        return RotationTransition(child: child, turns: animation,);
+        return FadeTransition(child: child, opacity: animation,);
+      },
+
+      child: Container(
+        child: _isUserButtonToggle ? _buildLoginMenu() : _buildMapMenu(),
+        key: ValueKey<bool>(_isUserButtonToggle),
+      )
+    );
+//    return AnimatedCrossFade(
+//      duration: const Duration(milliseconds: 400),
+//      firstChild: _buildLoginMenu(),
+//      secondChild: _buildMapMenu(),
+//      crossFadeState: _isUserButtonToggle ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+//    );
+  }
+
+
   Widget _buildUpperMenu() {
     return Container(
 //      padding: EdgeInsets.only(bottom: 8, top: 8),
       decoration: BoxDecoration(
         color: navColor,
       ),
-      height: 60,
-      child: Row(children: [
-        Expanded(
-            flex: 1,
-            child: Material(
-              color: navColor,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-//                      SizedBox(height: 1),
-                      SizedBox(height: 8),
-                      Flexible(
-                        child: Image.asset(IconPath.letter_p),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        "레시피공유",
-                        style: TextStyle(fontSize: 12),
-
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-              ),
-            )
-        ),
-        Expanded(
-            flex: 1,
-            child: Material(
-              color: navColor,
-              child: InkWell(
-                onTap: () {goCollectionPage();},
-                child: Container(
-                  decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-//                      SizedBox(height: 1),
-                      SizedBox(height: 8),
-                      Flexible(
-                        child: Image.asset(IconPath.letter_p),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        "컬렉션",
-                        style: TextStyle(fontSize: 12),
-
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-              ),
-            )
-        ),
-        Expanded(
-            flex: 1,
-            child: Material(
-              color: navColor,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-//                      SizedBox(height: 1),
-                      SizedBox(height: 8),
-                      Flexible(
-                        child: Image.asset(IconPath.letter_p),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        "스토리모드",
-                        style: TextStyle(fontSize: 12),
-
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-              ),
-            )
-        ),
-        Expanded(
-            flex: 1,
-            child: Material(
-              color: navColor,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                  ),
-                  child: Column(
-                    children: <Widget>[
-//                      SizedBox(height: 1),
-                      SizedBox(height: 8),
-                      Flexible(
-                        child: Image.asset(IconPath.letter_p),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        "커뮤니티",
-                        style: TextStyle(fontSize: 12),
-
-                      ),
-                      SizedBox(height: 8),
-                    ],
-                  ),
-                ),
-              ),
-            )
-        ),
-
-      ]),
+      height : 60,
+      child: _isLogined ? _buildLoginUpperMenu() : _buildGuestUpperMenu(),
     );
   }
 
@@ -405,7 +548,6 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: CollectionPage()),
     );
   }
-
 }
 
 //페이지 이동 디졸브 트랜지션

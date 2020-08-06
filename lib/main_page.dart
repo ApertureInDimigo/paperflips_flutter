@@ -24,9 +24,8 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   _MainPageState() {
-    request p = new request(IP.address);
     //p.register("idtest11", "pwdtest", "홍길동");
-    p.register("mamakd", "djkdfjl", "홍길동");
+    request.register("mamakd", "djkdfjl", "홍길동");
     //p.createPost();
   }
 

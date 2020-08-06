@@ -40,8 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     String id = _idController.text;
                     String pw = _pwController.text;
                     String name = _nameController.text;
-                    request r = request("192.168.21.1");
-                    r.register(id, pw, name);
+                    request.register(id, pw, name);
                   }
               )
             ],

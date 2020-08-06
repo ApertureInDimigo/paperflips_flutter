@@ -73,12 +73,14 @@ Widget buildRecipeCard(RecipeCard recipe) {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             _buildRarityText(recipe.rarity),
+                            Container(height: 2),
                             Text(recipe.recipeName,
                                 style: TextStyle(
                                   fontFamily: Font.bold,
                                   fontSize: 23,
                                 ),
                                 textAlign: TextAlign.left),
+                            Container(height: 4),
                             Text(recipe.summary,
                                 style: TextStyle(fontSize: 13)),
                           ],

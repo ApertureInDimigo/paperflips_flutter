@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
+import 'package:flutter_front/register_page.dart';
+
 import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
@@ -404,7 +406,7 @@ class _MainPageState extends State<MainPage> {
             color: navColor,
             child: InkWell(
               onTap: () {
-                goCollectionPage();
+                goRegisterPage();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -546,6 +548,13 @@ class _MainPageState extends State<MainPage> {
     Navigator.push(
       context,
       FadeRoute(page: CollectionPage()),
+    );
+  }
+
+  void goRegisterPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: RegisterPage()),
     );
   }
 }

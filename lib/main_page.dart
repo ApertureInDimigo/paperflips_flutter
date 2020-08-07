@@ -25,8 +25,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool _isUserButtonToggle;
-  bool _isLogined;
+  bool _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
+  bool _isLogined; //로그인 된 상태일 때 true, 아니면 false
 
   _MainPageState() {
     //p.register("idtest11", "pwdtest", "홍길동");
@@ -37,13 +37,11 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _isUserButtonToggle = false;
-    _isLogined = false;
+    _isUserButtonToggle = true;
+    _isLogined = true;
   }
 
   int result;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class _MainPageState extends State<MainPage> {
       child: ListView(
         padding: EdgeInsets.symmetric(horizontal: 12),
         children: <Widget>[
-          SizedBox(height: 10),
+          SizedBox(height: 25),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),
@@ -80,9 +78,9 @@ class _MainPageState extends State<MainPage> {
                   fontFamily: Font.extraBold),
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(height: 10),
           _buildMVPCard(),
-          SizedBox(height: 20),
+          SizedBox(height: 30),
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),
@@ -212,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                                 TextStyle(fontFamily: Font.bold, fontSize: 12),
                             textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 2),
+                          SizedBox(height: 5),
                           Text("종이배",
                               style: TextStyle(
                                 fontFamily: Font.extraBold,
@@ -261,7 +259,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -269,12 +267,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "레시피공유",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -291,7 +289,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -299,12 +297,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "컬렉션",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -319,7 +317,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -327,12 +325,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "스토리모드",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -347,7 +345,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -355,12 +353,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "커뮤니티",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -380,7 +378,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -388,12 +386,12 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "로그인",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
@@ -410,7 +408,7 @@ class _MainPageState extends State<MainPage> {
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
-                ),
+                    ),
                 child: Column(
                   children: <Widget>[
 //                      SizedBox(height: 1),
@@ -418,54 +416,107 @@ class _MainPageState extends State<MainPage> {
                     Flexible(
                       child: Image.asset(IconPath.letter_p),
                     ),
-                    SizedBox(height: 2),
+                    SizedBox(height: 4),
                     Text(
                       "회원가입",
                       style: TextStyle(fontSize: 12),
                     ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 14),
                   ],
                 ),
               ),
             ),
           )),
-
     ]);
   }
 
-  Widget _buildMyInfoMenu(){
+  Widget _buildMyInfoMenu() {
     return Container(
-//      width : 400,
-//      decoration:BoxDecoration(
-//        color : Colors.red,
-//      ),
+//      height: ,
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Text("홍길동", style : TextStyle(fontFamily: Font.bold, fontSize: 19)),
+            child: Text("홍길동",
+                style: TextStyle(fontFamily: Font.bold, fontSize: 17)),
           ),
+          Container(
+              height: 21,
+              child: Row(children: [
+                SizedBox(width: 10),
+                Image.network(IconPath.point),
+                SizedBox(width: 5),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: '123', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(
+                          text: ' 점',
+                          style:
+                              TextStyle(fontFamily: Font.normal, fontSize: 12)),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 5),
+              ])),
+          Container(
+              height: 21,
+              child: Row(children: [
+                SizedBox(width: 10),
+                Image.network(IconPath.paint_bucket),
+                SizedBox(width: 5),
+                Text.rich(
+                  TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                          text: '69', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(
+                          text: ' 페인트',
+                          style:
+                              TextStyle(fontFamily: Font.normal, fontSize: 12)),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 5),
+              ])),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8),
 
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                onTap: () {},
+                child: Container(
+                  height: 28,
+                  padding : EdgeInsets.all(5),
+                  child: Image.network(IconPath.gear),
+                ),
+              ),
+            ),
+          )
         ],
       ),
-
     );
   }
-
 
   Widget _buildLoginUpperMenu() {
     return AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
 //        return RotationTransition(child: child, turns: animation,);
-          return FadeTransition(child: child, opacity: animation,);
+          return FadeTransition(
+            child: child,
+            opacity: animation,
+          );
         },
-
         child: Container(
           child: _isUserButtonToggle ? _buildMyInfoMenu() : _buildMapMenu(),
           key: ValueKey<bool>(_isUserButtonToggle),
-        )
-    );
+        ));
 //    return AnimatedCrossFade(
 //      duration: const Duration(milliseconds: 400),
 //      firstChild: _buildLoginMenu(),
@@ -476,17 +527,18 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildGuestUpperMenu() {
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 200),
-      transitionBuilder: (Widget child, Animation<double> animation) {
+        duration: const Duration(milliseconds: 200),
+        transitionBuilder: (Widget child, Animation<double> animation) {
 //        return RotationTransition(child: child, turns: animation,);
-        return FadeTransition(child: child, opacity: animation,);
-      },
-
-      child: Container(
-        child: _isUserButtonToggle ? _buildLoginMenu() : _buildMapMenu(),
-        key: ValueKey<bool>(_isUserButtonToggle),
-      )
-    );
+          return FadeTransition(
+            child: child,
+            opacity: animation,
+          );
+        },
+        child: Container(
+          child: _isUserButtonToggle ? _buildLoginMenu() : _buildMapMenu(),
+          key: ValueKey<bool>(_isUserButtonToggle),
+        ));
 //    return AnimatedCrossFade(
 //      duration: const Duration(milliseconds: 400),
 //      firstChild: _buildLoginMenu(),
@@ -495,14 +547,13 @@ class _MainPageState extends State<MainPage> {
 //    );
   }
 
-
   Widget _buildUpperMenu() {
     return Container(
 //      padding: EdgeInsets.only(bottom: 8, top: 8),
       decoration: BoxDecoration(
         color: navColor,
       ),
-      height : 60,
+      height : 70,
       child: _isLogined ? _buildLoginUpperMenu() : _buildGuestUpperMenu(),
     );
   }

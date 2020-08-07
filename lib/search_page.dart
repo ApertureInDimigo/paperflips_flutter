@@ -139,7 +139,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((x) => RecipeCard(
             recipeName: "${searchQuery}${x}",
             rarity: "rare",
-            iconPath: IconPath.elephant,
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();
 
@@ -147,7 +146,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((x) => RecipeCard(
             recipeName: "${searchQuery}${x}",
             rarity: "rare",
-            iconPath: IconPath.elephant,
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();
 

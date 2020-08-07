@@ -18,6 +18,7 @@ import 'common/data_class.dart';
 
 import 'request.dart';
 import './common/ip.dart';
+import './common/data_class.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -25,7 +26,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
+  bool
+      _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
   bool _isLogined; //로그인 된 상태일 때 true, 아니면 false
 
   _MainPageState() {
@@ -483,7 +485,6 @@ class _MainPageState extends State<MainPage> {
               ])),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 8),
-
             child: Material(
               color: Colors.transparent,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -492,7 +493,7 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {},
                 child: Container(
                   height: 28,
-                  padding : EdgeInsets.all(5),
+                  padding: EdgeInsets.all(5),
                   child: Image.network(IconPath.gear),
                 ),
               ),
@@ -553,7 +554,7 @@ class _MainPageState extends State<MainPage> {
       decoration: BoxDecoration(
         color: navColor,
       ),
-      height : 70,
+      height: 70,
       child: _isLogined ? _buildLoginUpperMenu() : _buildGuestUpperMenu(),
     );
   }
@@ -561,25 +562,20 @@ class _MainPageState extends State<MainPage> {
   Widget _buildRecommendRecipeList() {
     return Column(
       children: [
+
+        /*이 부분 수정해주세요.. FutureBuilder 참고*/ 
+       // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
         RecipeCard(
-            recipeName: "코끼리",
-            rarity: "rare",
-            iconPath: IconPath.elephant,
-            summary: "배경을 클릭해 코끼리의 소개를 들어봐요!"),
-        RecipeCard(
-            recipeName: "종이이배",
+            recipeName: "종이배",
             rarity: "normal",
-            iconPath: IconPath.boat,
             summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
         RecipeCard(
-            recipeName: "코코끼리",
+            recipeName: "코끼리",
             rarity: "legend",
-            iconPath: IconPath.elephant,
             summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
         RecipeCard(
             recipeName: "종이배",
             rarity: "normal",
-            iconPath: IconPath.boat,
             summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
       ].map((x) => buildRecipeCard(x)).toList(),
     );

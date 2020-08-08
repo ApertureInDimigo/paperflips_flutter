@@ -27,7 +27,7 @@ class request {
 
   static register(String id, String pwd, String name) async {
     //회원 가입
-    var apiUrl = Uri.parse(IP.address + '/AddUser'); //URL
+    var apiUrl = Uri.parse(IP.address + '/User/AddUser'); //URL
     var client = HttpClient(); // `new` keyword optional
 
     // 1. Create request

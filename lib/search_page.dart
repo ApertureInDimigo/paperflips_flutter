@@ -139,7 +139,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((x) => RecipeCard(
             recipeName: "${searchQuery}${x}",
             rarity: "rare",
-            iconPath: IconPath.elephant,
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();
 
@@ -147,7 +146,6 @@ class _SearchPageState extends State<SearchPage> {
         .map((x) => RecipeCard(
             recipeName: "${searchQuery}${x}",
             rarity: "rare",
-            iconPath: IconPath.elephant,
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();
 
@@ -186,7 +184,7 @@ class _SearchPageState extends State<SearchPage> {
               Flexible(
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 0),
                   child: TextField(
 //                      key: _searchFormKey,
                     onSubmitted: (value) {
@@ -218,14 +216,14 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
               Container(
-//                margin: EdgeInsets.only(left: 1),
+                margin: EdgeInsets.only(left: 5),
                 child: Material(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   color: Colors.white,
                   child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: Container(
-                        padding: EdgeInsets.all(3), child: Icon(Icons.search)),
+                        padding: EdgeInsets.only(left : 3, top : 3, bottom : 3, right: 3), child: Icon(Icons.search)),
                     onTap: () async {
                       getRecipeSearchData(_searchQuery);
                       FocusScope.of(context).unfocus();

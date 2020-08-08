@@ -4,6 +4,27 @@ import 'package:http/http.dart' as http;
 import './common/ip.dart';
 
 class request {
+  static req(Map<String, String> payload, String api) async {
+    Uri apiUrl = Uri.parse(IP.address + api);
+    HttpClient client = HttpClient();
+
+    HttpClientRequest request = await client.postUrl(apiUrl);
+
+    request.headers
+        .set(HttpHeaders.contentTypeHeader, "aplication/json; charset=utf-8");
+    request.write(json.encode(payload));
+
+    HttpClientResponse response = await request.close();
+
+    var resStream = response.transform(Utf8Decoder());
+    String d;
+    await for (var data in resStream) {
+      d = data.toString();
+    }
+    return d;
+  }
+
+
   static register(String id, String pwd, String name) async {
     //회원 가입
     var apiUrl = Uri.parse(IP.address + '/AddUser'); //URL
@@ -11,9 +32,8 @@ class request {
 
     // 1. Create request
     HttpClientRequest request = await client.postUrl(apiUrl);
-    String n = "누구세요";
     // 2. Add payload to request
-    var payload = {'id': id, 'password': pwd, 'name': name};
+    Map<String, String> payload = {'id': id, 'password': pwd, 'name': name};
     json.encode(payload);
     request.headers
         .set(HttpHeaders.contentTypeHeader, "application/json; charset=utf-8");
@@ -27,7 +47,6 @@ class request {
     await for (var data in resStream) {
       d = data.toString();
     }
-
     print(d);
     parsing(d);
   }
@@ -48,3 +67,5 @@ class Respond {
     return Respond(json['status'] as int, json['error'] as int);
   }
 }
+
+

@@ -42,8 +42,8 @@ class _CollectionPageState extends State<CollectionPage> {
       return RecipeCard(
           recipeName: "코끼리${x}",
           rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
-          iconPath: IconPath.elephant,
-          obtainDate: DateTime(2019, rng.nextInt(12), rng.nextInt(12)));
+          summary : "SFDA"
+          );
     }).toList();
 //    print(collectionList);
     setState(() {

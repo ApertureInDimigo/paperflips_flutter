@@ -247,11 +247,11 @@ Widget buildRecipeCollection(collection) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
 
-                Image.network(
-                    collection.iconPath,
-                    width: 80,
-                    height: 80
-                ),
+//                Image.network(
+//                    collection.iconPath,
+//                    width: 80,
+//                    height: 80
+//                ),
                 _buildRarityBox(collection.rarity),
                 SizedBox(height: 3),
                 Text(
@@ -263,14 +263,14 @@ Widget buildRecipeCollection(collection) {
                   ),
                 ),
                 SizedBox(height: 2),
-                Text(
-                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    fontFamily: Font.normal,
-                  ),
-                ),
+//                Text(
+//                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
+//                  style: TextStyle(
+//                    fontSize: 14,
+//                    fontWeight: FontWeight.normal,
+//                    fontFamily: Font.normal,
+//                  ),
+//                ),
                 SizedBox(height: 5),
               ],
             ),

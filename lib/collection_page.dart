@@ -43,7 +43,6 @@ class _CollectionPageState extends State<CollectionPage> {
           recipeName: "코끼리${x}",
           rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
           iconPath: IconPath.elephant,
-          summary : "SFDA",
           obtainDate: DateTime(2019, rng.nextInt(12), rng.nextInt(12)));
     }).toList();
 //    print(collectionList);
@@ -86,7 +85,7 @@ class _CollectionPageState extends State<CollectionPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
-        margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15.0),
+        margin: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
         child: GridView.count(
           scrollDirection: Axis.vertical,
           //스크롤 방향 조절

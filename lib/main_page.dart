@@ -58,7 +58,7 @@ class _MainPageState extends State<MainPage> {
           children: <Widget>[
             _buildUpperMenu(), //앱바 아래 메뉴까지
             _buildBottomMenu(), //MVP 카드 추천 종이접기
-            _buildSearchBar(), //클릭 시 검색바 열림림
+            _buildSearchBar(), //클릭 시 검색바 열림
           ],
         ));
   }

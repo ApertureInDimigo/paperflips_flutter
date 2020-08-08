@@ -19,6 +19,8 @@ import 'common/data_class.dart';
 import 'request.dart';
 import './common/ip.dart';
 import './common/data_class.dart';
+import 'login_page.dart';
+
 
 class MainPage extends StatefulWidget {
   @override
@@ -40,7 +42,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _isUserButtonToggle = true;
-    _isLogined = true;
+    _isLogined = false;
   }
 
   int result;
@@ -376,7 +378,7 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {},
+              onTap: () {goLoginPage();},
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -504,7 +506,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget _buildLoginUpperMenu() {
+  Widget _buildLoginedUpperMenu() {
     return AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -555,7 +557,7 @@ class _MainPageState extends State<MainPage> {
         color: navColor,
       ),
       height: 70,
-      child: _isLogined ? _buildLoginUpperMenu() : _buildGuestUpperMenu(),
+      child: _isLogined ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
     );
   }
 
@@ -648,6 +650,14 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: RegisterPage()),
     );
   }
+
+  void goLoginPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: LoginPage()),
+    );
+  }
+
 }
 
 //페이지 이동 디졸브 트랜지션

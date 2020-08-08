@@ -559,12 +559,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildRecommendRecipeList() {
-    return Column(
-      children: [
 
-        /*이 부분 수정해주세요.. FutureBuilder 참고*/ 
-       // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
-        RecipeCard(
+    Future<List<RecipeCard>> _fetchRecommendRecipeList() async {
+      await Future.delayed(Duration(seconds: 2));
+      return  [RecipeCard(
             recipeName: "종이배",
             rarity: "normal",
             summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
@@ -576,8 +574,55 @@ class _MainPageState extends State<MainPage> {
             recipeName: "종이배",
             rarity: "normal",
             summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
-      ].map((x) => buildRecipeCard(x)).toList(),
+      ];
+    }
+
+    return FutureBuilder(
+        future: _fetchRecommendRecipeList(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          if (snapshot.hasData == false) {
+            return Container(
+              alignment: Alignment.center,
+              margin : EdgeInsets.all(50),
+              child: Center(
+                child:  CircularProgressIndicator(),
+              ),
+            );
+          }
+          else if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                "아니 에러가 왜 나"
+              ),
+            );
+          }else{
+
+            return Column(
+                children:  snapshot.data.map<Widget>((x) => buildRecipeCard(x)).toList()
+            );
+          }
+
+        }
     );
+//    return Column(
+//      children: [
+//
+//        /*이 부분 수정해주세요.. FutureBuilder 참고*/
+//       // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
+//        RecipeCard(
+//            recipeName: "종이배",
+//            rarity: "normal",
+//            summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
+//        RecipeCard(
+//            recipeName: "코끼리",
+//            rarity: "legend",
+//            summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
+//        RecipeCard(
+//            recipeName: "종이배",
+//            rarity: "normal",
+//            summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
+//      ].map((x) => buildRecipeCard(x)).toList(),
+//    );
   }
 
   //검색 페이지로 이동

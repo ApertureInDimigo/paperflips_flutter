@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'dart:math';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
+
 class CollectionPage extends StatefulWidget {
   @override
   _CollectionPageState createState() => _CollectionPageState();
@@ -34,7 +35,7 @@ class _CollectionPageState extends State<CollectionPage> {
       _inAsyncCall = true;
     });
     final res = await http.get(
-      "http://coronawith.me/",
+      "http://dimigo.herokuapp.com/",
     );
     List<RecipeCard> collectionList = [1,2,3,4,5,6,7,8,9,10].map((x) {
       var rng = new Random();
@@ -42,7 +43,8 @@ class _CollectionPageState extends State<CollectionPage> {
       return RecipeCard(
           recipeName: "코끼리${x}",
           rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
-          summary : "SFDA"
+          summary : "SFDA",
+
           );
     }).toList();
 //    print(collectionList);
@@ -99,4 +101,32 @@ class _CollectionPageState extends State<CollectionPage> {
       ),
     );
   }
+}
+
+
+
+
+//페이지 이동 디졸브 트랜지션
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({this.page})
+      : super(
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
 }

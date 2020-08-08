@@ -132,19 +132,19 @@ class _SearchPageState extends State<SearchPage> {
     });
 
     final res = await http.get(
-      "http://coronawith.me/",
+      "http://dimigo.herokuapp.com/",
     ); //그냥 임의 주소로 http 요청 해둠
 
     List<RecipeCard> officialRecipeList = [1, 2, 3, 4, 5]
         .map((x) => RecipeCard(
-            recipeName: "${searchQuery}${x}",
+            recipeName: searchQuery,
             rarity: "rare",
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();
 
     List<RecipeCard> customRecipeList = [6, 7, 8, 9, 10]
         .map((x) => RecipeCard(
-            recipeName: "${searchQuery}${x}",
+            recipeName: searchQuery,
             rarity: "rare",
             summary: "${searchQuery}의 소개 좀 들어보세요"))
         .toList();

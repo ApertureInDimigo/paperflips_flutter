@@ -9,12 +9,13 @@ import 'register_page.dart';
 void main() {
   runApp(MyApp());
 }
-
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Flutter Demo',
       theme: ThemeData(
         fontFamily: "a고딕12",

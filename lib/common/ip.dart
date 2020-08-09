@@ -1,3 +1,5 @@
 class IP {
-  static const String address = 'http://192.168.211.1:3000';
+
+static const String address = 'https://paperflips-server.herokuapp.com';
+
 }

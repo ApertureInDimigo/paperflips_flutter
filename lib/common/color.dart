@@ -28,6 +28,7 @@ Color limitedRecipeColor = Color(0xFF0ABFB3);
 
 
 Color primaryColor = Color(0xFFFFD917);
+Color kakaoColor = Color(0xFFFFD814);
 
 Color collectionContainerColor = Color(0xFFF8F8F8);
 

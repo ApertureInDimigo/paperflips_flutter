@@ -73,8 +73,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(
                           left: 20, right: 15, top: 20, bottom: 20),
-                      child: Image.network(
-                          '${IP.address}/image/${recipe.recipeName}.png' /*recipe.iconPath*/),
+                      child: Image.network('${IP.address}/img/image/${recipe.recipeName}.png'/*recipe.iconPath*/),
                     ),
                     Flexible(
                       child: Container(

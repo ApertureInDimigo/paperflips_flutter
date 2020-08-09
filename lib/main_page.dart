@@ -35,7 +35,6 @@ class _MainPageState extends State<MainPage> {
 
   _MainPageState() {
     //p.register("idtest11", "pwdtest", "홍길동");
-//    request.register("mamakd", "djkdfjl", "홍길동");
     //p.createPost();
   }
 
@@ -46,7 +45,9 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _isUserButtonToggle = true;
     _isLogined = false;
+
     getAllTasksFuture = fetchRecommendRecipeList();
+
   }
 
   int result;
@@ -203,7 +204,7 @@ class _MainPageState extends State<MainPage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
                         left: 10, right: 20, top: 20, bottom: 20),
-                    child: Image.network(IconPath.boat),
+                    child: Image.network('${IP.address}/img/image/종이배.png'/*recipe.iconPath*/),
                   ),
                   Flexible(
                     child: Container(

@@ -8,6 +8,7 @@ import '../../common/ip.dart';
 import 'package:intl/intl.dart';
 
 import '../../fold_ready.dart';
+import '../../introduce.dart';
 import '../../main.dart';
 
 // rarity 를 받고 해당 Text 위젯 반환
@@ -47,12 +48,6 @@ Widget _buildRarityText(rarity) {
 
 // RecipeCard 클래스를 받아 메인 페이지, 검색 페이지 등에 쓰일 레시피 카드 반환
 Widget buildRecipeCard(RecipeCard recipe) {
-  void goFoldReadyPage(RecipeCard recipe) {
-    navigatorKey.currentState.push(MaterialPageRoute(
-      builder: (context) => FoldReadyPage(recipe),
-    ));
-  }
-
   return Container(
       margin: EdgeInsets.only(top: 5),
       height: 100,
@@ -65,7 +60,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
             child: Material(
               color: cardColor,
               child: InkWell(
-                onTap: () {},
+                onTap: () {goIntroducePage(recipe);},
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -73,7 +68,8 @@ Widget buildRecipeCard(RecipeCard recipe) {
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(
                           left: 20, right: 15, top: 20, bottom: 20),
-                      child: Image.network('${IP.address}/img/image/${recipe.recipeName}.png'/*recipe.iconPath*/),
+                      child: Image.network('${IP.address}/img/image/${recipe
+                          .recipeName}.png' /*recipe.iconPath*/),
                     ),
                     Flexible(
                       child: Container(
@@ -113,7 +109,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                   decoration: BoxDecoration(),
                   width: 50,
                   padding:
-                      EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
+                  EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -242,7 +238,9 @@ Widget buildRecipeCollection(collection) {
       color: collectionContainerColor,
       child: InkWell(
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        onTap: () {},
+        onTap: () {
+          goIntroducePage(collection);
+        },
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: Container(
@@ -289,4 +287,37 @@ Widget buildRecipeCollection(collection) {
       ),
     ),
   );
+}
+
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({this.page})
+      : super(
+    pageBuilder: (BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,) =>
+    page,
+    transitionsBuilder: (BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
+}
+
+
+void goFoldReadyPage(RecipeCard recipe) {
+  navigatorKey.currentState.push(FadeRoute(page: FoldReadyPage(recipe)),
+
+  );
+}
+
+
+void goIntroducePage(RecipeCard recipe) {
+  navigatorKey.currentState.push(FadeRoute(page: IntroducePage(recipe),
+  ));
 }

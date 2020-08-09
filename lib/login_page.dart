@@ -3,6 +3,10 @@ import 'common/widgets/appbar.dart';
 import 'request.dart';
 import 'common/color.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import './common/ip.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -26,14 +30,13 @@ class _LoginPageState extends State<LoginPage> {
       _inAsyncCall = true;
     });
 
-    await Future.delayed(Duration(seconds: 2));
 
-    if(_idController.text == "qwe123" && _pwController.text == "123456"){
-      print("succ");
-    }else{
-      print("fal");
+    final res = await http.post(
+        "${IP.localAddress}/login",
+        body: {"id": _idController.text, "password" : _pwController.text});
+    print(res.body);
+    Map<String, dynamic> data = jsonDecode(res.body);
 
-    }
 
     setState(() {
       _inAsyncCall = false;
@@ -82,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   height: 45,
                   child: TextField(
-                    obscureText: true,
+//                    obscureText: true,
                     controller: _pwController,
                     onSubmitted: (value) {},
                     onChanged: (value) {},

@@ -47,7 +47,6 @@ class _MainPageState extends State<MainPage> {
     _isLogined = false;
 
     getAllTasksFuture = fetchRecommendRecipeList();
-
   }
 
   int result;
@@ -204,7 +203,8 @@ class _MainPageState extends State<MainPage> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.only(
                         left: 10, right: 20, top: 20, bottom: 20),
-                    child: Image.network('${IP.address}/img/image/종이배.png'/*recipe.iconPath*/),
+                    child: Image.network(
+                        '${IP.address}/img/image/종이배.png' /*recipe.iconPath*/),
                   ),
                   Flexible(
                     child: Container(
@@ -574,15 +574,15 @@ class _MainPageState extends State<MainPage> {
         await http.get("https://paperflips-server.herokuapp.com/rec/data/1");
     //테스트 하려고 하니 갑자기 서버가 터져버려서 못했어요..
 
-    Map<String, dynamic> recipe = jsonDecode(res.body);
+    Map<String, dynamic> data = jsonDecode(res.body);
+
+    var recipe = data["data"];
     print(recipe);
 
     print(RecipeCard.fromJson(recipe));
     setState(() {});
 
-    return [
-      RecipeCard.fromJson(recipe)
-    ];
+    return [RecipeCard.fromJson(recipe)];
 
     return [
       RecipeCard(
@@ -602,34 +602,11 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildRecommendRecipeList() {
 
-    return FutureBuilder(
-        future: getAllTasksFuture,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text("아니 에러가 왜 나!!!!!!!!!!!!!!!"),
-            );
-          }
-          else if (snapshot.hasData == false) {
-            return Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.all(50),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else {
-            return Column(
-                children: snapshot.data
-                    .map<Widget>((x) => buildRecipeCard(x))
-                    .toList());
-          }
-        });
 //    return Column(
 //      children: [
 //
 //        /*이 부분 수정해주세요.. FutureBuilder 참고*/
-//       // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
+//        // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
 //        RecipeCard(
 //            recipeName: "종이배",
 //            rarity: "normal",
@@ -644,6 +621,32 @@ class _MainPageState extends State<MainPage> {
 //            summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
 //      ].map((x) => buildRecipeCard(x)).toList(),
 //    );
+
+
+    return FutureBuilder(
+        future: getAllTasksFuture,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("아니 에러가 왜 나!!!!!!!!!!!!!!!"),
+            );
+          } else if (snapshot.hasData == false) {
+            return Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.all(50),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+//            print(snapshot.data[0].recipeName);
+//            print("!");
+            return Column(
+                children: snapshot.data
+                    .map<Widget>((x) => buildRecipeCard(x))
+                    .toList());
+          }
+        });
 
   }
 

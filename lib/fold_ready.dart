@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'common/data_class.dart';
 import 'dart:core';
 
-
+import 'common/ip.dart';
 
 class FoldReadyPage extends StatefulWidget {
   final RecipeCard recipeCard;

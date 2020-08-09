@@ -6,6 +6,10 @@ import '../../common/asset_path.dart';
 import '../../common/data_class.dart';
 import '../../common/ip.dart';
 import 'package:intl/intl.dart';
+
+import '../../fold_ready.dart';
+import '../../main.dart';
+
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
 Widget _buildRarityText(rarity) {
@@ -16,7 +20,6 @@ Widget _buildRarityText(rarity) {
         "보통",
         style: TextStyle(color: normalRecipeColor, fontFamily: Font.bold),
         textAlign: TextAlign.left,
-
       );
       break;
     case "rare":
@@ -44,6 +47,12 @@ Widget _buildRarityText(rarity) {
 
 // RecipeCard 클래스를 받아 메인 페이지, 검색 페이지 등에 쓰일 레시피 카드 반환
 Widget buildRecipeCard(RecipeCard recipe) {
+  void goFoldReadyPage(RecipeCard recipe) {
+    navigatorKey.currentState.push(MaterialPageRoute(
+      builder: (context) => FoldReadyPage(recipe),
+    ));
+  }
+
   return Container(
       margin: EdgeInsets.only(top: 5),
       height: 100,
@@ -97,17 +106,19 @@ Widget buildRecipeCard(RecipeCard recipe) {
             color: primaryColor,
             child: InkWell(
 //                splashColor: Colors.white,
-              onTap: () {},
+              onTap: () {
+                goFoldReadyPage(recipe);
+              },
               child: Container(
                   decoration: BoxDecoration(),
                   width: 50,
-                  padding: EdgeInsets.only(
-                      top: 15, bottom: 15, left: 12, right: 12),
+                  padding:
+                      EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(IconPath.fold),
+                      //Image.asset(IconPath.fold),
                       SizedBox(height: 3),
                       Text("접기", style: TextStyle(fontSize: 12))
                     ],
@@ -117,7 +128,6 @@ Widget buildRecipeCard(RecipeCard recipe) {
         ],
       ));
 }
-
 
 Widget _buildRarityBox(String rarity) {
   Widget rarityBoxWidget;
@@ -237,21 +247,19 @@ Widget buildRecipeCollection(collection) {
           padding: const EdgeInsets.all(4.0),
           child: Container(
             decoration: BoxDecoration(
-
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
-
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
 
-//                Image.network(
-//                    collection.iconPath,
-//                    width: 80,
-//                    height: 80
-//                ),
+                Image.network(
+                    '${IP.address}/img/image/${collection.recipeName}.png',
+                    width: 80,
+                    height: 80),
+
                 _buildRarityBox(collection.rarity),
                 SizedBox(height: 3),
                 Text(
@@ -263,14 +271,16 @@ Widget buildRecipeCollection(collection) {
                   ),
                 ),
                 SizedBox(height: 2),
-//                Text(
-//                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
-//                  style: TextStyle(
-//                    fontSize: 14,
-//                    fontWeight: FontWeight.normal,
-//                    fontFamily: Font.normal,
-//                  ),
-//                ),
+
+                /*Text(
+                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: Font.normal,
+                  ),
+                ),*/
+
                 SizedBox(height: 5),
               ],
             ),
@@ -280,5 +290,3 @@ Widget buildRecipeCollection(collection) {
     ),
   );
 }
-
-

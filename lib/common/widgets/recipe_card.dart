@@ -6,6 +6,7 @@ import '../../common/asset_path.dart';
 import '../../common/data_class.dart';
 import '../../common/ip.dart';
 import 'package:intl/intl.dart';
+
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
 Widget _buildRarityText(rarity) {
@@ -107,7 +108,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.asset(IconPath.fold),
+                      //Image.asset(IconPath.fold),
                       SizedBox(height: 3),
                       Text("접기", style: TextStyle(fontSize: 12))
                     ],
@@ -247,11 +248,11 @@ Widget buildRecipeCollection(collection) {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
 
-                Image.network(
+                /*Image.network(
                     collection.iconPath,
                     width: 80,
                     height: 80
-                ),
+                ),*/
                 _buildRarityBox(collection.rarity),
                 SizedBox(height: 3),
                 Text(
@@ -263,14 +264,14 @@ Widget buildRecipeCollection(collection) {
                   ),
                 ),
                 SizedBox(height: 2),
-                Text(
+                /*Text(
                   DateFormat('yyyy/MM/dd').format(collection.obtainDate),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
                     fontFamily: Font.normal,
                   ),
-                ),
+                ),*/
                 SizedBox(height: 5),
               ],
             ),
@@ -280,5 +281,3 @@ Widget buildRecipeCollection(collection) {
     ),
   );
 }
-
-

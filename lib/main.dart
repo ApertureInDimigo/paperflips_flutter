@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main_page.dart';
+import 'introduce.dart';
 import './common/color.dart';
 import 'collection_page.dart';
 import 'register_page.dart';
@@ -44,8 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      body: MainPage(),
-      //body: CollectionPage(),
+      //body: MainPage(),
+      body: IntroducePage(),
     );
   }
 }

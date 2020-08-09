@@ -40,7 +40,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _isUserButtonToggle = true;
-    _isLogined = true;
+    _isLogined = false;
   }
 
   int result;
@@ -562,9 +562,8 @@ class _MainPageState extends State<MainPage> {
   Widget _buildRecommendRecipeList() {
     return Column(
       children: [
-
-        /*이 부분 수정해주세요.. FutureBuilder 참고*/ 
-       // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
+        /*이 부분 수정해주세요.. FutureBuilder 참고*/
+        // GetRecipeCard.fetchPost(1), Future<RecipeCard> 형으로 반환..
         RecipeCard(
             recipeName: "종이배",
             rarity: "normal",
@@ -589,7 +588,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  //검색 페이지로 이동
+  //컬렉션 페이지로 이동
   void goCollectionPage() {
     Navigator.push(
       context,

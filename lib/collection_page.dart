@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_front/introduce.dart';
 import './common/font.dart';
 import './common/color.dart';
 import './common/asset_path.dart';
@@ -10,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:math';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
 
 class CollectionPage extends StatefulWidget {
   @override
@@ -99,4 +102,35 @@ class _CollectionPageState extends State<CollectionPage> {
       ),
     );
   }
+}
+
+/*void goIntroducePage() {
+  Navigator.push(
+    context,
+    FadeRoute(page: IntroducePage()),
+  );
+}*/
+
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({this.page})
+      : super(
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
 }

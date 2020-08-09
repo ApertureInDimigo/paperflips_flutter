@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'common/widgets/appbar.dart';
 import 'request.dart';
 import 'common/color.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -43,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: DefaultAppBar(title : "로그인"),
       body: ModalProgressHUD(
         progressIndicator: CircularProgressIndicator(),
         opacity: 0.2,
@@ -60,7 +61,6 @@ class _LoginPageState extends State<LoginPage> {
 
                     onSubmitted: (value) {},
                     onChanged: (value) {},
-                    autofocus: true,
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -86,7 +86,6 @@ class _LoginPageState extends State<LoginPage> {
                     controller: _pwController,
                     onSubmitted: (value) {},
                     onChanged: (value) {},
-                    autofocus: true,
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -118,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                       height: 45,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(
-                          width : 0.4
-                        ),
+//                        border: Border.all(
+//                          width : 0.4
+//                        ),
                       ),
                       child: Text("로그인ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"),
                     ),

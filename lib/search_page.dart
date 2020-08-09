@@ -40,7 +40,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildDefaultAppbar(),
+      appBar: DefaultAppBar(),
       body: ModalProgressHUD(
         inAsyncCall : _inAsyncCall,
         progressIndicator: CircularProgressIndicator(),

@@ -15,12 +15,13 @@ import './common/asset_path.dart';
 import 'common/widgets/appbar.dart';
 import 'common/widgets/recipe_card.dart';
 import 'common/data_class.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'request.dart';
 import './common/ip.dart';
 import './common/data_class.dart';
 import 'login_page.dart';
-
 
 class MainPage extends StatefulWidget {
   @override
@@ -34,15 +35,18 @@ class _MainPageState extends State<MainPage> {
 
   _MainPageState() {
     //p.register("idtest11", "pwdtest", "홍길동");
-    request.register("mamakd", "djkdfjl", "홍길동");
+//    request.register("mamakd", "djkdfjl", "홍길동");
     //p.createPost();
   }
+
+  var getAllTasksFuture;
 
   @override
   void initState() {
     super.initState();
     _isUserButtonToggle = true;
     _isLogined = false;
+    getAllTasksFuture = fetchRecommendRecipeList();
   }
 
   int result;
@@ -378,7 +382,9 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {goLoginPage();},
+              onTap: () {
+                goLoginPage();
+              },
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -561,52 +567,62 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
+  Future<List<RecipeCard>> fetchRecommendRecipeList() async {
+//      await Future.delayed(Duration(seconds: 2));
+    final res =
+        await http.get("https://paperflips-server.herokuapp.com/rec/data/1");
+    //테스트 하려고 하니 갑자기 서버가 터져버려서 못했어요..
+
+    Map<String, dynamic> recipe = jsonDecode(res.body);
+    print(recipe);
+
+    print(RecipeCard.fromJson(recipe));
+    setState(() {});
+
+    return [
+      RecipeCard.fromJson(recipe)
+    ];
+
+    return [
+      RecipeCard(
+          recipeName: "종이배",
+          rarity: "normal",
+          summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
+      RecipeCard(
+          recipeName: "코끼리",
+          rarity: "legend",
+          summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
+      RecipeCard(
+          recipeName: "종이배",
+          rarity: "normal",
+          summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
+    ];
+  }
+
   Widget _buildRecommendRecipeList() {
-
-    Future<List<RecipeCard>> _fetchRecommendRecipeList() async {
-      await Future.delayed(Duration(seconds: 2));
-      return  [RecipeCard(
-            recipeName: "종이배",
-            rarity: "normal",
-            summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
-        RecipeCard(
-            recipeName: "코끼리",
-            rarity: "legend",
-            summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
-        RecipeCard(
-            recipeName: "종이배",
-            rarity: "normal",
-            summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
-      ];
-    }
-
     return FutureBuilder(
-        future: _fetchRecommendRecipeList(),
-        builder: (BuildContext context, AsyncSnapshot snapshot){
-          if (snapshot.hasData == false) {
+        future: getAllTasksFuture,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text("아니 에러가 왜 나!!!!!!!!!!!!!!!"),
+            );
+          }
+          else if (snapshot.hasData == false) {
             return Container(
               alignment: Alignment.center,
-              margin : EdgeInsets.all(50),
+              margin: EdgeInsets.all(50),
               child: Center(
-                child:  CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               ),
             );
-          }
-          else if (snapshot.hasError) {
-            return Center(
-              child: Text(
-                "아니 에러가 왜 나"
-              ),
-            );
-          }else{
-
+          } else {
             return Column(
-                children:  snapshot.data.map<Widget>((x) => buildRecipeCard(x)).toList()
-            );
+                children: snapshot.data
+                    .map<Widget>((x) => buildRecipeCard(x))
+                    .toList());
           }
-
-        }
-    );
+        });
 //    return Column(
 //      children: [
 //
@@ -627,6 +643,8 @@ class _MainPageState extends State<MainPage> {
 //      ].map((x) => buildRecipeCard(x)).toList(),
 //    );
   }
+
+//  print(test2);
 
   //검색 페이지로 이동
   void goSearchPage() {
@@ -657,7 +675,6 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: LoginPage()),
     );
   }
-
 }
 
 //페이지 이동 디졸브 트랜지션

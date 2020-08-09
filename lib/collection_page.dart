@@ -41,7 +41,7 @@ class _CollectionPageState extends State<CollectionPage> {
       var rng = new Random();
       int rndInt = rng.nextInt(1000);
       return RecipeCard(
-          recipeName: "코끼리${x}",
+          recipeName: "코끼리",
           rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
           summary : "SFDA",
 

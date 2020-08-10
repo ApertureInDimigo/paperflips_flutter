@@ -1,6 +1,10 @@
 //import 'dart:html';
 
+//import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'common/font.dart';
+import 'common/ip.dart';
 import 'common/widgets/appbar.dart';
 import 'request.dart';
 import 'common/color.dart';
@@ -38,6 +42,7 @@ class FoldStatus with ChangeNotifier {
   }
 
   void nextStep() {
+
     if (_step + 1 <= maxStep) {
       _step += 1;
     }
@@ -77,9 +82,13 @@ class _FoldPageState extends State<FoldPage> {
   _FoldPageState(RecipeCard _recipeCard, List<FoldProcess> _foldProcessList) {
     recipeCard = _recipeCard;
     foldProcessList = _foldProcessList;
+
+
   }
+
   bool counterListening = false;
 
+  Map<String, dynamic> _readingWord;
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
@@ -95,9 +104,14 @@ class _FoldPageState extends State<FoldPage> {
       setState(() {
         _platformVersion = word;
       });
+      setState(() {
+        _readingWord = {"start" : start, "end" : end};
+      });
+
       print('PROGRESS: $word => $start - $end');
     });
   }
+//  initPlatformState();
 
   void _fetchFoldProcessList() {
     setState(() {});
@@ -109,6 +123,7 @@ class _FoldPageState extends State<FoldPage> {
     initPlatformState();
     _currentFoldProcess = foldProcessList[0];
     ttsSpeak(_currentFoldProcess.ttsExplainText);
+    _readingWord = {"start" : 0, "end" : 0};
   }
 
   void ttsSpeak(text) {
@@ -118,9 +133,7 @@ class _FoldPageState extends State<FoldPage> {
   @override
   Widget build(BuildContext context) {
 //    BankAccount bankAccount = Provider.of<BankAccount>(context);
-
-
-
+//    print(_readingWord);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<FoldStatus>(
@@ -145,32 +158,99 @@ class _FoldPageState extends State<FoldPage> {
             },
           ),
           body: Container(
-            child: Center(child: Builder(builder: (context) {
-              FoldStatus foldStatus = Provider.of<FoldStatus>(context);
+            child: Stack(children: [
+              Container(
+//                  color: Colors.blue,
+                  alignment: Alignment.bottomCenter,
+                  margin: EdgeInsets.only(bottom: 20),
+                  child: Builder(builder: (context) {
+                    FoldStatus foldStatus = Provider.of<FoldStatus>(context);
 
-              if (!counterListening) {
-                foldStatus.addListener(() {
-                  ttsSpeak(foldStatus.getCurrentProcess().ttsExplainText);
-                });
-                counterListening = true;
-              }
+                    if (!counterListening) {
 
-              return Material(
-                color: navColor,
-                child: InkWell(
-                  onTap: () {
-                    ttsSpeak(foldStatus.getCurrentProcess().ttsExplainText);
-                  },
-                  child: Container(
-                    width: 350,
-                    height: 30,
-                    alignment: Alignment.center,
-                    child: Text(
-                        foldStatus.getCurrentProcess().subtitleExplainText),
-                  ),
-                ),
-              );
-            })),
+                      foldStatus.addListener(() {
+                        ttsSpeak(foldStatus.getCurrentProcess().ttsExplainText);
+                      });
+                      counterListening = true;
+                    }
+
+                    Widget _buildSubtitleText(String text){
+                      print( _readingWord["start"]);
+
+                      if(_readingWord["end"] > text.length){
+                        return Text(text);
+                      }
+
+
+                      List<TextSpan> temp = [
+//                        TextSpan(text : text.substring(0, _readingWord["start"])),
+                        TextSpan(text : text.substring(0, _readingWord["end"]), style: TextStyle(color: Colors.red)),
+                        TextSpan(text : text.substring(_readingWord["end"], text.length))
+                      ];
+                      print(temp);
+//                      return Text(text);
+
+
+                      return RichText(
+                        text: TextSpan(
+                            style: TextStyle(
+                                color: Colors.black, fontSize: 15, fontFamily: Font.normal),
+                            children: temp
+                        )
+                      );
+
+                      return Text(text);
+                    }
+
+
+                    return Container(
+                      child: Column(
+                          verticalDirection: VerticalDirection.up,
+                          children: [
+                            Material(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                              color: navColor,
+                              child: InkWell(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50)),
+                                onTap: () {
+                                  ttsSpeak(foldStatus
+                                      .getCurrentProcess()
+                                      .ttsExplainText);
+                                },
+                                child: Container(
+//                      margin: EdgeInsets.symmetric(horizontal: 50),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.9,
+                                  height: 36,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(50)),
+                                  ),
+                                  child: _buildSubtitleText(foldStatus
+                                      .getCurrentProcess()
+                                      .ttsExplainText),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height : 25),
+                            Container(
+//                              width :  MediaQuery.of(context).size.width * 0.3,
+//                              height : 240,
+                              color : navColor,
+                              padding: EdgeInsets.all(25),
+                              child: Column(
+                                children: <Widget>[
+                                  Image.network('${IP.localAddress}/img/image/fold.png'),
+                                ],
+                              ),
+                            )
+                          ]),
+                    );
+                  })),
+            ]),
           )),
     );
   }

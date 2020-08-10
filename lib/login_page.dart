@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
     final res = await http.post(
-        "${IP.localAddress}/login",
+        "${IP.address}/login",
         body: {"id": _idController.text, "password" : _pwController.text});
     print(res.body);
     Map<String, dynamic> data = jsonDecode(res.body);

@@ -7,7 +7,7 @@ import '../../common/data_class.dart';
 import '../../common/ip.dart';
 import 'package:intl/intl.dart';
 
-import '../../fold_ready.dart';
+import '../../foldReady_page.dart';
 import '../../introduce.dart';
 import '../../main.dart';
 
@@ -114,7 +114,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      //Image.asset(IconPath.fold),
+                      Image.network('${IP.localAddress}/img/image/fold.png'),
                       SizedBox(height: 3),
                       Text("접기", style: TextStyle(fontSize: 12))
                     ],

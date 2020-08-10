@@ -4,12 +4,16 @@ import 'introduce.dart';
 import './common/color.dart';
 import 'collection_page.dart';
 import 'register_page.dart';
-
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
 }
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
+
+
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -51,3 +55,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+

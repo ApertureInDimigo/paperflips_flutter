@@ -2,7 +2,7 @@ import 'package:flutter_front/request.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'ip.dart';
-import 'package:json_annotation/json_annotation.dart'; //이건 어떻게 쓸 지 모르겠어요.. 일단 기존 방법을 택할게요..ㅠㅠ
+//import 'package:json_annotation/json_annotation.dart'; //이건 어떻게 쓸 지 모르겠어요.. 일단 기존 방법을 택할게요..ㅠㅠ
 
 //이 파일에 json 파싱 등을 위한 데이터 클래스를 정의할 것
 
@@ -18,6 +18,17 @@ class CollectionCard {
     obtainDate.add(obtain);
   }
 }
+
+
+class FoldProcess {
+  String subtitleExplainText;
+  String ttsExplainText;
+
+  FoldProcess({this.subtitleExplainText, this.ttsExplainText});
+}
+
+
+
 
 class RecipeCard {
   String recipeName;

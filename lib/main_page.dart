@@ -7,6 +7,7 @@ import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
 import 'package:flutter_front/register_page.dart';
+import 'package:vibration/vibration.dart';
 
 import './common/color.dart';
 import './common/font.dart';
@@ -18,6 +19,7 @@ import 'common/data_class.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import 'myRoom_page.dart';
 import 'request.dart';
 import './common/ip.dart';
 import './common/data_class.dart';
@@ -322,7 +324,9 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                goMyRoomPage();
+              },
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -350,7 +354,7 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {},
+              onTap: () {Vibration.vibrate(pattern: List.generate(100, (index) => 50));},
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -667,6 +671,15 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: CollectionPage()),
     );
   }
+
+  //마이룸 페이지로 이동
+  void goMyRoomPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: MyRoomPage()),
+    );
+  }
+
 
   void goRegisterPage() {
     Navigator.push(

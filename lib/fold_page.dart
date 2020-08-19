@@ -88,6 +88,10 @@ class _FoldPageState extends State<FoldPage> {
 
   bool counterListening = false;
 
+  bool _isSpeakingTTS ;
+
+
+
   Map<String, dynamic> _readingWord;
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -96,10 +100,27 @@ class _FoldPageState extends State<FoldPage> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
+    await tts.setPitch(0.1);
     print('VOICES: ${await tts.getVoices}');
     print('LANGUAGES: ${await tts.getLanguages}');
 //    tts.setPitch(2.0);
+    tts.setStartHandler(() {
+
+      setState(() {
+        _isSpeakingTTS = true;
+      });
+    });
+    
+    tts.setCompletionHandler(() {
+//      print("h1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+      setState(() {
+        _isSpeakingTTS = false;
+      });
+    });
+
+
+    
+    
     tts.setProgressHandler((String words, int start, int end, String word) {
       setState(() {
         _platformVersion = word;
@@ -124,6 +145,7 @@ class _FoldPageState extends State<FoldPage> {
     _currentFoldProcess = foldProcessList[0];
     ttsSpeak(_currentFoldProcess.ttsExplainText);
     _readingWord = {"start" : 0, "end" : 0};
+    _isSpeakingTTS = false;
   }
 
   void ttsSpeak(text) {
@@ -175,10 +197,11 @@ class _FoldPageState extends State<FoldPage> {
                     }
 
                     Widget _buildSubtitleText(String text){
-                      print( _readingWord["start"]);
-
-                      if(_readingWord["end"] > text.length){
-                        return Text(text);
+//                      print( _readingWord["start"]);
+                      print(_isSpeakingTTS);
+                      if(_isSpeakingTTS == false || _readingWord["end"] > text.length){
+                        return Text(text, style : TextStyle(
+                            color: Colors.black, fontSize: 15, fontFamily: Font.normal));
                       }
 
 

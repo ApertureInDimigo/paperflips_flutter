@@ -5,8 +5,11 @@ import 'common/color.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import './common/ip.dart';
+
+import './common/auth.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +18,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _idController = new TextEditingController();
+
+
   final TextEditingController _pwController = new TextEditingController();
 //  final TextEditingController _nameController = new TextEditingController();
   bool _inAsyncCall; //http 요청중이면 true 아니면 false
@@ -23,25 +28,13 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _inAsyncCall = false;
+    _idController.text = "test123";
+    _pwController.text = "test1234!";
   }
-
-  Future login() async{
-    setState(() {
-      _inAsyncCall = true;
-    });
-
-
-    final res = await http.post(
-        "${IP.address}/login",
-        body: {"id": _idController.text, "password" : _pwController.text});
-    print(res.body);
-    Map<String, dynamic> data = jsonDecode(res.body);
-
-
-    setState(() {
-      _inAsyncCall = false;
-    });
-  }
+//
+//  void login() async{
+//
+//  }
 
 
   @override
@@ -113,7 +106,21 @@ class _LoginPageState extends State<LoginPage> {
                   borderRadius: BorderRadius.circular(10.0),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10.0),
-                    onTap: () {login();},
+                    onTap: () async {
+                      setState(() {
+                        _inAsyncCall = true;
+                      });
+
+                      var res = await
+                      login(_idController.text, _pwController.text);
+
+
+
+                      setState(() {
+                        _inAsyncCall = false;
+                      });
+
+                    },
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,

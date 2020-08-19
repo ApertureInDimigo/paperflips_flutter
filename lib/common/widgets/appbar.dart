@@ -131,13 +131,14 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
 
     Widget _buildFoldAppBarNextButton() {
       return Material(
-        color: Colors.amber,
+        color: primaryColor,
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
           onTap: () {foldStatus.nextStep();},
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
           child: Container(
+//            width : 70,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
@@ -148,7 +149,7 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
                 Text(
                   "다음",
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
                 Icon(Icons.arrow_forward),
@@ -189,13 +190,14 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
 
     Widget _buildFoldAppBarExitButton() {
       return Material(
-        color: Colors.amber,
+        color: primaryColor,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
           onTap: () {_showExitWarningDialog();},
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
           child: Container(
+            width : 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
@@ -206,7 +208,7 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
                 Text(
                   "나가기",
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],
@@ -219,13 +221,14 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
     
     Widget _buildFoldAppBarPrevButton() {
       return Material(
-        color: Colors.amber,
+        color: primaryColor,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
           onTap: () {foldStatus.prevStep();},
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
           child: Container(
+            width : 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
@@ -236,7 +239,7 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
                 Text(
                   "이전",
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
                 ),
               ],

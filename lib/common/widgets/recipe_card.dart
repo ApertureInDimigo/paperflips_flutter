@@ -13,7 +13,7 @@ import '../../main.dart';
 
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
-Widget _buildRarityText(rarity) {
+Widget buildRarityText(rarity) {
   Widget rarityTextWidget;
   switch (rarity) {
     case "normal":
@@ -78,7 +78,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _buildRarityText(recipe.rarity),
+                            buildRarityText(recipe.rarity),
                             Container(height: 2),
                             Text(recipe.recipeName,
                                 style: TextStyle(
@@ -125,7 +125,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
       ));
 }
 
-Widget _buildRarityBox(String rarity) {
+Widget buildRarityBox(String rarity) {
   Widget rarityBoxWidget;
   switch (rarity) {
     case "normal":
@@ -258,7 +258,7 @@ Widget buildRecipeCollection(collection) {
                     width: 80,
                     height: 80),
 
-                _buildRarityBox(collection.rarity),
+                buildRarityBox(collection.rarity),
                 SizedBox(height: 3),
                 Text(
                   collection.recipeName,

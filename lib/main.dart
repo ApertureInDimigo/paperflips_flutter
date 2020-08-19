@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'main_page.dart';
 import 'introduce.dart';
 import './common/color.dart';
@@ -7,6 +8,7 @@ import 'register_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+
   runApp(MyApp());
 }
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();

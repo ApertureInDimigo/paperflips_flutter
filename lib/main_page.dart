@@ -8,6 +8,8 @@ import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
 import 'package:flutter_front/register_page.dart';
 import 'package:flutter_front/test_page.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
 import './common/color.dart';
@@ -26,6 +28,9 @@ import './common/ip.dart';
 import './common/data_class.dart';
 import 'login_page.dart';
 
+
+import './common/provider/userProvider.dart';
+
 class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
@@ -34,7 +39,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   bool
       _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
-  bool _isLogined; //로그인 된 상태일 때 true, 아니면 false
+  bool _isLogined = false; //로그인 된 상태일 때 true, 아니면 false
 
   _MainPageState() {
     //p.register("idtest11", "pwdtest", "홍길동");
@@ -48,14 +53,33 @@ class _MainPageState extends State<MainPage> {
     super.initState();
     _isUserButtonToggle = true;
     _isLogined = false;
+    getIsLogined();
 
     getAllTasksFuture = fetchRecommendRecipeList();
   }
+
+  void getIsLogined() async {
+    final storage = new FlutterSecureStorage();
+    var token = await storage.read(key: "token");
+    print(token);
+    setState(() {
+//      _isLogined = true;
+    });
+  }
+
+
+
 
   int result;
 
   @override
   Widget build(BuildContext context) {
+
+    UserStatus userStatus = Provider.of<UserStatus>(context);
+
+    _isLogined = userStatus.isLogined;
+
+
     return Scaffold(
         appBar: DefaultAppBar(onActionButtonPressed: () {
           setState(() {
@@ -448,6 +472,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildMyInfoMenu() {
+    UserStatus userStatus = Provider.of<UserStatus>(context);
     return Container(
 //      height: ,
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -455,7 +480,7 @@ class _MainPageState extends State<MainPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Text("홍길동",
+            child: Text(userStatus.userInfo["id"],
                 style: TextStyle(fontFamily: Font.bold, fontSize: 17)),
           ),
           Container(
@@ -510,6 +535,24 @@ class _MainPageState extends State<MainPage> {
                   height: 28,
                   padding: EdgeInsets.all(5),
                   child: Image.network(IconPath.gear),
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              child: InkWell(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                onTap: () {
+                  userStatus.logout();
+                },
+                child: Container(
+//                  height: 28,
+                  padding: EdgeInsets.all(5),
+                  child: Icon(Icons.exit_to_app),
                 ),
               ),
             ),
@@ -570,7 +613,7 @@ class _MainPageState extends State<MainPage> {
         color: navColor,
       ),
       height: 70,
-      child: _isLogined ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
+      child: _isLogined == true ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
     );
   }
 

@@ -285,7 +285,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
                     _isPanelOpen = false;
                   }
 
-                  Vibration.vibrate(duration: 80);
+//                  Vibration.vibrate(duration: 80);
                 },
                 feedbackOffset: Offset.fromDirection(10),
                 dragAnchor: DragAnchor.child,
@@ -547,17 +547,33 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
     Widget _buildUnderStickerBox() {
       return Column(children: [
-
+        Container(
+//                      color: Colors.green,
+          margin: EdgeInsets.all(8),
+          alignment: Alignment.bottomCenter,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                height: 5,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+              ),
+            ],
+          ),
+        ),
         Container(
           color: Color(0xFFFFFFFF),
-          height: 300,
+          height: 270,
           child: Column(children: [
 
             Flexible(
               child: Container(
 //            height : 250,
                 padding:
-                    EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                    EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
 
                 child: GridView.count(
 //        physics: const NeverScrollableScrollPhysics(),
@@ -664,27 +680,11 @@ class _MyRoomPageState extends State<MyRoomPage> {
                   }),
                 ),
 
-                Positioned.fill(
-                  bottom : _fabHeight,
-                  child:
-                    Container(
-//                      color: Colors.green,
-                      margin: EdgeInsets.all(7),
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: 30,
-                            height: 5,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                          ),
-                        ],
-                      ),
-                    ),
-                ),
+//                Positioned.fill(
+//                  bottom : _fabHeight,
+//                  child:
+//
+//                ),
 
 
                 Positioned(

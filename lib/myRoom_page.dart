@@ -63,6 +63,15 @@ class PlaceStatus with ChangeNotifier {
     notifyListeners();
   }
 
+  void clear(){
+    for (int i = 0; i < placedStickerList.length; i++) {
+      placedStickerList[i].sticker.count -= 1;
+    }
+    placedStickerList = [];
+    notifyListeners();
+  }
+
+
   void moveSticker(int id, Offset offset) {
     PlacedSticker temp;
     placedStickerList.where((x) => x.id == id).toList().every((x) {
@@ -267,7 +276,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
 
 //        width: 0,
 //        height: 50,
-            child: LongPressDraggable(
+            child: Draggable(
                 onDragStarted: () {
                   if (_pc.isPanelOpen == true) {
                     _pc.close();
@@ -431,12 +440,13 @@ class _MyRoomPageState extends State<MyRoomPage> {
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       onTap: () {
-                        placeStatus.loadStatus();
+//                        placeStatus.loadStatus();
+                          placeStatus.clear();
                       },
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.share),
+                        child: Icon(Icons.layers_clear),
                       ),
                     ),
                   ),
@@ -614,18 +624,23 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                         placeStatus
                                             .updateStickerScale(details.scale);
                                       },
-                                      child: Container(
-                                        key: _keyStickerBackground,
-                                        color: Color(0xFFFFF385),
-                                        child: AspectRatio(
-                                            aspectRatio: 9 / 18,
-                                            child: Stack(
-                                                children: placeStatus
-                                                    .placedStickerList
-                                                    .map((x) {
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          placeStatus.selectSticker(placeStatus.selectedSticker.id);
+                                        },
+                                        child: Container(
+                                          key: _keyStickerBackground,
+                                          color: Color(0xFFFFF385),
+                                          child: AspectRatio(
+                                              aspectRatio: 9 / 18,
+                                              child: Stack(
+                                                  children: placeStatus
+                                                      .placedStickerList
+                                                      .map((x) {
 //                                                          print(x.sticker.path);
-                                              return x;
-                                            }).toList())),
+                                                return x;
+                                              }).toList())),
+                                        ),
                                       ),
                                     );
                                   },

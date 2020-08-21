@@ -8,6 +8,8 @@ import 'package:flutter_front/common/widgets/recipe_card.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:swipedetector/swipedetector.dart';
 import 'dart:convert';
 import 'common/color.dart';
 import 'common/data_class.dart';
@@ -22,6 +24,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:vibration/vibration.dart';
 
 GlobalKey _keyStickerBackground = GlobalKey();
+PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
   List<PlacedSticker> placedStickerList = [];
@@ -211,10 +214,9 @@ class _PlacedStickerState extends State<PlacedSticker> {
 
   Sticker sticker;
 
-
-
   double _scaleFactor = 1.0;
 
+  bool _isPanelOpen;
 
   _PlacedStickerState(
       int _id, Offset _initPos, double _initScale, Sticker _sticker) {
@@ -227,7 +229,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
   @override
   void initState() {
     super.initState();
-
+    _isPanelOpen = _pc.isPanelOpen;
   }
 
   @override
@@ -241,9 +243,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
       child: Visibility(
         visible: widget.visible,
         child: GestureDetector(
-          onScaleStart: (details) {
-
-          },
+          onScaleStart: (details) {},
           onTap: () {
             placeStatus.selectSticker(id);
 //            select
@@ -269,6 +269,13 @@ class _PlacedStickerState extends State<PlacedSticker> {
 //        height: 50,
             child: LongPressDraggable(
                 onDragStarted: () {
+                  if (_pc.isPanelOpen == true) {
+                    _pc.close();
+                    _isPanelOpen = true;
+                  } else {
+                    _isPanelOpen = false;
+                  }
+
                   Vibration.vibrate(duration: 80);
                 },
                 feedbackOffset: Offset.fromDirection(10),
@@ -283,6 +290,10 @@ class _PlacedStickerState extends State<PlacedSticker> {
                 ),
                 childWhenDragging: Container(),
                 onDragEnd: (data) {
+                  if (_isPanelOpen == true) {
+                    _pc.open();
+                  }
+
                   if (data.wasAccepted == true) {
                     final RenderBox renderBox =
                         _keyStickerBackground.currentContext.findRenderObject();
@@ -325,6 +336,12 @@ class _MyRoomPageState extends State<MyRoomPage> {
   List<Sticker> _stickerList;
   List<PlacedSticker> _placedStickerList;
 
+  final double _initFabHeight = 27.0;
+  double _fabHeight;
+  double _panelHeightOpen = 300;
+  double _panelHeightClosed = 25.0;
+
+
   int count = 0;
 
   bool _inAsyncCall = false;
@@ -333,7 +350,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
   void initState() {
     super.initState();
     _inAsyncCall = false;
-
+    _fabHeight = 300;
     _placedStickerList = [
 //      PlacedSticker(
 //        Offset(50, 50),
@@ -372,12 +389,6 @@ class _MyRoomPageState extends State<MyRoomPage> {
           path: '${IP.address}/img/image/golden_frog.png',
           limit: 1,
           count: 0),
-      Sticker(
-          id: 3,
-          name: "황구리",
-          path: '${IP.address}/img/image/golden_frog.png',
-          limit: 1,
-          count: 0)
     ];
 //    _getMySongList();
   }
@@ -388,46 +399,50 @@ class _MyRoomPageState extends State<MyRoomPage> {
       return Builder(
         builder: (context) {
           PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                child: Material(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: InkWell(
+          return Container(
+            height: 50,
+            child: Row(
+
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Material(
+                    color: Colors.white.withOpacity(0.8),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    onTap: () {
-                      placeStatus.saveCurrentStatus();
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      child: Text("저장하기"),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      onTap: () {
+                        placeStatus.saveCurrentStatus();
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        child: Icon(Icons.check),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                child: Material(
-                  color: primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: InkWell(
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Material(
+                    color: Colors.white.withOpacity(0.8),
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    onTap: () {
-                      placeStatus.loadStatus();
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                      child: Text("불러오기(임시)"),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      onTap: () {
+                        placeStatus.loadStatus();
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        child: Icon(Icons.share),
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           );
         },
       );
@@ -464,6 +479,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
                             return LongPressDraggable(
                                 onDragStarted: () {
+                                  _pc.close();
                                   Vibration.vibrate(duration: 80);
                                 },
                                 feedbackOffset: Offset.fromDirection(10),
@@ -474,6 +490,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                   width: 50,
                                 ),
                                 onDragEnd: (data) {
+                                  _pc.open();
                                   if (data.wasAccepted == true) {
                                     final RenderBox renderBox =
                                         _keyStickerBackground.currentContext
@@ -518,21 +535,36 @@ class _MyRoomPageState extends State<MyRoomPage> {
       );
     }
 
-    Widget _buildUnderIStickerBox() {
-      return Container(
-        padding: EdgeInsets.all(10),
-        color: Color(0xFFCCCCCC),
-        child: GridView.count(
-//        physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          //스크롤 방향 조절
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          crossAxisCount: 5,
+    Widget _buildUnderStickerBox() {
+      return Column(children: [
 
-          children: _stickerList.map((x) => _buildUnderSticker(x)).toList(),
+        Container(
+          color: Color(0xFFFFFFFF),
+          height: 300,
+          child: Column(children: [
+
+            Flexible(
+              child: Container(
+//            height : 250,
+                padding:
+                    EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+
+                child: GridView.count(
+//        physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  //스크롤 방향 조절
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  crossAxisCount: 5,
+
+                  children:
+                      _stickerList.map((x) => _buildUnderSticker(x)).toList(),
+                ),
+              ),
+            ),
+          ]),
         ),
-      );
+      ]);
     }
 
     return MultiProvider(
@@ -542,91 +574,111 @@ class _MyRoomPageState extends State<MyRoomPage> {
       child: Scaffold(
           appBar: DefaultAppBar(title: "방 꾸미기"),
           // 2-1. 상세 화면 (전체 화면 세팅1)
-          body: ModalProgressHUD(
-            inAsyncCall: _inAsyncCall,
-            progressIndicator: CircularProgressIndicator(),
-            opacity: 0.1,
-            child: Container(
-                height: double.infinity,
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                        child: Column(
-                      verticalDirection: VerticalDirection.up,
-                      children: <Widget>[
-                        Flexible(flex: 3, child: _buildUnderIStickerBox()),
-                        Container(
-                          child: Flexible(
-                              flex: 5,
-//                            fit: FlexFit.loose,
-                              child: Stack(
-                                children: <Widget>[
-                                  Container(
-                                    alignment: Alignment.center,
-//                              height: double.infinity,
+          body: SwipeDetector(
+            onSwipeDown: () {
+              _pc.close();
+            },
+            onSwipeUp: () {
+              _pc.open();
+            },
+            child: Stack(
+              children: <Widget>[
+                ModalProgressHUD(
+                    inAsyncCall: _inAsyncCall,
+                    progressIndicator: CircularProgressIndicator(),
+                    opacity: 0.1,
+                    child: Container(
+//                      color : Colors.red,
+//                  height: double.infinity,
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.center,
+                                child: DragTarget(
+                                  builder: (context,
+                                      List<Sticker> candidateData,
+                                      rejectedData) {
+                                    PlaceStatus placeStatus =
+                                        Provider.of<PlaceStatus>(context);
+                                    return GestureDetector(
+                                      onScaleStart: (details) {},
+                                      onScaleUpdate: (details) {
+                                        print(details.scale);
+                                        if (placeStatus.selectedSticker ==
+                                            null) {
+                                          return;
+                                        }
 
-                                    child: DragTarget(
-                                      builder: (context,
-                                          List<Sticker> candidateData,
-                                          rejectedData) {
-                                        PlaceStatus placeStatus =
-                                            Provider.of<PlaceStatus>(context);
-                                        return GestureDetector(
-                                          onScaleStart: (details) {},
-                                          onScaleUpdate: (details) {
-                                            print(details.scale);
-                                            if (placeStatus.selectedSticker ==
-                                                null) {
-                                              return;
-                                            }
-
-//                                            print(details.scale);
-                                            placeStatus.updateStickerScale(
-                                                details.scale);
-//                                            setState(() {
-//                                              _scaleFactor = details.scale * 0.2;
-//                                              double currentScale = _scale;
-//                                              double afterScale = _scaleFactor <= 3 ? (_scaleFactor >= 1 ? _scaleFactor : 1) : 3;
-//                                              setState(() {
-//                                                _position = Offset(
-//                                                    _position.dx - (50 * (afterScale - currentScale) / 2),
-//                                                    _position.dy - (50 * (afterScale - currentScale) / 2));
-//                                                _scale = afterScale;
-//                                              });
-//                                            });
-                                          },
-                                          child: Container(
-                                            key: _keyStickerBackground,
-                                            color: Color(0xFFFFF385),
-                                            child: AspectRatio(
-                                                aspectRatio: 1,
-                                                child: Stack(
-                                                    children: placeStatus
-                                                        .placedStickerList
-                                                        .map((x) {
+                                        placeStatus
+                                            .updateStickerScale(details.scale);
+                                      },
+                                      child: Container(
+                                        key: _keyStickerBackground,
+                                        color: Color(0xFFFFF385),
+                                        child: AspectRatio(
+                                            aspectRatio: 9 / 18,
+                                            child: Stack(
+                                                children: placeStatus
+                                                    .placedStickerList
+                                                    .map((x) {
 //                                                          print(x.sticker.path);
-                                                  return x;
-                                                }).toList())),
-                                          ),
-                                        );
-                                      },
-                                      onWillAccept: (data) {
-                                        return true;
-                                      },
-                                      onAccept: (data) {},
-                                    ),
-                                  ),
-                                  Container(
-                                    alignment: Alignment.bottomRight,
-                                    child: _buildUtilButtons(),
-                                  )
-                                ],
-                              )),
-                        ),
-                      ],
-                    )),
-                  ],
-                )),
+                                              return x;
+                                            }).toList())),
+                                      ),
+                                    );
+                                  },
+                                  onWillAccept: (data) {
+                                    return true;
+                                  },
+                                  onAccept: (data) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))),
+                SlidingUpPanel(
+                  defaultPanelState: PanelState.OPEN,
+                  minHeight: _panelHeightClosed,
+                  maxHeight: _panelHeightOpen,
+                  controller: _pc,
+                  panel: _buildUnderStickerBox(),
+                  onPanelSlide: (double pos) => setState((){
+                    _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
+                  }),
+                ),
+
+                Positioned.fill(
+                  bottom : _fabHeight,
+                  child:
+                    Container(
+//                      color: Colors.green,
+                      margin: EdgeInsets.all(7),
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: 30,
+                            height: 5,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                          ),
+                        ],
+                      ),
+                    ),
+                ),
+
+
+                Positioned(
+                  right: 0.0,
+                  bottom: _fabHeight,
+                  child: _buildUtilButtons(),
+                ),
+              ],
+            ),
           )),
     );
   }

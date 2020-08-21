@@ -7,6 +7,7 @@ import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
 import 'package:flutter_front/register_page.dart';
+import 'package:flutter_front/test_page.dart';
 import 'package:vibration/vibration.dart';
 
 import './common/color.dart';
@@ -340,8 +341,9 @@ class _MainPageState extends State<MainPage> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "스토리모드",
-                      style: TextStyle(fontSize: 12),
+                      "스토리모드\n(방꾸미기로 대체됨)",
+                      style: TextStyle(fontSize: 12, ),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 14),
                   ],
@@ -354,7 +356,7 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {Vibration.vibrate(pattern: List.generate(100, (index) => 50));},
+              onTap: () {goTestPage();},
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -679,6 +681,14 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: MyRoomPage()),
     );
   }
+
+  void goTestPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: TestPage()),
+    );
+  }
+
 
 
   void goRegisterPage() {

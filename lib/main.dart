@@ -7,6 +7,8 @@ import 'collection_page.dart';
 import 'register_page.dart';
 import 'package:provider/provider.dart';
 
+import './common/provider/userProvider.dart';
+
 void main() {
 
   runApp(MyApp());
@@ -20,15 +22,22 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: "a고딕12",
-        primarySwatch: navColor,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+
+//    UserStatus userStatus = Provider.of<UserStatus>(context);
+
+
+    return MultiProvider(
+      providers: [ChangeNotifierProvider<UserStatus>(create: (_) => UserStatus()),],
+      child: MaterialApp(
+        navigatorKey: navigatorKey,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          fontFamily: "a고딕12",
+          primarySwatch: navColor,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

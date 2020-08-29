@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'main_page.dart';
+import 'common/provider/userProvider.dart';
 import 'common/widgets/appbar.dart';
+import 'package:provider/provider.dart';
 import 'request.dart';
 import 'common/color.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -39,6 +42,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    UserStatus userStatus = Provider.of<UserStatus>(context);
+
     return Scaffold(
       appBar: DefaultAppBar(title : "로그인"),
       body: ModalProgressHUD(
@@ -55,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
                     controller: _idController,
 
-                    onSubmitted: (value) {},
+                    textInputAction: TextInputAction.next,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     onChanged: (value) {},
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
@@ -80,7 +86,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: TextField(
 //                    obscureText: true,
                     controller: _pwController,
-                    onSubmitted: (value) {},
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                     onChanged: (value) {},
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
@@ -111,9 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                         _inAsyncCall = true;
                       });
 
-                      var res = await
-                      login(_idController.text, _pwController.text);
+                      var loginResult = await
+                      userStatus.login(_idController.text, _pwController.text);
 
+                      if(loginResult == true){
+                        goMainPage();
+                      }
 
 
                       setState(() {
@@ -161,4 +171,39 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
+  void goMainPage() {
+    Navigator.push(
+      context,
+      FadeRoute(page: MainPage()),
+    );
+  }
+
 }
+
+//페이지 이동 디졸브 트랜지션
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({this.page})
+      : super(
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
+}
+

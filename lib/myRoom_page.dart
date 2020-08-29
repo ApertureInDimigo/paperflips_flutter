@@ -63,6 +63,15 @@ class PlaceStatus with ChangeNotifier {
     notifyListeners();
   }
 
+  void clear(){
+    for (int i = 0; i < placedStickerList.length; i++) {
+      placedStickerList[i].sticker.count -= 1;
+    }
+    placedStickerList = [];
+    notifyListeners();
+  }
+
+
   void moveSticker(int id, Offset offset) {
     PlacedSticker temp;
     placedStickerList.where((x) => x.id == id).toList().every((x) {
@@ -267,7 +276,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
 
 //        width: 0,
 //        height: 50,
-            child: LongPressDraggable(
+            child: Draggable(
                 onDragStarted: () {
                   if (_pc.isPanelOpen == true) {
                     _pc.close();
@@ -276,7 +285,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
                     _isPanelOpen = false;
                   }
 
-                  Vibration.vibrate(duration: 80);
+//                  Vibration.vibrate(duration: 80);
                 },
                 feedbackOffset: Offset.fromDirection(10),
                 dragAnchor: DragAnchor.child,
@@ -431,12 +440,13 @@ class _MyRoomPageState extends State<MyRoomPage> {
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       onTap: () {
-                        placeStatus.loadStatus();
+//                        placeStatus.loadStatus();
+                          placeStatus.clear();
                       },
                       child: Container(
                         padding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.share),
+                        child: Icon(Icons.layers_clear),
                       ),
                     ),
                   ),
@@ -537,17 +547,33 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
     Widget _buildUnderStickerBox() {
       return Column(children: [
-
+        Container(
+//                      color: Colors.green,
+          margin: EdgeInsets.all(8),
+          alignment: Alignment.bottomCenter,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                height: 5,
+                decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.all(Radius.circular(12.0))),
+              ),
+            ],
+          ),
+        ),
         Container(
           color: Color(0xFFFFFFFF),
-          height: 300,
+          height: 270,
           child: Column(children: [
 
             Flexible(
               child: Container(
 //            height : 250,
                 padding:
-                    EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
+                    EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
 
                 child: GridView.count(
 //        physics: const NeverScrollableScrollPhysics(),
@@ -614,18 +640,23 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                         placeStatus
                                             .updateStickerScale(details.scale);
                                       },
-                                      child: Container(
-                                        key: _keyStickerBackground,
-                                        color: Color(0xFFFFF385),
-                                        child: AspectRatio(
-                                            aspectRatio: 9 / 18,
-                                            child: Stack(
-                                                children: placeStatus
-                                                    .placedStickerList
-                                                    .map((x) {
+                                      child: GestureDetector(
+                                        onTap: (){
+                                          placeStatus.selectSticker(placeStatus.selectedSticker.id);
+                                        },
+                                        child: Container(
+                                          key: _keyStickerBackground,
+                                          color: Color(0xFFFFF385),
+                                          child: AspectRatio(
+                                              aspectRatio: 9 / 18,
+                                              child: Stack(
+                                                  children: placeStatus
+                                                      .placedStickerList
+                                                      .map((x) {
 //                                                          print(x.sticker.path);
-                                              return x;
-                                            }).toList())),
+                                                return x;
+                                              }).toList())),
+                                        ),
                                       ),
                                     );
                                   },
@@ -649,27 +680,11 @@ class _MyRoomPageState extends State<MyRoomPage> {
                   }),
                 ),
 
-                Positioned.fill(
-                  bottom : _fabHeight,
-                  child:
-                    Container(
-//                      color: Colors.green,
-                      margin: EdgeInsets.all(7),
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            width: 30,
-                            height: 5,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                          ),
-                        ],
-                      ),
-                    ),
-                ),
+//                Positioned.fill(
+//                  bottom : _fabHeight,
+//                  child:
+//
+//                ),
 
 
                 Positioned(

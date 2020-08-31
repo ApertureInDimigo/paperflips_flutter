@@ -33,10 +33,231 @@ class PlaceStatus with ChangeNotifier {
   List<PlacedSticker> placedStickerList = [];
   List<Sticker> stickerList = [];
 
+  BackgroundColor backgruondColor = BackgroundColor(
+    id : 666,
+    kind: "빨강",
+    name: "개빨감",
+    color: Color(0xFFFFF385),
+    decoration: BoxDecoration(color: Color(0xFFFFF385)),
+    isAvailable: true,
+  );
+
+  String selectedColorTab = "빨강";
+  List<Map<String, dynamic>> colorTabList = [
+    {"name": "빨강", "color": Colors.red},
+    {"name": "주황", "color": Colors.orange},
+    {"name": "노랑", "color": Colors.yellow},
+    {"name": "초록", "color": Colors.green},
+    {"name": "파랑", "color": Colors.blue},
+    {"name": "보라", "color": Colors.purple},
+    {"name": "갈색", "color": Colors.brown},
+    {"name": "검정", "color": Colors.black},
+    {"name" : "하양", "color": Colors.white}
+  ];
+
+  Map<String, dynamic> colorList = {
+    "빨강": [
+      BackgroundColor(
+        id : 1,
+        kind: "빨강",
+        name: "개빨감",
+        decoration: BoxDecoration(
+          color: Colors.red,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 2,
+        kind: "빨강",
+        name: "좀빨감",
+        decoration: BoxDecoration(
+          color: Colors.red[300],
+        ),
+        isAvailable: true,
+      ),
+    ],
+    "주황" : [],
+    "노랑" : [],
+    "초록" : [
+      BackgroundColor(
+        id : 500,
+        kind: "초록",
+        name: "녹파스텔",
+        decoration: BoxDecoration(
+          color: Color(0xFFC2DCC9),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 501,
+        kind: "초록",
+        name: "흑녹파스텔",
+        decoration: BoxDecoration(
+          color: Color(0xFFCEDCC2),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 502,
+        kind: "초록",
+        name: "광녹파스텔",
+        decoration: BoxDecoration(
+          color: Color(0xFF87C999),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 503,
+        kind: "초록",
+        name: "광녹색",
+        decoration: BoxDecoration(
+          color: Color(0xFF6EDE8C),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 504,
+        kind: "초록",
+        name: "녹색",
+        decoration: BoxDecoration(
+          color: Color(0xFF49C86B),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 505,
+        kind: "초록",
+        name: "백광녹색",
+        decoration: BoxDecoration(
+          color: Color(0xFFC8FFDE),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 506,
+        kind: "초록",
+        name: "형광파스텔",
+        decoration: BoxDecoration(
+          color: Color(0xFF91F8AD),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 508,
+        kind: "초록",
+        name: "형광녹색",
+        decoration: BoxDecoration(
+          color: Color(0xFF4BFF00),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 509,
+        kind: "초록",
+        name: "연잎색",
+        decoration: BoxDecoration(
+          color: Color(0xFF92CE5F),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 510,
+        kind: "초록",
+        name: "잎색",
+        decoration: BoxDecoration(
+          color: Color(0xFF00AD45),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 511,
+        kind: "초록",
+        name: "잔디색",
+        decoration: BoxDecoration(
+          color: Color(0xFF4EB168),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 512,
+        kind: "초록",
+        name: "스카이민트",
+        decoration: BoxDecoration(
+          color: Color(0xFF0ABFB3),
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 513,
+        kind: "초록",
+        name: "민트색",
+        decoration: BoxDecoration(
+          color: Color(0xFF00A78E),
+        ),
+        isAvailable: true,
+      ),
+
+
+    ],
+    "파랑": [
+      BackgroundColor(
+        id : 3,
+        kind: "파랑",
+        name: "개파람",
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id : 4,
+        kind: "파랑",
+        name: "좀파람",
+        color: Colors.red,
+        decoration: BoxDecoration(
+          color: Colors.blue[300],
+        ),
+        isAvailable: true,
+      ),
+    ],
+    "보라" : [],
+    "갈색" : [],
+    "검정" : [],
+    "하양" : [],
+    "흑우": [
+
+      BackgroundColor(
+        id : 9999,
+        kind: "흑우",
+        name: "스페셜",
+        color: Colors.red,
+        decoration: BoxDecoration(
+          gradient: SweepGradient(
+            colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.blue],
+            stops: [0.0, 0.25, 0.5, 0.75, 1],
+          ),
+        ),
+        isAvailable: true,
+      )
+    ]
+  };
+
   double defualtStickerWidth = 50;
+
+  bool isStickerPanel = true;
 
   PlaceStatus() {
     setStickerList();
+  }
+
+  void setSelectedColorTab(value) {
+    selectedColorTab = value;
+    notifyListeners();
+  }
+
+  void setBackgroundColor(value) {
+    backgruondColor = value;
+    notifyListeners();
   }
 
   void setStickerList() {
@@ -61,7 +282,7 @@ class PlaceStatus with ChangeNotifier {
     double renderBoxHeight = renderBox.size.height;
 
     var data = placedStickerList.where((x) => x.visible == true).toList().map((x) => x.toJson()).toList();
-    log(jsonEncode({"renderBoxWidth": renderBoxWidth, "renderBoxHeight": renderBoxHeight, "data": data}));
+    log(jsonEncode({"renderBoxWidth": renderBoxWidth, "renderBoxHeight": renderBoxHeight, "data": data, "backgroundColor" : backgruondColor.id}));
   }
 
   void loadStatus() {
@@ -71,9 +292,10 @@ class PlaceStatus with ChangeNotifier {
     final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
 //    var loaded = jsonDecode(
 //        '{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":87.62323288690476,"dy":245.82061434659056},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":81.32886904761901,"dy":159.5325947641472},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":2,"initPos":{"dx":165.03841145833331,"dy":97.2551115052189},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":3,"initPos":{"dx":243.04287574404785,"dy":241.18461681547592},"initScale":1.0,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-    var loaded = jsonDecode('{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":154.18154761904762,"dy":159.79871144480478},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":156.19047619047618,"dy":214.66896814123345},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":2,"initPos":{"dx":158.47563244047618,"dy":267.2422103287334},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":3,"initPos":{"dx":154.4789806547619,"dy":325.8209597195037},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":4,"initPos":{"dx":105.33556547619045,"dy":325.79515056771817},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":5,"initPos":{"dx":43.90001860119045,"dy":330.1052789159327},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":6,"initPos":{"dx":210.18908110119045,"dy":327.8082644070038},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":7,"initPos":{"dx":266.1754092261907,"dy":326.9307532462897},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":8,"initPos":{"dx":128.6974621414766,"dy":84.27572665040529},"initScale":1.9627674369599777,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-
-        double widthRatio = renderBoxWidth / loaded["renderBoxWidth"];
+    var loaded = jsonDecode(
+        '{"backgroundColor":9999, "renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":154.18154761904762,"dy":159.79871144480478},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":156.19047619047618,"dy":214.66896814123345},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":2,"initPos":{"dx":158.47563244047618,"dy":267.2422103287334},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":3,"initPos":{"dx":154.4789806547619,"dy":325.8209597195037},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":4,"initPos":{"dx":105.33556547619045,"dy":325.79515056771817},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":5,"initPos":{"dx":43.90001860119045,"dy":330.1052789159327},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":6,"initPos":{"dx":210.18908110119045,"dy":327.8082644070038},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":7,"initPos":{"dx":266.1754092261907,"dy":326.9307532462897},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":8,"initPos":{"dx":128.6974621414766,"dy":84.27572665040529},"initScale":1.9627674369599777,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
+//    loaded = jsonDecode('{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[],"backgroundColor":9999}');
+    double widthRatio = renderBoxWidth / loaded["renderBoxWidth"];
     double heightRatio = renderBoxHeight / loaded["renderBoxHeight"];
     print(widthRatio);
     print(heightRatio);
@@ -82,11 +304,9 @@ class PlaceStatus with ChangeNotifier {
 
     for (int i = 0; i < stickerList.length; i++) {
 //      print("heell");
-      try{
+      try {
         stickerList[i].limit = data.where((x) => x.sticker.id == stickerList[i].id).toList()[0].sticker.limit;
-      }catch(e){
-
-      }
+      } catch (e) {}
 
       stickerList[i].count = 0;
 //      print(stickerList[i].limit);
@@ -96,7 +316,7 @@ class PlaceStatus with ChangeNotifier {
       data[i].sticker = stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
       data[i].sticker.count += 1;
 
-      data[i].position = Offset(data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio );
+      data[i].position = Offset(data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
     }
 
     for (int i = 0; i < data.length; i++) {
@@ -104,7 +324,7 @@ class PlaceStatus with ChangeNotifier {
 //        x.sticker.count += 1;
 //        return true;
 //      });
-    print(data[i].position);
+      print(data[i].position);
     }
     for (int i = 0; i < stickerList.length; i++) {
 //      print("heell");
@@ -117,6 +337,20 @@ class PlaceStatus with ChangeNotifier {
     defualtStickerWidth = 50 * widthRatio;
     print(defualtStickerWidth);
     placedStickerList = data;
+
+
+    for(var colorTab in colorList.keys){
+      for(BackgroundColor color in colorList[colorTab]){
+        if(color.id == loaded["backgroundColor"]){
+          backgruondColor = color;
+        }
+      }
+    }
+
+
+
+
+
 //    stickerList = loadedStickerList;
 
 //    print(loadedStickerList.toList());
@@ -230,6 +464,41 @@ class Sticker {
   int count;
 
   Sticker({this.id, this.name, this.path, this.limit, this.count});
+}
+
+class BackgroundColor {
+  int id;
+  String kind;
+  String name;
+  Color color;
+  int price;
+  BoxDecoration decoration;
+  bool isAvailable;
+
+  BackgroundColor({int id, String kind, String name, Color color, int price, BoxDecoration decoration, bool isAvailable}) {
+    this.id = id;
+    this.kind = kind;
+    this.name = name;
+    if(price != null){
+      this.price = price;
+    }else{
+      this.price = null;
+    }
+
+
+    if (color != null) {
+      this.color = color;
+    } else {
+      this.color = null;
+    }
+    if (decoration != null) {
+      this.decoration = decoration;
+    } else {
+      this.decoration = null;
+    }
+
+    this.isAvailable = isAvailable;
+  }
 }
 
 class PlacedSticker extends StatefulWidget {
@@ -519,6 +788,24 @@ class _MyRoomPageState extends State<MyRoomPage> {
                       ),
                     ),
                   ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Material(
+                    color: placeStatus.isStickerPanel ? Colors.white.withOpacity(0.8) : Colors.grey[400].withOpacity(0.8),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      onTap: () {
+                        _pc.open();
+                        placeStatus.isStickerPanel = !placeStatus.isStickerPanel;
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                        child: Icon(Icons.brush),
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),
@@ -704,7 +991,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                         },
                                         child: Container(
                                           key: _keyStickerBackground,
-                                          color: Color(0xFFFFF385),
+                                          decoration: placeStatus.backgruondColor.decoration,
                                           child: AspectRatio(
                                               aspectRatio: 9 / 18,
                                               child: Stack(
@@ -725,15 +1012,20 @@ class _MyRoomPageState extends State<MyRoomPage> {
                             ],
                           ),
                         ))),
-                SlidingUpPanel(
-                  defaultPanelState: PanelState.OPEN,
-                  minHeight: _panelHeightClosed,
-                  maxHeight: _panelHeightOpen,
-                  controller: _pc,
-                  panel: _buildUnderStickerBox(),
-                  onPanelSlide: (double pos) => setState(() {
-                    _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
-                  }),
+                Builder(
+                  builder: (context) {
+                    PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                    return SlidingUpPanel(
+                      defaultPanelState: PanelState.OPEN,
+                      minHeight: _panelHeightClosed,
+                      maxHeight: _panelHeightOpen,
+                      controller: _pc,
+                      panel: placeStatus.isStickerPanel ? _buildUnderStickerBox() : _buildUnderColorBox(),
+                      onPanelSlide: (double pos) => setState(() {
+                        _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
+                      }),
+                    );
+                  },
                 ),
 
 //                Positioned.fill(
@@ -750,6 +1042,143 @@ class _MyRoomPageState extends State<MyRoomPage> {
               ],
             ),
           )),
+    );
+  }
+
+  Widget _buildUnderColor(BackgroundColor backgroundColor) {
+    return Builder(
+      builder: (context) {
+        PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+        return Material(
+          color: navColor,
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: InkWell(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            onTap: () {
+              if (backgroundColor.isAvailable) {
+                placeStatus.setBackgroundColor(backgroundColor);
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
+              child: Stack(
+                children: <Widget>[
+                  Center(
+                    child: FractionallySizedBox(
+                      widthFactor: 11 / 20,
+                      heightFactor: 11 / 20,
+                      child: Container(
+                        decoration: backgroundColor.decoration,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomCenter,
+                    child: Builder(builder: (context) {
+                      PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                      return Text(
+                        backgroundColor.name,
+                        style: TextStyle(fontSize: 12),
+                      );
+                    }),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildUnderColorBox() {
+    return Builder(
+      builder: (context) {
+        PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+
+        return Column(children: [
+          Container(
+//                      color: Colors.green,
+            margin: EdgeInsets.all(8),
+            alignment: Alignment.bottomCenter,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: 30,
+                  height: 5,
+                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            color: navColor,
+            height: 30,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: placeStatus.colorTabList.map<Widget>((x) {
+                  return Material(
+                    color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
+                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                    child: InkWell(
+                      borderRadius: BorderRadius.all(Radius.circular(1000)),
+                      onTap: () {
+                        placeStatus.setSelectedColorTab(x["name"]);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 8,
+                              height: 8,
+                              decoration:
+                                  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(1000)), color: x["color"]),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              x["name"],
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList()),
+          ),
+          Container(
+            color: Color(0xFFFFFFFF),
+            height: 240,
+            child: Column(children: [
+              Flexible(
+                child: Container(
+//            height : 250,
+                  padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
+
+                  child: GridView.count(
+//        physics: const NeverScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    //스크롤 방향 조절
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 5,
+
+                    children:
+                        placeStatus.colorList[placeStatus.selectedColorTab].map<Widget>((x) => _buildUnderColor(x)).toList(),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+        ]);
+      },
     );
   }
 }

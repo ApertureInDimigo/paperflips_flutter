@@ -9,6 +9,12 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'ip.dart';
 
 
+Future<String> getToken() async {
+  final storage = new FlutterSecureStorage();
+  var token = await storage.read(key: "token");
+  return token;
+}
+
 
 
 void login(String id, String pw) async{

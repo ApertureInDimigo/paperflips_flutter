@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -130,23 +132,34 @@ class _SearchPageState extends State<SearchPage> {
       _isGetSearchData = false;
       _inAsyncCall = true;
     });
-
-    final res = await http.get(
-      "http://dimigo.herokuapp.com/",
+    print(searchQuery);
+    final res = await http.post(
+      "https://paperflips-server.herokuapp.com/rec/Search",
+      body: jsonEncode({"recipe" : searchQuery}), headers: {"Content-Type": "application/json"},
     ); //그냥 임의 주소로 http 요청 해둠
+    Map<String, dynamic> data = jsonDecode(res.body);
+    var recipeList = data["data"];
+    print(recipeList);
 
-    List<RecipeCard> officialRecipeList = [1, 2, 3, 4, 5]
-        .map((x) => RecipeCard(
-            recipeName: searchQuery,
-            rarity: "rare",
-            summary: "${searchQuery}의 소개 좀 들어보세요"))
-        .toList();
+    var officialRecipeList = recipeList != null ? recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList() : [];
+
+//    print(recipe);
+
+//    print(RecipeCard.fromJson(recipe));
+//    setState(() {});
+
+//    List<RecipeCard> officialRecipeList = [1, 2, 3, 4, 5]
+//        .map((x) => RecipeCard(
+//            recipeName: searchQuery,
+//            rarity: "rare",
+//            summary: "${searchQuery}의 소개 좀 들어보세요"))
+//        .toList();
 
     List<RecipeCard> customRecipeList = [6, 7, 8, 9, 10]
         .map((x) => RecipeCard(
-            recipeName: searchQuery,
+            recipeName: "더미데이터",
             rarity: "rare",
-            summary: "${searchQuery}의 소개 좀 들어보세요"))
+            summary: "터미네이터 아님 ㅋㅋ"))
         .toList();
 
     setState(() {

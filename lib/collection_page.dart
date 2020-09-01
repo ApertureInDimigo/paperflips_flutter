@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/introduce.dart';
 import './common/font.dart';
 import './common/color.dart';
 import './common/asset_path.dart';
+import 'common/auth.dart';
 import 'main_page.dart';
 import './common/data_class.dart';
 import './common/widgets/recipe_card.dart';
@@ -37,20 +39,27 @@ class _CollectionPageState extends State<CollectionPage> {
       _collectionList = [];
       _inAsyncCall = true;
     });
+//    print("Bearer " +await getToken());
     final res = await http.get(
-      "http://dimigo.herokuapp.com/",
+      "https://paperflips-server.herokuapp.com/User/GetCollection",
+      headers: {"Cookie" : "user=" + await getToken()}
     );
-    List<RecipeCard> collectionList = [1,2,3,4,5,6,7,8,9,10].map((x) {
-      var rng = new Random();
-      int rndInt = rng.nextInt(1000);
-      return RecipeCard(
-          recipeName: "코끼리",
-          rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
-          summary : "SFDA",
+    print(res.headers);
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    var data = resData["data"];
+    var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
-          );
-    }).toList();
-//    print(collectionList);
+//    List<RecipeCard> collectionList = [1,2,3,4,5,6,7,8,9,10].map((x) {
+//      var rng = new Random();
+//      int rndInt = rng.nextInt(1000);
+//      return RecipeCard(
+//          recipeName: "코끼리",
+//          rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
+//          summary : "SFDA",
+//
+//          );
+//    }).toList();
+    print(collectionList);
     setState(() {
       _collectionList = collectionList;
       _inAsyncCall = false;

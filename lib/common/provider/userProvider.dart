@@ -2,6 +2,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../auth.dart';
 import '../ip.dart';
 import 'package:http/http.dart' as http;
 
@@ -135,6 +136,19 @@ class UserStatus with ChangeNotifier {
     var token = await storage.read(key: "token");
 
     //jwt 토큰이 유효한지 서버에서 가져와야할 것 같은데 일단 생략
+    final res = await http.get(
+        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        headers: {"Cookie" : "user=" + await getToken()}
+    );
+
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if(resData["status"] != 200){
+      storage.write(key: "token", value: null);
+      token = null;
+    }
+
+
+
 
     if(token != null){
       isLogined = true;

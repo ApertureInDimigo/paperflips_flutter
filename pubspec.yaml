@@ -40,6 +40,9 @@ dependencies:
 
   flutter_native_splash:
 
+#  firebase_core: ^0.2.5
+  firebase_admob:
+
 
 dev_dependencies:
   flutter_test:

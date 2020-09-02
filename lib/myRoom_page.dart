@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swipedetector/swipedetector.dart';
 import 'dart:convert';
+import 'common/auth.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
 import 'dart:core';
@@ -30,11 +31,16 @@ GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
+
+  String tempSaveData;
+
+
+
   List<PlacedSticker> placedStickerList = [];
   List<Sticker> stickerList = [];
 
   BackgroundColor backgruondColor = BackgroundColor(
-    id : 666,
+    id: 666,
     kind: "빨강",
     name: "개빨감",
     color: Color(0xFFFFF385),
@@ -52,13 +58,13 @@ class PlaceStatus with ChangeNotifier {
     {"name": "보라", "color": Colors.purple},
     {"name": "갈색", "color": Colors.brown},
     {"name": "검정", "color": Colors.black},
-    {"name" : "하양", "color": Colors.white}
+    {"name": "하양", "color": Colors.white}
   ];
 
   Map<String, dynamic> colorList = {
     "빨강": [
       BackgroundColor(
-        id : 1,
+        id: 1,
         kind: "빨강",
         name: "개빨감",
         decoration: BoxDecoration(
@@ -67,7 +73,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 2,
+        id: 2,
         kind: "빨강",
         name: "좀빨감",
         decoration: BoxDecoration(
@@ -76,11 +82,11 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
     ],
-    "주황" : [],
-    "노랑" : [],
-    "초록" : [
+    "주황": [],
+    "노랑": [],
+    "초록": [
       BackgroundColor(
-        id : 500,
+        id: 500,
         kind: "초록",
         name: "녹파스텔",
         decoration: BoxDecoration(
@@ -89,7 +95,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 501,
+        id: 501,
         kind: "초록",
         name: "흑녹파스텔",
         decoration: BoxDecoration(
@@ -98,7 +104,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 502,
+        id: 502,
         kind: "초록",
         name: "광녹파스텔",
         decoration: BoxDecoration(
@@ -107,7 +113,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 503,
+        id: 503,
         kind: "초록",
         name: "광녹색",
         decoration: BoxDecoration(
@@ -116,7 +122,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 504,
+        id: 504,
         kind: "초록",
         name: "녹색",
         decoration: BoxDecoration(
@@ -125,7 +131,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 505,
+        id: 505,
         kind: "초록",
         name: "백광녹색",
         decoration: BoxDecoration(
@@ -134,7 +140,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 506,
+        id: 506,
         kind: "초록",
         name: "형광파스텔",
         decoration: BoxDecoration(
@@ -143,7 +149,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 508,
+        id: 508,
         kind: "초록",
         name: "형광녹색",
         decoration: BoxDecoration(
@@ -152,7 +158,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 509,
+        id: 509,
         kind: "초록",
         name: "연잎색",
         decoration: BoxDecoration(
@@ -161,7 +167,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 510,
+        id: 510,
         kind: "초록",
         name: "잎색",
         decoration: BoxDecoration(
@@ -170,7 +176,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 511,
+        id: 511,
         kind: "초록",
         name: "잔디색",
         decoration: BoxDecoration(
@@ -179,7 +185,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 512,
+        id: 512,
         kind: "초록",
         name: "스카이민트",
         decoration: BoxDecoration(
@@ -188,7 +194,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 513,
+        id: 513,
         kind: "초록",
         name: "민트색",
         decoration: BoxDecoration(
@@ -196,12 +202,10 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
-
     ],
     "파랑": [
       BackgroundColor(
-        id : 3,
+        id: 3,
         kind: "파랑",
         name: "개파람",
         decoration: BoxDecoration(
@@ -210,7 +214,7 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
       BackgroundColor(
-        id : 4,
+        id: 4,
         kind: "파랑",
         name: "좀파람",
         color: Colors.red,
@@ -220,14 +224,13 @@ class PlaceStatus with ChangeNotifier {
         isAvailable: true,
       ),
     ],
-    "보라" : [],
-    "갈색" : [],
-    "검정" : [],
-    "하양" : [],
+    "보라": [],
+    "갈색": [],
+    "검정": [],
+    "하양": [],
     "흑우": [
-
       BackgroundColor(
-        id : 9999,
+        id: 9999,
         kind: "흑우",
         name: "스페셜",
         color: Colors.red,
@@ -246,6 +249,9 @@ class PlaceStatus with ChangeNotifier {
 
   bool isStickerPanel = true;
 
+  bool isCollectionLoading = false;
+
+
   PlaceStatus() {
     setStickerList();
   }
@@ -260,12 +266,37 @@ class PlaceStatus with ChangeNotifier {
     notifyListeners();
   }
 
-  void setStickerList() {
-    stickerList = [
-      Sticker(id: 1, name: "종이배", path: '${IP.address}/img/image/종이배.png', limit: 9, count: 0),
-      Sticker(id: 2, name: "코끼리", path: '${IP.address}/img/image/코끼리.png', limit: 5, count: 0),
-      Sticker(id: 3, name: "황구리", path: '${IP.address}/img/image/황금개구리.png', limit: 1, count: 0),
-    ];
+  void setStickerList() async {
+    isCollectionLoading = true;
+    notifyListeners();
+
+    final res = await http
+        .get("https://paperflips-server.herokuapp.com/User/GetCollection", headers: {"Cookie": "user=" + await getToken()});
+    print(res.headers);
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    var data = resData["data"];
+
+    if(data == null){
+      stickerList = [];
+    }else{
+      var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
+
+      stickerList = collectionList
+          .map<Sticker>((x) =>
+          Sticker(id: x.recipeName.hashCode, name: x.recipeName, path: "${IP.address}/img/image/${x.recipeName}.png", limit: 9, count: 0))
+          .toList();
+
+    }
+
+
+
+    isCollectionLoading = false;
+
+//    stickerList = [
+//      Sticker(id: 1, name: "종이배", path: '${IP.address}/img/image/종이배.png', limit: 9, count: 0),
+//      Sticker(id: 2, name: "코끼리", path: '${IP.address}/img/image/코끼리.png', limit: 5, count: 0),
+//      Sticker(id: 3, name: "황구리", path: '${IP.address}/img/image/황금개구리.png', limit: 1, count: 0),
+//    ];
     notifyListeners();
   }
 
@@ -282,7 +313,19 @@ class PlaceStatus with ChangeNotifier {
     double renderBoxHeight = renderBox.size.height;
 
     var data = placedStickerList.where((x) => x.visible == true).toList().map((x) => x.toJson()).toList();
-    log(jsonEncode({"renderBoxWidth": renderBoxWidth, "renderBoxHeight": renderBoxHeight, "data": data, "backgroundColor" : backgruondColor.id}));
+    log(jsonEncode({
+      "renderBoxWidth": renderBoxWidth,
+      "renderBoxHeight": renderBoxHeight,
+      "data": data,
+      "backgroundColor": backgruondColor.id
+    }));
+
+    tempSaveData = jsonEncode({
+      "renderBoxWidth": renderBoxWidth,
+      "renderBoxHeight": renderBoxHeight,
+      "data": data,
+      "backgroundColor": backgruondColor.id
+    });
   }
 
   void loadStatus() {
@@ -294,7 +337,7 @@ class PlaceStatus with ChangeNotifier {
 //        '{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":87.62323288690476,"dy":245.82061434659056},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":81.32886904761901,"dy":159.5325947641472},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":2,"initPos":{"dx":165.03841145833331,"dy":97.2551115052189},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":3,"initPos":{"dx":243.04287574404785,"dy":241.18461681547592},"initScale":1.0,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
     var loaded = jsonDecode(
         '{"backgroundColor":9999, "renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":154.18154761904762,"dy":159.79871144480478},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":156.19047619047618,"dy":214.66896814123345},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":2,"initPos":{"dx":158.47563244047618,"dy":267.2422103287334},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":3,"initPos":{"dx":154.4789806547619,"dy":325.8209597195037},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":4,"initPos":{"dx":105.33556547619045,"dy":325.79515056771817},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":5,"initPos":{"dx":43.90001860119045,"dy":330.1052789159327},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":6,"initPos":{"dx":210.18908110119045,"dy":327.8082644070038},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":7,"initPos":{"dx":266.1754092261907,"dy":326.9307532462897},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":8,"initPos":{"dx":128.6974621414766,"dy":84.27572665040529},"initScale":1.9627674369599777,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-//    loaded = jsonDecode('{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[],"backgroundColor":9999}');
+    loaded = jsonDecode(tempSaveData);
     double widthRatio = renderBoxWidth / loaded["renderBoxWidth"];
     double heightRatio = renderBoxHeight / loaded["renderBoxHeight"];
     print(widthRatio);
@@ -303,16 +346,13 @@ class PlaceStatus with ChangeNotifier {
     List<PlacedSticker> data = loaded["data"].map<PlacedSticker>((x) => PlacedSticker.fromJson(x)).toList();
 
     for (int i = 0; i < stickerList.length; i++) {
-//      print("heell");
       try {
         stickerList[i].limit = data.where((x) => x.sticker.id == stickerList[i].id).toList()[0].sticker.limit;
       } catch (e) {}
 
       stickerList[i].count = 0;
-//      print(stickerList[i].limit);
     }
     for (int i = 0; i < data.length; i++) {
-//      print("heell");
       data[i].sticker = stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
       data[i].sticker.count += 1;
 
@@ -320,41 +360,21 @@ class PlaceStatus with ChangeNotifier {
     }
 
     for (int i = 0; i < data.length; i++) {
-//      data.where((x) => x.sticker.id == data[i].sticker.id).toList().every((x) {
-//        x.sticker.count += 1;
-//        return true;
-//      });
       print(data[i].position);
     }
-    for (int i = 0; i < stickerList.length; i++) {
-//      print("heell");
-//      print(stickerList[i].count);
-
-//      print(data[1].initPos);
-
-    }
+    for (int i = 0; i < stickerList.length; i++) {}
 
     defualtStickerWidth = 50 * widthRatio;
     print(defualtStickerWidth);
     placedStickerList = data;
 
-
-    for(var colorTab in colorList.keys){
-      for(BackgroundColor color in colorList[colorTab]){
-        if(color.id == loaded["backgroundColor"]){
+    for (var colorTab in colorList.keys) {
+      for (BackgroundColor color in colorList[colorTab]) {
+        if (color.id == loaded["backgroundColor"]) {
           backgruondColor = color;
         }
       }
     }
-
-
-
-
-
-//    stickerList = loadedStickerList;
-
-//    print(loadedStickerList.toList());
-//    print()
 
     notifyListeners();
   }
@@ -371,24 +391,10 @@ class PlaceStatus with ChangeNotifier {
     PlacedSticker temp;
     placedStickerList.where((x) => x.id == id).toList().every((x) {
       x.position = offset;
-//      temp =  jsonDecode(jsonEncode(x));
-//      print(temp.sticker);
-//      x.visible = false;
-//      temp = PlacedSticker(x.id, offset ,x.initScale, x.sticker);
-//      placedStickerList.remove(x);
+
       return true;
     });
 
-//    placedStickerList = [];
-//
-////    notifyListeners();
-//    placedStickerList = [temp];
-//    print(temp.sticker.path);
-//    print(temp.position);
-//    placedStickerList.remove(temp);
-//    print(temp.sticker.name);
-//    temp.visible = true;
-//    placedStickerList.insert(0, temp);
     notifyListeners();
   }
 
@@ -403,17 +409,9 @@ class PlaceStatus with ChangeNotifier {
     selectedSticker.position = Offset(selectedSticker.position.dx - (defualtStickerWidth * (afterScale - currentScale) / 2),
         selectedSticker.position.dy - (defualtStickerWidth * (afterScale - currentScale) / 2));
     notifyListeners();
-
-//    setState(() {
-////      _position = Offset(
-////          _position.dx - (50 * (afterScale - currentScale) / 2),
-////          _position.dy - (50 * (afterScale - currentScale) / 2));
-//      _scale = afterScale;
-//    });
   }
 
   void addSticker(PlacedSticker placedSticker) {
-//    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
     placedStickerList.add(placedSticker);
     notifyListeners();
   }
@@ -448,7 +446,6 @@ class PlaceStatus with ChangeNotifier {
         placedStickerList[i].sticker.count -= 1;
         placedStickerList[i].visible = false;
         print(placedStickerList[i].id);
-//        placedStickerList.removeAt(i);
         notifyListeners();
         break;
       }
@@ -479,12 +476,11 @@ class BackgroundColor {
     this.id = id;
     this.kind = kind;
     this.name = name;
-    if(price != null){
+    if (price != null) {
       this.price = price;
-    }else{
+    } else {
       this.price = null;
     }
-
 
     if (color != null) {
       this.color = color;
@@ -538,7 +534,6 @@ class PlacedSticker extends StatefulWidget {
 
     data['initScale'] = this.scale;
     print(this.scale);
-//    data['sticker'] = {"id": this.sticker.id};
 
     data['sticker'] = {
       "id": this.sticker.id,
@@ -549,8 +544,6 @@ class PlacedSticker extends StatefulWidget {
     print(data);
     return data;
   }
-
-//  PlacedSticker(this.id, this.initPos, this.initScale, this.sticker);
 
   PlacedSticker(int id, Offset initPos, double initScale, Sticker sticker) {
     this.id = id;
@@ -602,18 +595,6 @@ class _PlacedStickerState extends State<PlacedSticker> {
           onScaleStart: (details) {},
           onTap: () {
             placeStatus.selectSticker(id);
-//            select
-//            setState(() {
-//              double currentScale = _scale;
-//              double afterScale =
-//                  currentScale <= 3 ? currentScale + 0.2 : currentScale;
-//              setState(() {
-//                _position = Offset(
-//                    _position.dx - (50 * (afterScale - currentScale) / 2),
-//                    _position.dy - (50 * (afterScale - currentScale) / 2));
-//                _scale = afterScale;
-//              });
-//            });
           },
           child: Container(
             decoration: BoxDecoration(
@@ -920,7 +901,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
               height: 270,
               child: Column(children: [
                 Flexible(
-                  child: Container(
+                  child: !placeStatus.isCollectionLoading ? Container(
 //            height : 250,
                     padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
 
@@ -934,7 +915,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
                       children: placeStatus.stickerList.map((x) => _buildUnderSticker(x)).toList(),
                     ),
-                  ),
+                  ) : Center(child: CircularProgressIndicator()),
                 ),
               ]),
             ),

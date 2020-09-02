@@ -270,14 +270,14 @@ Widget buildRecipeCollection(collection) {
                 ),
                 SizedBox(height: 2),
 
-                /*Text(
-                  DateFormat('yyyy/MM/dd').format(collection.obtainDate),
+                Text(
+                  DateFormat('yyyy년 MM월 dd일 H시').format(DateTime.parse(collection.date)),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
                     fontFamily: Font.normal,
                   ),
-                ),*/
+                ),
 
                 SizedBox(height: 5),
               ],

@@ -35,12 +35,18 @@ class RecipeCard {
   String rarity;
   String summary;
 
-  RecipeCard({this.recipeName, this.rarity, this.summary});
+  String date;
+
+
+  RecipeCard({this.recipeName, this.rarity, this.summary, this.date = ""});
 
   RecipeCard.fromJson(Map<String, dynamic> json) {
     recipeName = json['recipeName'];
     rarity = json['rarity'];
     summary = json['summary'];
+
+    date = json["Date"];
+
   }
 
   Map<String, dynamic> toJson() {

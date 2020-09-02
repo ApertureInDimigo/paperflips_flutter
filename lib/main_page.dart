@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:math';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
@@ -37,6 +39,44 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+
+
+  InterstitialAd myInterstitial;
+
+  InterstitialAd buildInterstitialAd() {
+    return InterstitialAd(
+      adUnitId: "ca-app-pub-2755450101712612/1904039260",
+      targetingInfo: MobileAdTargetingInfo(
+        childDirected: true,
+        nonPersonalizedAds: true,
+      ),
+//      adUnitId: InterstitialAd.testAdUnitId,
+      listener: (MobileAdEvent event) {
+        print("ello");
+        if (event == MobileAdEvent.failedToLoad) {
+          myInterstitial..load();
+        } else if (event == MobileAdEvent.closed) {
+          myInterstitial = buildInterstitialAd()..load();
+        }
+        print(event);
+      },
+    );
+  }
+
+  void showInterstitialAd() {
+    myInterstitial..show();
+  }
+
+
+
+
+
+
+
+
+
+
   bool
       _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
   bool _isLogined = false; //로그인 된 상태일 때 true, 아니면 false
@@ -48,6 +88,18 @@ class _MainPageState extends State<MainPage> {
 
   var getAllTasksFuture;
 
+
+
+  @override
+  void dispose() {
+    myInterstitial.dispose();
+
+    super.dispose();
+  }
+
+
+
+
   @override
   void initState() {
     super.initState();
@@ -56,6 +108,12 @@ class _MainPageState extends State<MainPage> {
     getIsLogined();
 
     getAllTasksFuture = fetchRecommendRecipeList();
+
+
+    myInterstitial = buildInterstitialAd()..load();
+
+
+
   }
 
   void getIsLogined() async {
@@ -217,7 +275,11 @@ class _MainPageState extends State<MainPage> {
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(20)),
-          onTap: () {},
+          onTap: () {
+
+            showInterstitialAd();
+
+          },
 //          splashColor: Colors.white,
           child: Container(
 //            margin: EdgeInsets.only(top: 5),

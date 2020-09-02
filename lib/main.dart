@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'common/ad_manager.dart';
 import 'main_page.dart';
 import 'introduce.dart';
 import './common/color.dart';
@@ -9,7 +10,22 @@ import 'package:provider/provider.dart';
 
 import './common/provider/userProvider.dart';
 
+
+
+import 'package:firebase_admob/firebase_admob.dart';
+
+import 'package:flutter/material.dart';
+
+
+
+
+
+
+
+
 void main() {
+
+
 
   runApp(MyApp());
 }
@@ -20,6 +36,9 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 
 class MyApp extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
 

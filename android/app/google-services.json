@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "81236584595",
+    "firebase_url": "https://paperflips-fcb2d.firebaseio.com",
+    "project_id": "paperflips-fcb2d",
+    "storage_bucket": "paperflips-fcb2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81236584595:android:7e2edce326f88c5148c566",
+        "android_client_info": {
+          "package_name": "com.example.flutter_front"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81236584595-h6g892ahij0c7echsklt124l4qabg7af.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIFCYNrgW9FJp0tN5xhHSc1ZC8R2-7i30"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81236584595-h6g892ahij0c7echsklt124l4qabg7af.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id" : "ca-app-pub-2755450101712612~6034855966"
+    }
+  ],
+  "configuration_version": "1"
+}

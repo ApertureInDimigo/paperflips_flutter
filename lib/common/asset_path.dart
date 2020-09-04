@@ -10,4 +10,7 @@ class IconPath {
   static const String fold = "images/fold_icon.png";
   static const String golden_frog = "/image/golden_frog";
 
+
+  static const String green_success = "images/green_success.png";
+
 }

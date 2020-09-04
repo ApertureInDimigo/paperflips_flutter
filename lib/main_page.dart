@@ -47,9 +47,14 @@ class _MainPageState extends State<MainPage> {
   InterstitialAd buildInterstitialAd() {
     return InterstitialAd(
       adUnitId: "ca-app-pub-2755450101712612/1904039260",
-      targetingInfo: MobileAdTargetingInfo(
-        childDirected: true,
-        nonPersonalizedAds: true,
+      targetingInfo:  MobileAdTargetingInfo(
+        keywords: <String>['flutterio', 'beautiful apps'],
+        contentUrl: 'https://flutter.cn',
+        birthday: DateTime.now(),
+        childDirected: false,
+        designedForFamilies: false,
+        gender: MobileAdGender.male, // or MobileAdGender.female, MobileAdGender.unknown
+        testDevices: <String>[], // Android emulators are considered test devices
       ),
 //      adUnitId: InterstitialAd.testAdUnitId,
       listener: (MobileAdEvent event) {
@@ -145,12 +150,14 @@ class _MainPageState extends State<MainPage> {
 //            print(_isUserButtonToggle);
           });
         }),
-        body: Column(
-          children: <Widget>[
-            _buildUpperMenu(), //앱바 아래 메뉴까지
-            _buildBottomMenu(), //MVP 카드 추천 종이접기
-            _buildSearchBar(), //클릭 시 검색바 열림
-          ],
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              _buildUpperMenu(), //앱바 아래 메뉴까지
+              _buildBottomMenu(), //MVP 카드 추천 종이접기
+              _buildSearchBar(), //클릭 시 검색바 열림
+            ],
+          ),
         ));
   }
 
@@ -427,7 +434,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "스토리모드\n(방꾸미기로 대체됨)",
+                      "방 꾸미기",
                       style: TextStyle(fontSize: 12, ),
                       textAlign: TextAlign.center,
                     ),

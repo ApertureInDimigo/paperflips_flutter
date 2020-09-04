@@ -6,6 +6,7 @@ import 'package:flutter_front/common/widgets/recipe_card.dart';
 
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'common/asset_path.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
 import 'dart:core';
@@ -135,7 +136,7 @@ class _FoldReadyPageState extends State<FoldReadyPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Image.network('${IP.localAddress}/img/image/fold.png'),
+                        Image.asset(IconPath.fold),
                         SizedBox(width: 6,),
                         Text("접기", style: TextStyle(fontSize: 20),),
                       ],

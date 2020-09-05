@@ -123,7 +123,7 @@ class UserStatus with ChangeNotifier {
 
   void logout() {
     var storage = FlutterSecureStorage();
-    storage.write(key: "token", value: null);
+    storage.write(key: "token", value: "");
     isLogined = false;
     userInfo = {};
 

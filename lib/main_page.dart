@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
+import 'package:flutter_front/common/widgets/dialog.dart';
 import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
 import 'package:flutter_front/register_page.dart';
@@ -108,7 +109,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _isUserButtonToggle = true;
+    _isUserButtonToggle = false;
     _isLogined = false;
     getIsLogined();
 
@@ -556,8 +557,8 @@ class _MainPageState extends State<MainPage> {
               height: 21,
               child: Row(children: [
                 SizedBox(width: 10),
-                Image.network(IconPath.point),
-                SizedBox(width: 5),
+                Image.asset(IconPath.point),
+                SizedBox(width: 1),
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
@@ -576,8 +577,8 @@ class _MainPageState extends State<MainPage> {
               height: 21,
               child: Row(children: [
                 SizedBox(width: 10),
-                Image.network(IconPath.paint_bucket),
-                SizedBox(width: 5),
+                Image.asset(IconPath.paint_bucket),
+                SizedBox(width: 1),
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
@@ -593,7 +594,7 @@ class _MainPageState extends State<MainPage> {
                 SizedBox(width: 5),
               ])),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 8),
+            margin: EdgeInsets.symmetric(horizontal: 4),
             child: Material(
               color: Colors.transparent,
               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -603,7 +604,7 @@ class _MainPageState extends State<MainPage> {
                 child: Container(
                   height: 28,
                   padding: EdgeInsets.all(5),
-                  child: Image.network(IconPath.gear),
+                  child: Image.asset(IconPath.gear),
                 ),
               ),
             ),
@@ -616,7 +617,23 @@ class _MainPageState extends State<MainPage> {
               child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 onTap: () {
-                  userStatus.logout();
+
+                  showCustomDialog(
+                      context: context,
+                      title: "로그아웃 할까요?",
+                      content: "다시 로그인 할 수 있어요.",
+                      cancelButtonText: "취소",
+                      confirmButtonText: "로그아웃",
+                      cancelButtonAction: () {
+                        Navigator.pop(context);
+                      },
+                      confirmButtonAction: () {
+                        userStatus.logout();
+                        Navigator.pop(context);
+                        showCustomAlert(context:context, title:"로그아웃 성공!", duration: Duration(seconds: 1));
+                      });
+
+
                 },
                 child: Container(
 //                  height: 28,
@@ -676,13 +693,20 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildUpperMenu() {
-    return Container(
+    return Builder(
+
+      builder: (context){
+//        print(MediaQuery.of(context).size.height * 0.085);
+        UserStatus userStatus = Provider.of<UserStatus>(context);
+        return Container(
 //      padding: EdgeInsets.only(bottom: 8, top: 8),
-      decoration: BoxDecoration(
-        color: navColor,
-      ),
-      height: 70,
-      child: _isLogined == true ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
+          decoration: BoxDecoration(
+            color: navColor,
+          ),
+          height: MediaQuery.of(context).size.height * 0.085,
+          child: userStatus.isLogined == true ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
+        );
+      }
     );
   }
 

@@ -47,6 +47,11 @@ class _CollectionPageState extends State<CollectionPage> {
     print(res.headers);
     Map<String, dynamic> resData = jsonDecode(res.body);
     var data = resData["data"];
+
+    if(data == null){
+      return null;
+    }
+
     var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
 //    List<RecipeCard> collectionList = [1,2,3,4,5,6,7,8,9,10].map((x) {
@@ -91,6 +96,7 @@ class _CollectionPageState extends State<CollectionPage> {
           crossAxisSpacing: 15,
           mainAxisSpacing: 15,
           crossAxisCount: 2,
+          childAspectRatio: 9/10,
           //로우 혹은 컬럼수 조절 (필수값)
           children:
               _collectionList.map((x) => buildRecipeCollection(x)).toList(),

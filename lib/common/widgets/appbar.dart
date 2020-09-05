@@ -4,6 +4,8 @@ import '../font.dart';
 import '../asset_path.dart';
 import 'package:provider/provider.dart';
 import '../../fold_page.dart';
+import '../provider/userProvider.dart';
+import 'dialog.dart';
 
 
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -42,6 +44,23 @@ class _DefaultAppBarState extends State<DefaultAppBar>
 
   @override
   Widget build(BuildContext context) {
+    UserStatus userStatus = Provider.of<UserStatus>(context);
+    Widget _buildDefaultAppBarActionButton() {
+
+
+      Widget temp;
+      if (onActionButtonPressed != null) {
+        temp = IconButton(
+          icon: userStatus.isUserButtonToggled ?  Icon(Icons.dehaze) : Icon(Icons.person_outline) ,
+          onPressed: () => onActionButtonPressed(),
+        );
+      } else {
+        temp = Container();
+      }
+      return temp;
+    }
+
+
     return AppBar(
       // Here we take the value from the MyHomePage object that was created by
       // the App.build method, and use it to set our appbar title.
@@ -52,27 +71,18 @@ class _DefaultAppBarState extends State<DefaultAppBar>
       flexibleSpace: Container(
         decoration: BoxDecoration(),
       ),
-      actions: <Widget>[
+      actions: userStatus.isLogined ? <Widget>[
         _buildDefaultAppBarActionButton(),
         SizedBox(
-          width: 30,
+          width: 10,
         )
-      ],
+      ] : null,
     );
+
+
   }
 
-  Widget _buildDefaultAppBarActionButton() {
-    Widget temp;
-    if (onActionButtonPressed != null) {
-      temp = IconButton(
-        icon: new Icon(Icons.person_outline),
-        onPressed: () => onActionButtonPressed(),
-      );
-    } else {
-      temp = Container();
-    }
-    return temp;
-  }
+
 
   Widget _buildDefaultAppBarTitle() {
     Widget temp;
@@ -160,31 +170,25 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
     }
 
     void _showExitWarningDialog(){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return object of type Dialog
-          return AlertDialog(
-            title: new Text("진짜 나가요?"),
-            content: new Text("ㄹㅇ?"),
-            actions: <Widget>[
-              RaisedButton(
-                child: new Text("놉"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-               RaisedButton(
-                child: new Text("나가요"),
-                onPressed: () {
-                  Navigator.pop(context); //알림 창 닫힘
-                  Navigator.pop(context); //접기 화면 나가짐
-                },
-              ),
-            ],
-          );
-        },
-      );
+
+
+      showCustomDialog(
+          context: context,
+          title: "진짜 나가요?",
+          content: "ㄹㅇ?",
+          cancelButtonText: "취소",
+          confirmButtonText: "나가용",
+          cancelButtonAction: () {
+            Navigator.pop(context);
+          },
+          confirmButtonAction: () {
+
+            Navigator.pop(context);
+            Navigator.pop(context);
+          });
+
+
+
     }
 
     Widget _buildFoldAppBarExitButton() {

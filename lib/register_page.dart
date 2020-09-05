@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'common/widgets/dialog.dart';
 import 'main_page.dart';
 import 'request.dart';
 import 'common/widgets/appbar.dart';
@@ -285,7 +286,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         userStatus.login(_idController.text, _pwController.text);
 
                         if(loginResult == true){
-                          goMainPage();
+                          Navigator.pop(context);
+                          showCustomAlert(
+                            context : context,
+                            title : "로그인 성공!",
+                            duration: Duration(seconds: 1),
+                          );
+
+
+//                          goMainPage();
                         }else{
 
                         }

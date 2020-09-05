@@ -150,6 +150,8 @@ class _MainPageState extends State<MainPage> {
             _isUserButtonToggle = !_isUserButtonToggle;
 //            print(_isUserButtonToggle);
           });
+          userStatus.setIsUserButtonToggled(!userStatus.isUserButtonToggled);
+          print(userStatus.isUserButtonToggled);
         }),
         body: SafeArea(
           child: Column(
@@ -544,13 +546,14 @@ class _MainPageState extends State<MainPage> {
   Widget _buildMyInfoMenu() {
     UserStatus userStatus = Provider.of<UserStatus>(context);
     return Container(
+//      color : Colors.red,
 //      height: ,
       padding: EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Expanded(
-            child: Text(userStatus.userInfo["id"],
+            child: Text(userStatus.userInfo["name"] != null ? userStatus.userInfo["name"] : "",
                 style: TextStyle(fontFamily: Font.bold, fontSize: 17)),
           ),
           Container(
@@ -658,16 +661,20 @@ class _MainPageState extends State<MainPage> {
             opacity: animation,
           );
         },
-        child: Container(
-          child: _isUserButtonToggle ? _buildMyInfoMenu() : _buildMapMenu(),
-          key: ValueKey<bool>(_isUserButtonToggle),
-        ));
-//    return AnimatedCrossFade(
-//      duration: const Duration(milliseconds: 400),
-//      firstChild: _buildLoginMenu(),
-//      secondChild: _buildMapMenu(),
-//      crossFadeState: _isUserButtonToggle ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-//    );
+        child: Builder(
+          builder: (context){
+            UserStatus userStatus = Provider.of<UserStatus>(context);
+            return Center(
+              child: Container(
+                  child: userStatus.isUserButtonToggled ? _buildMyInfoMenu() : _buildMapMenu(),
+              key: ValueKey<bool>(_isUserButtonToggle),
+              ),
+            );
+          },
+        )
+
+    );
+
   }
 
   Widget _buildGuestUpperMenu() {
@@ -681,8 +688,7 @@ class _MainPageState extends State<MainPage> {
           );
         },
         child: Container(
-          child: _isUserButtonToggle ? _buildLoginMenu() : _buildMapMenu(),
-          key: ValueKey<bool>(_isUserButtonToggle),
+          child: _buildLoginMenu(),
         ));
 //    return AnimatedCrossFade(
 //      duration: const Duration(milliseconds: 400),

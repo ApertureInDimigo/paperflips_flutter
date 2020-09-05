@@ -60,6 +60,17 @@ String _decodeBase64(String str) {
 class UserStatus with ChangeNotifier {
 
   bool isLogined = false;
+
+  bool isUserButtonToggled = false;
+
+  void setIsUserButtonToggled(value){
+    isUserButtonToggled = value;
+    notifyListeners();
+  }
+
+
+
+
   Map<String, dynamic> userInfo = {};
 
   UserStatus(){
@@ -73,8 +84,8 @@ class UserStatus with ChangeNotifier {
         "${IP.address}/User/login",
         body: {"id": id, "password" : pw});
     print(res.body);
-    Map<String, dynamic> data = jsonDecode(res.body);
-    if(data["status"]!= 200){
+    Map<String, dynamic> resData = jsonDecode(res.body);
+    if(resData["status"]!= 200){
       return false;
     }
     var token = res.headers["set-cookie"].split("user=")[1].split(";")[0];
@@ -84,7 +95,7 @@ class UserStatus with ChangeNotifier {
     storage.write(key: "token", value: token);
 
     isLogined = true;
-    userInfo["id"] = parseJwtPayLoad(token)["id"];
+    userInfo["name"] = resData["data"]["name"];
 
     notifyListeners();
 //  print();
@@ -143,7 +154,7 @@ class UserStatus with ChangeNotifier {
 
     Map<String, dynamic> resData = jsonDecode(res.body);
     if(resData["status"] != 200){
-      storage.write(key: "token", value: null);
+      storage.write(key: "token", value: "");
       token = null;
     }
 
@@ -152,7 +163,7 @@ class UserStatus with ChangeNotifier {
 
     if(token != null){
       isLogined = true;
-      userInfo["id"] = parseJwtPayLoad(token)["id"];
+      userInfo["name"] = resData["name"];
     }else{
       isLogined = false;
     }

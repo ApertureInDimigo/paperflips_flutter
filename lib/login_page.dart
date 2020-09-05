@@ -123,7 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                       userStatus.login(_idController.text, _pwController.text);
 
                       if(loginResult == true){
-                        goMainPage();
+                        Navigator.pop(context);
+//                        goMainPage();
                         showCustomAlert(
                           context : context,
                           title : "로그인 성공!",

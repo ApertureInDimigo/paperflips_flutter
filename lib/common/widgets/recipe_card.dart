@@ -57,6 +57,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
       child: Row(
         children: <Widget>[
           Flexible(
+            flex : 7,
             child: Material(
               color: cardColor,
               child: InkWell(
@@ -64,10 +65,10 @@ Widget buildRecipeCard(RecipeCard recipe) {
                 child: Row(
                   children: <Widget>[
                     Container(
-                      width: 90,
+                      width: 100,
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(
-                          left: 20, right: 15, top: 20, bottom: 20),
+                          left: 10, right: 15, top: 20, bottom: 20),
                       child: Image.network('${IP.address}/img/image/${recipe
                           .recipeName}.png' /*recipe.iconPath*/),
                     ),
@@ -88,7 +89,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                                 textAlign: TextAlign.left),
                             Container(height: 4),
                             Text(recipe.summary,
-                                style: TextStyle(fontSize: 13)),
+                                style: TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis,),
                           ],
                         ),
                       ),
@@ -98,27 +99,30 @@ Widget buildRecipeCard(RecipeCard recipe) {
               ),
             ),
           ),
-          Material(
-            color: primaryColor,
-            child: InkWell(
+          Flexible(
+            flex : 1,
+            child: Material(
+              color: primaryColor,
+              child: InkWell(
 //                splashColor: Colors.white,
-              onTap: () {
-                goFoldReadyPage(recipe);
-              },
-              child: Container(
-                  decoration: BoxDecoration(),
-                  width: 50,
-                  padding:
-                  EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Image.asset(IconPath.fold),
-                      SizedBox(height: 3),
-                      Text("접기", style: TextStyle(fontSize: 12))
-                    ],
-                  )),
+                onTap: () {
+                  goFoldReadyPage(recipe);
+                },
+                child: Container(
+                    decoration: BoxDecoration(),
+//                    width: 50,
+                    padding:
+                    EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Image.asset(IconPath.fold),
+                        SizedBox(height: 3),
+                        Text("접기", style: TextStyle(fontSize: 12))
+                      ],
+                    )),
+              ),
             ),
           )
         ],
@@ -222,6 +226,7 @@ Widget buildRarityBox(String rarity) {
 
 Widget buildRecipeCollection(collection) {
   return Container(
+
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(5.0)),
       boxShadow: [
@@ -242,8 +247,9 @@ Widget buildRecipeCollection(collection) {
           goIntroducePage(collection);
         },
         child: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.only(left : 4, right : 4, bottom : 4, top : 10),
           child: Container(
+
             decoration: BoxDecoration(
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.all(Radius.circular(5.0)),

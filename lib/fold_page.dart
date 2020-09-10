@@ -1,7 +1,4 @@
 //import 'dart:html';
-
-//import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'common/font.dart';
 import 'common/ip.dart';
@@ -15,6 +12,7 @@ import 'common/data_class.dart';
 import 'main.dart';
 
 import 'package:flutter_tts_improved/flutter_tts_improved.dart';
+import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 //import 'package:flutter_tts/flutter_tts.dart';
 
 class FoldStatus with ChangeNotifier {
@@ -75,6 +73,8 @@ class _FoldPageState extends State<FoldPage> {
   List<FoldProcess> foldProcessList;
 
   FoldProcess _currentFoldProcess;
+
+  UnityWidgetController _unityWidgetController;
 
   String _platformVersion = 'Unknown';
   FlutterTtsImproved tts = FlutterTtsImproved();
@@ -181,6 +181,9 @@ class _FoldPageState extends State<FoldPage> {
           ),
           body: Container(
             child: Stack(children: [
+              UnityWidget(
+                onUnityViewCreated: onUnityCreated
+              ),
               Container(
 //                  color: Colors.blue,
                   alignment: Alignment.bottomCenter,
@@ -260,21 +263,31 @@ class _FoldPageState extends State<FoldPage> {
                             ),
                             SizedBox(height : 25),
                             Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10)
+                                ),
+                                color : navColor,
+                              ),
 //                              width :  MediaQuery.of(context).size.width * 0.3,
 //                              height : 240,
-                              color : navColor,
                               padding: EdgeInsets.all(25),
                               child: Column(
                                 children: <Widget>[
-                                  Image.network('${IP.localAddress}/img/image/fold.png'),
+                                  Image.asset('images/fold_icon.png', width: 100, height: 100,),
                                 ],
                               ),
                             )
                           ]),
                     );
                   })),
+
             ]),
           )),
     );
+  }
+
+  void onUnityCreated(controller) {
+    this._unityWidgetController = controller;
   }
 }

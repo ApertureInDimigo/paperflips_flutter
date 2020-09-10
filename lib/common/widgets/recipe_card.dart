@@ -114,7 +114,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Image.network('${IP.localAddress}/img/image/fold.png'),
+                      Image.asset('images/fold_icon.png'),
                       SizedBox(height: 3),
                       Text("접기", style: TextStyle(fontSize: 12))
                     ],

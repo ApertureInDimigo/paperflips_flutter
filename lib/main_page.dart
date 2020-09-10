@@ -427,7 +427,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "스토리모드\n(방꾸미기로 대체됨)",
+                      "방꾸미기",
                       style: TextStyle(fontSize: 12, ),
                       textAlign: TextAlign.center,
                     ),

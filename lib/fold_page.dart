@@ -111,7 +111,7 @@ class _FoldPageState extends State<FoldPage> {
         _isSpeakingTTS = true;
       });
     });
-    
+
     tts.setCompletionHandler(() {
 //      print("h1!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
       setState(() {
@@ -120,8 +120,8 @@ class _FoldPageState extends State<FoldPage> {
     });
 
 
-    
-    
+
+
     tts.setProgressHandler((String words, int start, int end, String word) {
       setState(() {
         _platformVersion = word;
@@ -286,7 +286,7 @@ class _FoldPageState extends State<FoldPage> {
                                 ),
                               ),
 
-                            ),
+
                             SizedBox(height : 25),
                             Container(
                               decoration: BoxDecoration(
@@ -310,7 +310,7 @@ class _FoldPageState extends State<FoldPage> {
 
             ]),
           )),
-
+      )
     );
   }
 

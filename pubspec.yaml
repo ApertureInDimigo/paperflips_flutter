@@ -44,7 +44,7 @@ dependencies:
 #  firebase_core: ^0.2.5
   firebase_admob:
 
-  flutter_unity_widget: ^0.1.6+8
+  
 
 
 dev_dependencies:

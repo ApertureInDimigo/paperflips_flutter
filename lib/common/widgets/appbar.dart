@@ -66,7 +66,6 @@ class _DefaultAppBarState extends State<DefaultAppBar>
     if (onActionButtonPressed != null) {
       temp = IconButton(
         icon: new Icon(Icons.person_outline),
-        tooltip: "hello",
         onPressed: () => onActionButtonPressed(),
       );
     } else {

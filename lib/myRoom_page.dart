@@ -17,6 +17,9 @@ import 'dart:convert';
 import 'common/auth.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
+
+import 'common/widgets/dialog.dart';
+
 import 'dart:core';
 
 import 'common/font.dart';
@@ -31,10 +34,7 @@ GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
-
   String tempSaveData;
-
-
 
   List<PlacedSticker> placedStickerList = [];
   List<Sticker> stickerList = [];
@@ -44,7 +44,7 @@ class PlaceStatus with ChangeNotifier {
     kind: "빨강",
     name: "개빨감",
     color: Color(0xFFFFF385),
-    decoration: BoxDecoration(color: Color(0xFFFFF385)),
+    decoration: BoxDecoration(color: Color(0xFFC2DCC9)),
     isAvailable: true,
   );
 
@@ -251,7 +251,6 @@ class PlaceStatus with ChangeNotifier {
 
   bool isCollectionLoading = false;
 
-
   PlaceStatus() {
     setStickerList();
   }
@@ -276,19 +275,20 @@ class PlaceStatus with ChangeNotifier {
     Map<String, dynamic> resData = jsonDecode(res.body);
     var data = resData["data"];
 
-    if(data == null){
+    if (data == null) {
       stickerList = [];
-    }else{
+    } else {
       var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
       stickerList = collectionList
-          .map<Sticker>((x) =>
-          Sticker(id: x.recipeName.hashCode, name: x.recipeName, path: "${IP.address}/img/image/${x.recipeName}.png", limit: 9, count: 0))
+          .map<Sticker>((x) => Sticker(
+              id: x.recipeName.hashCode,
+              name: x.recipeName,
+              path: "${IP.address}/img/image/${x.recipeName}.png",
+              limit: 9,
+              count: 0))
           .toList();
-
     }
-
-
 
     isCollectionLoading = false;
 
@@ -302,7 +302,7 @@ class PlaceStatus with ChangeNotifier {
 
   PlacedSticker selectedSticker;
 
-  void saveCurrentStatus() {
+  Future<bool> saveCurrentStatus() async {
     void printWrapped(String text) {
       final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
       pattern.allMatches(text).forEach((match) => print(match.group(0)));
@@ -326,6 +326,9 @@ class PlaceStatus with ChangeNotifier {
       "data": data,
       "backgroundColor": backgruondColor.id
     });
+
+
+    return true;
   }
 
   void loadStatus() {
@@ -714,76 +717,127 @@ class _MyRoomPageState extends State<MyRoomPage> {
         builder: (context) {
           PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
           return Container(
-            height: 50,
+            height: 40,
+//            width : 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
+                  width: 30,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: Material(
                     color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
-                        placeStatus.saveCurrentStatus();
+
+
+                        showCustomDialog(
+                            context: context,
+                            title: "저장할까요?",
+                            content: "저장하면 좋아용",
+                            cancelButtonText: "취소",
+                            confirmButtonText: "저장",
+                            cancelButtonAction: () {
+                              Navigator.pop(context);
+                            },
+                            confirmButtonAction: () async {
+                              bool saveResult = await placeStatus.saveCurrentStatus();
+                              Navigator.pop(context);
+                              if(saveResult == true){
+                                showCustomAlert(context:context, title:"저장 됐어요!", duration: Duration(seconds: 1));
+                              }
+                            });
+                        
+                        
+                        
+              
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.check),
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        child: Icon(Icons.save, size: 20),
                       ),
                     ),
                   ),
                 ),
                 Container(
+                  width: 30,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: Material(
                     color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
 //                        placeStatus.loadStatus();
-                        placeStatus.clear();
+
+                        showCustomDialog(
+                            context: context,
+                            title: "스티커를 모두 지울까요?",
+                            content: "현재 배치되어 있는 모든 스티커들이 서랍으로 되돌아갑니다.",
+                            cancelButtonText: "취소",
+                            confirmButtonText: "초기화",
+                            cancelButtonAction: () {
+                              Navigator.pop(context);
+                            },
+                            confirmButtonAction: () {
+                              placeStatus.clear();
+                              Navigator.pop(context);
+                              showCustomAlert(context:context, title:"모두 지워졌어요!", duration: Duration(seconds: 1));
+                            });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.layers_clear),
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        child: Icon(
+                          Icons.delete_forever,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ),
                 ),
+//                Container(
+//                  width : 30,
+//                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+//                  child: Material(
+//                    color: Colors.white.withOpacity(0.8),
+//                    borderRadius: BorderRadius.all(Radius.circular(5)),
+//                    child: InkWell(
+//                      borderRadius: BorderRadius.all(Radius.circular(5)),
+//                      onTap: () {
+//                        placeStatus.loadStatus();
+//                      },
+//                      child: Container(
+//                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+//                        child:  Icon(Icons.cloud_download, size: 20,),
+//                      ),
+//                    ),
+//                  ),
+//                ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                  child: Material(
-                    color: Colors.white.withOpacity(0.8),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      onTap: () {
-                        placeStatus.loadStatus();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.cloud_download),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
+                  width: 30,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: Material(
                     color: placeStatus.isStickerPanel ? Colors.white.withOpacity(0.8) : Colors.grey[400].withOpacity(0.8),
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                     child: InkWell(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
                         _pc.open();
                         placeStatus.isStickerPanel = !placeStatus.isStickerPanel;
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                        child: Icon(Icons.brush),
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        child: placeStatus.isStickerPanel
+                            ? Icon(
+                                Icons.format_paint,
+                                size: 20,
+                              )
+                            : Icon(
+                                Icons.close,
+                                size: 20,
+                              ),
                       ),
                     ),
                   ),
@@ -824,7 +878,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                               );
                             }
 
-                            return LongPressDraggable(
+                            return Draggable(
                                 onDragStarted: () {
                                   _pc.close();
                                   Vibration.vibrate(duration: 80);
@@ -888,8 +942,8 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: 30,
-                    height: 5,
+                    width: 35,
+                    height: 4,
                     decoration:
                         BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
                   ),
@@ -901,21 +955,23 @@ class _MyRoomPageState extends State<MyRoomPage> {
               height: 270,
               child: Column(children: [
                 Flexible(
-                  child: !placeStatus.isCollectionLoading ? Container(
+                  child: !placeStatus.isCollectionLoading
+                      ? Container(
 //            height : 250,
-                    padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
+                          padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
 
-                    child: GridView.count(
+                          child: GridView.count(
 //        physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      //스크롤 방향 조절
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 5,
+                            scrollDirection: Axis.vertical,
+                            //스크롤 방향 조절
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            crossAxisCount: 5,
 
-                      children: placeStatus.stickerList.map((x) => _buildUnderSticker(x)).toList(),
-                    ),
-                  ) : Center(child: CircularProgressIndicator()),
+                            children: placeStatus.stickerList.map((x) => _buildUnderSticker(x)).toList(),
+                          ),
+                        )
+                      : Center(child: CircularProgressIndicator()),
                 ),
               ]),
             ),
@@ -947,52 +1003,53 @@ class _MyRoomPageState extends State<MyRoomPage> {
                     child: Container(
 //                      color : Colors.red,
 //                  height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Center(
-                          child: Stack(
-                            children: <Widget>[
-                              Container(
-                                alignment: Alignment.center,
-                                child: DragTarget(
-                                  builder: (context, List<Sticker> candidateData, rejectedData) {
-                                    PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-                                    return GestureDetector(
-                                      onScaleStart: (details) {},
-                                      onScaleUpdate: (details) {
-                                        print(details.scale);
-                                        if (placeStatus.selectedSticker == null) {
-                                          return;
-                                        }
+//                        alignment: Alignment.center,
+                        child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+//                                alignment: Alignment.center,
+                            child: DragTarget(
+                              builder: (context, List<Sticker> candidateData, rejectedData) {
+                                PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                                return GestureDetector(
+                                  onScaleStart: (details) {},
+                                  onScaleUpdate: (details) {
+                                    print(details.scale);
+                                    if (placeStatus.selectedSticker == null) {
+                                      return;
+                                    }
 
-                                        placeStatus.updateStickerScale(details.scale);
-                                      },
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          placeStatus.selectSticker(placeStatus.selectedSticker.id);
-                                        },
-                                        child: Container(
-                                          key: _keyStickerBackground,
-                                          decoration: placeStatus.backgruondColor.decoration,
-                                          child: AspectRatio(
-                                              aspectRatio: 9 / 18,
-                                              child: Stack(
-                                                  children: placeStatus.placedStickerList.map((x) {
+                                    placeStatus.updateStickerScale(details.scale);
+                                  },
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      placeStatus.selectSticker(placeStatus.selectedSticker.id);
+                                    },
+                                    child: Container(
+                                      key: _keyStickerBackground,
+                                      decoration: placeStatus.backgruondColor.decoration,
+                                      child: AspectRatio(
+                                          aspectRatio: 3 / 5,
+                                          child: Stack(
+                                              children: placeStatus.placedStickerList.map((x) {
 //                                                          print(x.sticker.path);
-                                                return x;
-                                              }).toList())),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  onWillAccept: (data) {
-                                    return true;
-                                  },
-                                  onAccept: (data) {},
-                                ),
-                              ),
-                            ],
+                                            return x;
+                                          }).toList())),
+                                    ),
+                                  ),
+                                );
+                              },
+                              onWillAccept: (data) {
+                                return true;
+                              },
+                              onAccept: (data) {},
+                            ),
                           ),
-                        ))),
+                        ],
+                      ),
+                    ))),
                 Builder(
                   builder: (context) {
                     PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
@@ -1062,7 +1119,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                       PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
                       return Text(
                         backgroundColor.name,
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 11),
                       );
                     }),
                   )
@@ -1089,8 +1146,8 @@ class _MyRoomPageState extends State<MyRoomPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 30,
-                  height: 5,
+                  width: 35,
+                  height: 4,
                   decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
               ],
@@ -1102,32 +1159,46 @@ class _MyRoomPageState extends State<MyRoomPage> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: placeStatus.colorTabList.map<Widget>((x) {
-                  return Material(
-                    color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
-                    borderRadius: BorderRadius.all(Radius.circular(1000)),
-                    child: InkWell(
+                  return Expanded(
+                    child: Material(
+                      color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
+
                       borderRadius: BorderRadius.all(Radius.circular(1000)),
-                      onTap: () {
-                        placeStatus.setSelectedColorTab(x["name"]);
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              width: 8,
-                              height: 8,
-                              decoration:
-                                  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(1000)), color: x["color"]),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              x["name"],
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
+                      child: InkWell(
+                        borderRadius: BorderRadius.all(Radius.circular(1000)),
+                        onTap: () {
+                          placeStatus.setSelectedColorTab(x["name"]);
+                        },
+                        child: Container(
+//                          alignment: Alignment.center,
+//                          height : 30,
+
+
+
+                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                width: 8,
+                                height: 8,
+                                decoration:
+                                    BoxDecoration(
+                                        border : placeStatus.selectedColorTab == x["name"] && x["name"] == "하양" ? Border.all(
+                                          color : Colors.black,
+                                          width : 1,
+                                        ) : null,
+                                        borderRadius: BorderRadius.all(Radius.circular(1000)), color: x["color"]),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                x["name"],
+                                style: TextStyle(fontSize: 11),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -1141,7 +1212,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
               Flexible(
                 child: Container(
 //            height : 250,
-                  padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
+                  padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
 
                   child: GridView.count(
 //        physics: const NeverScrollableScrollPhysics(),

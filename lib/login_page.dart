@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_front/common/widgets/dialog.dart';
 import 'main_page.dart';
 import 'common/provider/userProvider.dart';
 import 'common/widgets/appbar.dart';
@@ -123,6 +124,14 @@ class _LoginPageState extends State<LoginPage> {
 
                       if(loginResult == true){
                         goMainPage();
+                        showCustomAlert(
+                          context : context,
+                          title : "로그인 성공!",
+                          duration: Duration(seconds: 1),
+                        );
+
+                      }else{
+
                       }
 
 
@@ -145,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 10),
                 Material(
                   color: kakaoColor,
                   borderRadius: BorderRadius.circular(10.0),

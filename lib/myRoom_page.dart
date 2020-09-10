@@ -282,7 +282,7 @@ class PlaceStatus with ChangeNotifier {
 
       stickerList = collectionList
           .map<Sticker>((x) => Sticker(
-              id: x.recipeName.hashCode,
+              id: x.recipeSeq,
               name: x.recipeName,
               path: "${IP.address}/img/image/${x.recipeName}.png",
               limit: 9,
@@ -538,12 +538,18 @@ class PlacedSticker extends StatefulWidget {
     data['initScale'] = this.scale;
     print(this.scale);
 
+//    data['sticker'] = {
+//      "id": this.sticker.id,
+//      "name": this.sticker.name,
+//      "path": this.sticker.path,
+//      "limit": this.sticker.limit
+//    };
+
     data['sticker'] = {
-      "id": this.sticker.id,
-      "name": this.sticker.name,
-      "path": this.sticker.path,
-      "limit": this.sticker.limit
+      "seq": this.sticker.id,
     };
+
+
     print(data);
     return data;
   }

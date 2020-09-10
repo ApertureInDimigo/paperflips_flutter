@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'common/font.dart';
 import 'common/ip.dart';
 import 'common/widgets/appbar.dart';
+import 'common/widgets/dialog.dart';
 import 'request.dart';
 import 'common/color.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -156,125 +157,147 @@ class _FoldPageState extends State<FoldPage> {
   Widget build(BuildContext context) {
 //    BankAccount bankAccount = Provider.of<BankAccount>(context);
 //    print(_readingWord);
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<FoldStatus>(
-            builder: (_) => FoldStatus(8, foldProcessList)),
-      ],
-      child: Scaffold(
-          appBar: FoldAppBar(
-            title: recipeCard.recipeName,
-            onPrevButtonPressed: () {
-//              bankAccount.decrement(1);
-//              setState(() {
-//                _currentStep = _currentStep - 1;
-//              });
-//              print(_currentStep);
+    return  WillPopScope(
+      onWillPop: () async {
+        tts.stop();
+        showCustomDialog(
+            context: context,
+            title: "진짜 나가요?",
+            content: "ㄹㅇ?",
+            cancelButtonText: "취소",
+            confirmButtonText: "나가용",
+            cancelButtonAction: () {
+              Navigator.pop(context);
             },
-            onNextButtonPressed: () {
+            confirmButtonAction: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+
+            });
+
+        return true;
+
+
+      },
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<FoldStatus>(
+              builder: (_) => FoldStatus(8, foldProcessList)),
+        ],
+        child: Scaffold(
+            appBar: FoldAppBar(
+              title: recipeCard.recipeName,
+              onPrevButtonPressed: () {
+                tts.stop();
+              },
+              onExitButtonPressed: () {
+                tts.stop();
+              },
+              onNextButtonPressed: () {
 //              bankAccount.increment(1);
 //              setState(() {
 //                _currentStep = _currentStep + 1;
 //              });
 //              print(_currentStep);
-            },
-          ),
-          body: Container(
-            child: Stack(children: [
-              Container(
+              },
+            ),
+            body: Container(
+              child: Stack(children: [
+                Container(
 //                  color: Colors.blue,
-                  alignment: Alignment.bottomCenter,
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: Builder(builder: (context) {
-                    FoldStatus foldStatus = Provider.of<FoldStatus>(context);
+                    alignment: Alignment.bottomCenter,
+                    margin: EdgeInsets.only(bottom: 20),
+                    child: Builder(builder: (context) {
+                      FoldStatus foldStatus = Provider.of<FoldStatus>(context);
 
-                    if (!counterListening) {
+                      if (!counterListening) {
 
-                      foldStatus.addListener(() {
-                        ttsSpeak(foldStatus.getCurrentProcess().ttsExplainText);
-                      });
-                      counterListening = true;
-                    }
-
-                    Widget _buildSubtitleText(String text){
-//                      print( _readingWord["start"]);
-                      print(_isSpeakingTTS);
-                      if(_isSpeakingTTS == false || _readingWord["end"] > text.length){
-                        return Text(text, style : TextStyle(
-                            color: Colors.black, fontSize: 15, fontFamily: Font.normal));
+                        foldStatus.addListener(() {
+                          ttsSpeak(foldStatus.getCurrentProcess().ttsExplainText);
+                        });
+                        counterListening = true;
                       }
 
+                      Widget _buildSubtitleText(String text){
+//                      print( _readingWord["start"]);
+                        print(_isSpeakingTTS);
+                        if(_isSpeakingTTS == false || _readingWord["end"] > text.length){
+                          return Text(text, style : TextStyle(
+                              color: Colors.black, fontSize: 15, fontFamily: Font.normal));
+                        }
 
-                      List<TextSpan> temp = [
+
+                        List<TextSpan> temp = [
 //                        TextSpan(text : text.substring(0, _readingWord["start"])),
-                        TextSpan(text : text.substring(0, _readingWord["end"]), style: TextStyle(color: Colors.red)),
-                        TextSpan(text : text.substring(_readingWord["end"], text.length))
-                      ];
-                      print(temp);
+                          TextSpan(text : text.substring(0, _readingWord["end"]), style: TextStyle(color: Colors.red)),
+                          TextSpan(text : text.substring(_readingWord["end"], text.length))
+                        ];
+                        print(temp);
 //                      return Text(text);
 
 
-                      return RichText(
-                        text: TextSpan(
-                            style: TextStyle(
-                                color: Colors.black, fontSize: 15, fontFamily: Font.normal),
-                            children: temp
-                        )
-                      );
+                        return RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 15, fontFamily: Font.normal),
+                              children: temp
+                          )
+                        );
 
-                      return Text(text);
-                    }
+                        return Text(text);
+                      }
 
 
-                    return Container(
-                      child: Column(
-                          verticalDirection: VerticalDirection.up,
-                          children: [
-                            Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              color: navColor,
-                              child: InkWell(
+                      return Container(
+                        child: Column(
+                            verticalDirection: VerticalDirection.up,
+                            children: [
+                              Material(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(50)),
-                                onTap: () {
-                                  ttsSpeak(foldStatus
-                                      .getCurrentProcess()
-                                      .ttsExplainText);
-                                },
-                                child: Container(
+                                color: navColor,
+                                child: InkWell(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(50)),
+                                  onTap: () {
+                                    ttsSpeak(foldStatus
+                                        .getCurrentProcess()
+                                        .ttsExplainText);
+                                  },
+                                  child: Container(
 //                      margin: EdgeInsets.symmetric(horizontal: 50),
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.9,
-                                  height: 36,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50)),
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.9,
+                                    height: 36,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50)),
+                                    ),
+                                    child: _buildSubtitleText(foldStatus
+                                        .getCurrentProcess()
+                                        .ttsExplainText),
                                   ),
-                                  child: _buildSubtitleText(foldStatus
-                                      .getCurrentProcess()
-                                      .ttsExplainText),
                                 ),
                               ),
-                            ),
-                            SizedBox(height : 25),
-                            Container(
+                              SizedBox(height : 25),
+                              Container(
 //                              width :  MediaQuery.of(context).size.width * 0.3,
 //                              height : 240,
-                              color : navColor,
-                              padding: EdgeInsets.all(25),
-                              child: Column(
-                                children: <Widget>[
-                                  Image.network('${IP.localAddress}/img/image/fold.png'),
-                                ],
-                              ),
-                            )
-                          ]),
-                    );
-                  })),
-            ]),
-          )),
+                                color : navColor,
+                                padding: EdgeInsets.all(25),
+                                child: Column(
+                                  children: <Widget>[
+                                    Image.network('${IP.localAddress}/img/image/fold.png'),
+                                  ],
+                                ),
+                              )
+                            ]),
+                      );
+                    })),
+              ]),
+            )),
+      ),
     );
   }
 }

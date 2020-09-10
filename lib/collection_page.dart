@@ -40,6 +40,9 @@ class _CollectionPageState extends State<CollectionPage> {
       _inAsyncCall = true;
     });
 //    print("Bearer " +await getToken());
+
+    print("!@@@@@@@@@@@@@@@@@@@");
+
     final res = await http.get(
       "https://paperflips-server.herokuapp.com/User/GetCollection",
       headers: {"Cookie" : "user=" + await getToken()}

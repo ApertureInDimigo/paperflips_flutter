@@ -97,7 +97,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         SizedBox(height: 15),
         Column(
-          children: _officialRecipeList.map((x) => buildRecipeCard(x)).toList(),
+          children: _officialRecipeList.length != 0 ? _officialRecipeList.map((x) => buildRecipeCard(x)).toList() : [Text("레시피를 찾을 수 없어요.")],
         )
       ],
     );
@@ -141,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
     var recipeList = data["data"];
     print(recipeList);
 
-    var officialRecipeList = recipeList != null ? recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList() : [];
+    var officialRecipeList = recipeList != null ? recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList() : <RecipeCard>[];
 
 //    print(recipe);
 

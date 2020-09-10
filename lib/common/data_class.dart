@@ -31,6 +31,8 @@ class FoldProcess {
 
 
 class RecipeCard {
+
+  int recipeSeq;
   String recipeName;
   String rarity;
   String summary;
@@ -38,9 +40,10 @@ class RecipeCard {
   String date;
 
 
-  RecipeCard({this.recipeName, this.rarity, this.summary, this.date = ""});
+  RecipeCard({this.recipeSeq, this.recipeName, this.rarity, this.summary, this.date = ""});
 
   RecipeCard.fromJson(Map<String, dynamic> json) {
+    recipeSeq = json["seq"];
     recipeName = json['recipeName'];
     rarity = json['rarity'];
     summary = json['summary'];
@@ -51,7 +54,7 @@ class RecipeCard {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['recipeName'] = this.recipeName;
+    data["seq"] = this.recipeSeq;
     data['rarity'] = this.rarity;
     data['summary'] = this.summary;
 

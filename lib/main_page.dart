@@ -31,7 +31,6 @@ import './common/ip.dart';
 import './common/data_class.dart';
 import 'login_page.dart';
 
-
 import './common/provider/userProvider.dart';
 
 class MainPage extends StatefulWidget {
@@ -40,21 +39,19 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
-
   InterstitialAd myInterstitial;
 
   InterstitialAd buildInterstitialAd() {
     return InterstitialAd(
       adUnitId: "ca-app-pub-2755450101712612/1904039260",
-      targetingInfo:  MobileAdTargetingInfo(
+      targetingInfo: MobileAdTargetingInfo(
         keywords: <String>['flutterio', 'beautiful apps'],
         contentUrl: 'https://flutter.cn',
         birthday: DateTime.now(),
         childDirected: false,
         designedForFamilies: false,
-        gender: MobileAdGender.male, // or MobileAdGender.female, MobileAdGender.unknown
+        gender: MobileAdGender.male,
+        // or MobileAdGender.female, MobileAdGender.unknown
         testDevices: <String>[], // Android emulators are considered test devices
       ),
 //      adUnitId: InterstitialAd.testAdUnitId,
@@ -74,17 +71,7 @@ class _MainPageState extends State<MainPage> {
     myInterstitial..show();
   }
 
-
-
-
-
-
-
-
-
-
-  bool
-      _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
+  bool _isUserButtonToggle; //true 면 상단 메뉴에 로그인/회원가입 또는 내 정보 나타남, false 면 상단 메뉴에 MapMenu(버튼 4개)가 나타남.
   bool _isLogined = false; //로그인 된 상태일 때 true, 아니면 false
 
   _MainPageState() {
@@ -94,17 +81,12 @@ class _MainPageState extends State<MainPage> {
 
   var getAllTasksFuture;
 
-
-
   @override
   void dispose() {
     myInterstitial.dispose();
 
     super.dispose();
   }
-
-
-
 
   @override
   void initState() {
@@ -115,11 +97,7 @@ class _MainPageState extends State<MainPage> {
 
     getAllTasksFuture = fetchRecommendRecipeList();
 
-
     myInterstitial = buildInterstitialAd()..load();
-
-
-
   }
 
   void getIsLogined() async {
@@ -131,18 +109,13 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-
-
-
   int result;
 
   @override
   Widget build(BuildContext context) {
-
     UserStatus userStatus = Provider.of<UserStatus>(context);
 
     _isLogined = userStatus.isLogined;
-
 
     return Scaffold(
         appBar: DefaultAppBar(onActionButtonPressed: () {
@@ -210,8 +183,7 @@ class _MainPageState extends State<MainPage> {
         padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
@@ -254,8 +226,7 @@ class _MainPageState extends State<MainPage> {
                 color: Colors.white,
                 child: InkWell(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Container(
-                      padding: EdgeInsets.all(3), child: Icon(Icons.search)),
+                  child: Container(padding: EdgeInsets.all(3), child: Icon(Icons.search)),
                   onTap: () {
                     goSearchPage();
                   },
@@ -270,25 +241,21 @@ class _MainPageState extends State<MainPage> {
 
   Widget _buildMVPCard() {
     return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: Offset(1, 1), // changes position of shadow
-            )
-          ]),
+      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)), boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.4),
+          spreadRadius: 1,
+          blurRadius: 1,
+          offset: Offset(1, 1), // changes position of shadow
+        )
+      ]),
       child: Material(
         color: primaryColor,
         borderRadius: BorderRadius.all(Radius.circular(20)),
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           onTap: () {
-
             showInterstitialAd();
-
           },
 //          splashColor: Colors.white,
           child: Container(
@@ -300,10 +267,8 @@ class _MainPageState extends State<MainPage> {
                 children: <Widget>[
                   Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.only(
-                        left: 10, right: 20, top: 20, bottom: 20),
-                    child: Image.network(
-                        '${IP.address}/img/image/종이배.png' /*recipe.iconPath*/),
+                    padding: EdgeInsets.only(left: 10, right: 20, top: 20, bottom: 20),
+                    child: Image.network('${IP.address}/img/image/종이배.png' /*recipe.iconPath*/),
                   ),
                   Flexible(
                     child: Container(
@@ -314,8 +279,7 @@ class _MainPageState extends State<MainPage> {
                         children: <Widget>[
                           Text(
                             "김수한무님의",
-                            style:
-                                TextStyle(fontFamily: Font.bold, fontSize: 12),
+                            style: TextStyle(fontFamily: Font.bold, fontSize: 12),
                             textAlign: TextAlign.left,
                           ),
                           SizedBox(height: 5),
@@ -330,17 +294,14 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Container(
-                      padding: EdgeInsets.only(
-                          top: 20, bottom: 20, left: 12, right: 12),
+                      padding: EdgeInsets.only(top: 20, bottom: 20, left: 12, right: 12),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text("클릭하여 구경해보세요",
-                                  style: TextStyle(
-                                      fontSize: 13, fontFamily: Font.bold)),
+                              Text("클릭하여 구경해보세요", style: TextStyle(fontSize: 13, fontFamily: Font.bold)),
                               Icon(
                                 Icons.arrow_forward,
                                 size: 13,
@@ -357,7 +318,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildMapMenu() {
-    return Row(children: [
+    return Row(
+        children: [
       Expanded(
           flex: 1,
           child: Material(
@@ -438,7 +400,9 @@ class _MainPageState extends State<MainPage> {
                     SizedBox(height: 4),
                     Text(
                       "방 꾸미기",
-                      style: TextStyle(fontSize: 12, ),
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 14),
@@ -452,7 +416,9 @@ class _MainPageState extends State<MainPage> {
           child: Material(
             color: navColor,
             child: InkWell(
-              onTap: () {goTestPage();},
+              onTap: () {
+                goTestPage();
+              },
               child: Container(
                 decoration: BoxDecoration(
 //                    border: Border.all(width: 0.1),
@@ -546,6 +512,7 @@ class _MainPageState extends State<MainPage> {
   Widget _buildMyInfoMenu() {
     UserStatus userStatus = Provider.of<UserStatus>(context);
     return Container(
+
 //      color : Colors.red,
 //      height: ,
       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -565,12 +532,8 @@ class _MainPageState extends State<MainPage> {
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
-                      TextSpan(
-                          text: '123', style: TextStyle(fontFamily: Font.bold)),
-                      TextSpan(
-                          text: ' 점',
-                          style:
-                              TextStyle(fontFamily: Font.normal, fontSize: 12)),
+                      TextSpan(text: '123', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(text: ' 점', style: TextStyle(fontFamily: Font.normal, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -585,12 +548,8 @@ class _MainPageState extends State<MainPage> {
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
-                      TextSpan(
-                          text: '69', style: TextStyle(fontFamily: Font.bold)),
-                      TextSpan(
-                          text: ' 페인트',
-                          style:
-                              TextStyle(fontFamily: Font.normal, fontSize: 12)),
+                      TextSpan(text: '69', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(text: ' 페인트', style: TextStyle(fontFamily: Font.normal, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -620,7 +579,6 @@ class _MainPageState extends State<MainPage> {
               child: InkWell(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 onTap: () {
-
                   showCustomDialog(
                       context: context,
                       title: "로그아웃 할까요?",
@@ -633,10 +591,8 @@ class _MainPageState extends State<MainPage> {
                       confirmButtonAction: () {
                         userStatus.logout();
                         Navigator.pop(context);
-                        showCustomAlert(context:context, title:"로그아웃 성공!", duration: Duration(seconds: 1));
+                        showCustomAlert(context: context, title: "로그아웃 성공!", duration: Duration(seconds: 1));
                       });
-
-
                 },
                 child: Container(
 //                  height: 28,
@@ -652,29 +608,24 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildLoginedUpperMenu() {
+    UserStatus userStatus = Provider.of<UserStatus>(context);
     return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 200),
-        transitionBuilder: (Widget child, Animation<double> animation) {
+      duration: const Duration(milliseconds: 200),
+      transitionBuilder: (Widget child, Animation<double> animation) {
 //        return RotationTransition(child: child, turns: animation,);
-          return FadeTransition(
-            child: child,
-            opacity: animation,
-          );
-        },
-        child: Builder(
-          builder: (context){
-            UserStatus userStatus = Provider.of<UserStatus>(context);
-            return Center(
-              child: Container(
-                  child: userStatus.isUserButtonToggled ? _buildMyInfoMenu() : _buildMapMenu(),
-              key: ValueKey<bool>(_isUserButtonToggle),
-              ),
-            );
-          },
-        )
+        return FadeTransition(
+          child: child,
+          opacity: animation,
+        );
+      },
+      child: Center(
+        child: Container(
+          child: userStatus.isUserButtonToggled ? _buildMyInfoMenu() : _buildMapMenu(),
 
+        ),
+        key: ValueKey<bool>(_isUserButtonToggle),
+      ),
     );
-
   }
 
   Widget _buildGuestUpperMenu() {
@@ -699,27 +650,23 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _buildUpperMenu() {
-    return Builder(
-
-      builder: (context){
+    return Builder(builder: (context) {
 //        print(MediaQuery.of(context).size.height * 0.085);
-        UserStatus userStatus = Provider.of<UserStatus>(context);
-        return Container(
+      UserStatus userStatus = Provider.of<UserStatus>(context);
+      return Container(
 //      padding: EdgeInsets.only(bottom: 8, top: 8),
-          decoration: BoxDecoration(
-            color: navColor,
-          ),
-          height: MediaQuery.of(context).size.height * 0.085,
-          child: userStatus.isLogined == true ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
-        );
-      }
-    );
+        decoration: BoxDecoration(
+          color: navColor,
+        ),
+        height: MediaQuery.of(context).size.height * 0.085,
+        child: userStatus.isLogined == true ? _buildLoginedUpperMenu() : _buildGuestUpperMenu(),
+      );
+    });
   }
 
   Future<List<RecipeCard>> fetchRecommendRecipeList() async {
 //      await Future.delayed(Duration(seconds: 2));
-    final res =
-        await http.get("https://paperflips-server.herokuapp.com/rec/AllData");
+    final res = await http.get("https://paperflips-server.herokuapp.com/rec/AllData");
     //테스트 하려고 하니 갑자기 서버가 터져버려서 못했어요..
 
     Map<String, dynamic> data = jsonDecode(res.body);
@@ -730,33 +677,21 @@ class _MainPageState extends State<MainPage> {
 
 //    print(RecipeCard.fromJson(recipe));
 //    setState(() {});
-    print( recipeList.map((x) => RecipeCard.fromJson(x)).toList());
-    return  recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
+    print(recipeList.map((x) => RecipeCard.fromJson(x)).toList());
+    return recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
     return [
-      RecipeCard(
-          recipeName: "종이배",
-          rarity: "normal",
-          summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
-      RecipeCard(
-          recipeName: "코끼리",
-          rarity: "legend",
-          summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
-      RecipeCard(
-          recipeName: "종이배",
-          rarity: "normal",
-          summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
+      RecipeCard(recipeName: "종이배", rarity: "normal", summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),
+      RecipeCard(recipeName: "코끼리", rarity: "legend", summary: "배경을 클릭해 코코끼리의 소개를 들어봐요!"),
+      RecipeCard(recipeName: "종이배", rarity: "normal", summary: "배경을 클릭해 종이배의 소개를 들어봐요!"),
     ];
   }
 
   Widget _buildRecommendRecipeList() {
-
-
     return FutureBuilder(
         future: getAllTasksFuture,
-        builder: (BuildContext context, AsyncSnapshot snapshot)
-       {
-         print(snapshot.error);
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          print(snapshot.error);
 
           if (snapshot.hasError) {
             return Center(
@@ -773,13 +708,9 @@ class _MainPageState extends State<MainPage> {
           } else {
 //            print(snapshot.data[0].recipeName);
 //            print("!");
-            return Column(
-                children: snapshot.data
-                    .map<Widget>((x) => buildRecipeCard(x))
-                    .toList());
+            return Column(children: snapshot.data.map<Widget>((x) => buildRecipeCard(x)).toList());
           }
         });
-
   }
 
 //  print(test2);
@@ -814,8 +745,6 @@ class _MainPageState extends State<MainPage> {
       FadeRoute(page: TestPage()),
     );
   }
-
-
 
   void goRegisterPage() {
     Navigator.push(

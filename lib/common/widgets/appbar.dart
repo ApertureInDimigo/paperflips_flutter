@@ -7,7 +7,6 @@ import '../../fold_page.dart';
 import '../provider/userProvider.dart';
 import 'dialog.dart';
 
-
 class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   DefaultAppBar({this.onActionButtonPressed, this.title});
 
@@ -15,16 +14,14 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   var title;
 
   @override
-  _DefaultAppBarState createState() =>
-      _DefaultAppBarState(onActionButtonPressed, title);
+  _DefaultAppBarState createState() => _DefaultAppBarState(onActionButtonPressed, title);
 
   @override
   // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-class _DefaultAppBarState extends State<DefaultAppBar>
-    with TickerProviderStateMixin {
+class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateMixin {
   String value;
   var onActionButtonPressed;
   var title;
@@ -46,12 +43,10 @@ class _DefaultAppBarState extends State<DefaultAppBar>
   Widget build(BuildContext context) {
     UserStatus userStatus = Provider.of<UserStatus>(context);
     Widget _buildDefaultAppBarActionButton() {
-
-
       Widget temp;
       if (onActionButtonPressed != null) {
         temp = IconButton(
-          icon: userStatus.isUserButtonToggled ?  Icon(Icons.dehaze) : Icon(Icons.person_outline) ,
+          icon: userStatus.isUserButtonToggled ? Icon(Icons.dehaze) : Icon(Icons.person_outline),
           onPressed: () => onActionButtonPressed(),
         );
       } else {
@@ -59,7 +54,6 @@ class _DefaultAppBarState extends State<DefaultAppBar>
       }
       return temp;
     }
-
 
     return AppBar(
       // Here we take the value from the MyHomePage object that was created by
@@ -71,18 +65,16 @@ class _DefaultAppBarState extends State<DefaultAppBar>
       flexibleSpace: Container(
         decoration: BoxDecoration(),
       ),
-      actions: userStatus.isLogined ? <Widget>[
-        _buildDefaultAppBarActionButton(),
-        SizedBox(
-          width: 10,
-        )
-      ] : null,
+      actions: userStatus.isLogined
+          ? <Widget>[
+              _buildDefaultAppBarActionButton(),
+              SizedBox(
+                width: 10,
+              )
+            ]
+          : null,
     );
-
-
   }
-
-
 
   Widget _buildDefaultAppBarTitle() {
     Widget temp;
@@ -90,8 +82,7 @@ class _DefaultAppBarState extends State<DefaultAppBar>
       temp = Text(
         title,
         textAlign: TextAlign.center,
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, fontFamily: Font.bold),
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: Font.bold),
       );
     } else {
       temp = Container(width: 135, child: Image.asset("images/nav_logo.png"));
@@ -101,17 +92,18 @@ class _DefaultAppBarState extends State<DefaultAppBar>
 }
 
 class FoldAppBar extends StatefulWidget implements PreferredSizeWidget {
-  FoldAppBar({this.onPrevButtonPressed,this.onNextButtonPressed, this.title, this.step});
+
+  FoldAppBar({this.onPrevButtonPressed, this.onNextButtonPressed, this.onExitButtonPressed, this.title, this.step});
 
   var onPrevButtonPressed;
   var onNextButtonPressed;
+  var onExitButtonPressed;
   var title;
 
   var step;
 
   @override
-  _FoldAppBarState createState() =>
-      _FoldAppBarState(onPrevButtonPressed,onNextButtonPressed, title, step);
+  _FoldAppBarState createState() => _FoldAppBarState(onPrevButtonPressed, onNextButtonPressed, onExitButtonPressed, title, step);
 
   @override
   // TODO: implement preferredSize
@@ -122,12 +114,14 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
   String value;
   var onPrevButtonPressed;
   var onNextButtonPressed;
+  var onExitButtonPressed;
   var title;
   var step;
 
-  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed, _title, _step) {
+  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed, _onExitButtonPressed, _title, _step) {
     onPrevButtonPressed = _onPrevButtonPressed;
     onNextButtonPressed = _onNextButtonPressed;
+    onExitButtonPressed = _onExitButtonPressed;
     title = _title;
     step = _step;
   }
@@ -144,15 +138,15 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
-          onTap: () {foldStatus.nextStep();},
+          onTap: () {
+            foldStatus.nextStep();
+          },
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
           child: Container(
 //            width : 70,
-            height: 56,
+            height: 80,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                borderRadius:
-                BorderRadius.only(bottomRight: Radius.circular(10))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Text(
@@ -169,9 +163,7 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
       );
     }
 
-    void _showExitWarningDialog(){
-
-
+    void _showExitWarningDialog() {
       showCustomDialog(
           context: context,
           title: "진짜 나가요?",
@@ -182,13 +174,10 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
             Navigator.pop(context);
           },
           confirmButtonAction: () {
-
             Navigator.pop(context);
             Navigator.pop(context);
+            onExitButtonPressed();
           });
-
-
-
     }
 
     Widget _buildFoldAppBarExitButton() {
@@ -197,14 +186,15 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
-          onTap: () {_showExitWarningDialog();},
+          onTap: () {
+            _showExitWarningDialog();
+          },
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
           child: Container(
-            width : 80,
+            width: 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Icon(Icons.arrow_back),
@@ -220,22 +210,22 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         ),
       );
     }
-    
-    
+
     Widget _buildFoldAppBarPrevButton() {
       return Material(
         color: primaryColor,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
         child: InkWell(
           splashColor: navColor,
-          onTap: () {foldStatus.prevStep();},
+          onTap: () {
+            foldStatus.prevStep();
+          },
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
           child: Container(
-            width : 80,
+            width: 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Icon(Icons.arrow_back),
@@ -252,33 +242,40 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
       );
     }
 
-
     Widget _buildFoldAppBarTitle() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          foldStatus.getStep() != 1 ? _buildFoldAppBarPrevButton() : _buildFoldAppBarExitButton(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14, fontFamily: Font.bold),
-              ),
-              SizedBox(height: 3),
-              Text(
-                "(${foldStatus.getBalance().toString()}/${foldStatus.maxStep})",
-                style: TextStyle(
-                  fontSize: 12,
+      return Stack(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            foldStatus.getStep() != 1 ? _buildFoldAppBarPrevButton() : _buildFoldAppBarExitButton(),
+            _buildFoldAppBarNextButton(),
+          ],
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+
+              children: <Widget>[
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 14, fontFamily: Font.bold),
                 ),
-              )
-            ],
+                SizedBox(height: 3),
+                Text(
+                  "(${foldStatus.getBalance().toString()}/${foldStatus.maxStep})",
+                  style: TextStyle(
+                    fontSize: 12,
+                  ),
+                )
+              ],
+            ),
           ),
-          _buildFoldAppBarNextButton(),
-        ],
-      );
+        )
+      ]);
     }
 
     return AppBar(
@@ -308,7 +305,4 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
 //      ),
     );
   }
-
-
-
 }

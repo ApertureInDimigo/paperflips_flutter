@@ -43,11 +43,13 @@ dependencies:
 #  firebase_core: ^0.2.5
   firebase_admob:
 
+  flutter_unity_widget: ^0.1.6+8
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-#  flutter_unity_widget: ^0.1.6+8
+
 # 유니티 위젯은 UnityExport 가 없으면 컴파일이 안 되나 봅니다.
 
 

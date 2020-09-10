@@ -31,3 +31,7 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
+
+
+include ":UnityExport", ':unity-classes'
+project(":UnityExport").projectDir = file("./UnityExport")

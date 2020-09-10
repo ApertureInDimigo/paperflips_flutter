@@ -85,7 +85,10 @@ class UserStatus with ChangeNotifier {
         body: {"id": id, "password" : pw});
     print(res.body);
     Map<String, dynamic> resData = jsonDecode(res.body);
-    if(resData["status"]!= 200){
+
+    print("!!!!!!!!1");
+
+    if(res.statusCode != 200){
       return false;
     }
     var token = res.headers["set-cookie"].split("user=")[1].split(";")[0];
@@ -95,7 +98,7 @@ class UserStatus with ChangeNotifier {
     storage.write(key: "token", value: token);
 
     isLogined = true;
-    userInfo["name"] = resData["data"]["name"];
+    userInfo["name"] = resData["name"];
 
     notifyListeners();
 //  print();
@@ -124,7 +127,7 @@ class UserStatus with ChangeNotifier {
     print(data);
 
 
-    if(data["status"] == 200){
+    if(res.statusCode == 200){
       return true;
     }else{
       return false;
@@ -148,12 +151,12 @@ class UserStatus with ChangeNotifier {
 
     //jwt 토큰이 유효한지 서버에서 가져와야할 것 같은데 일단 생략
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        "https://paperflips-server.herokuapp.com/User/GetMyInfo",
         headers: {"Cookie" : "user=" + await getToken()}
     );
 
     Map<String, dynamic> resData = jsonDecode(res.body);
-    if(resData["status"] != 200){
+    if(res.statusCode != 200){
       storage.write(key: "token", value: "");
       token = null;
     }

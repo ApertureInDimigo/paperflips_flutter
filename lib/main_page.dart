@@ -399,10 +399,10 @@ class _MainPageState extends State<MainPage> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      "방 꾸미기",
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
+
+                      "방꾸미기",
+                      style: TextStyle(fontSize: 12, ),
+
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 14),

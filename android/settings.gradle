@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-include ':app'
+include ':app', ':unity-classes'
 
 def localPropertiesFile = new File(rootProject.projectDir, "local.properties")
 def properties = new Properties()
@@ -32,6 +32,6 @@ plugins.each { name, path ->
     project(":$name").projectDir = pluginDirectory
 }
 
+include ":UnityExport"
 
-include ":UnityExport", ':unity-classes'
 project(":UnityExport").projectDir = file("./UnityExport")

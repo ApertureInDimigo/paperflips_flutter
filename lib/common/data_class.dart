@@ -64,7 +64,7 @@ class RecipeCard {
 
 class GetRecipeCard{
   static Future<RecipeCard> fetchPost(int n) async {
-    final response = await http.get('${IP.address}/recipe/' + n.toString());
+    final response = await http.get('${IP.address}/rec/data/' + n.toString());
 
     if (response.statusCode == 200) {
       // 만약 서버가 OK 응답을 반환하면, JSON을 파싱합니다.

@@ -105,6 +105,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
               color: primaryColor,
               child: InkWell(
 //                splashColor: Colors.white,
+
                 onTap: () {
                   goFoldReadyPage(recipe);
                 },
@@ -123,6 +124,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                       ],
                     )),
               ),
+
             ),
           )
         ],

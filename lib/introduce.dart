@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import './common/color.dart';
 import './common/font.dart';
 import './common/asset_path.dart';
-
+import 'package:http/http.dart' as http;
 import './common/data_class.dart';
+import 'common/auth.dart';
 
 class IntroducePage extends StatefulWidget {
   final RecipeCard recipeCard;
@@ -27,10 +28,25 @@ class _IntroducePageState extends State<IntroducePage> {
   String dirname;
   static String videoURL = "https://www.youtube.com/watch?v=qG7LPf5n5MQ";
 
+
+  String _imagePath;
+  String _videoUrl;
+  String _description;
+
+  getIntroduceInfo() async{
+    final res = await http.get(
+        "https://paperflips-server.herokuapp.com/rec/GetDetail/${recipeCard.recipeName}",
+        headers: {"Cookie" : "user=" + await getToken()}
+    );
+  }
+
+
+
+
   YoutubePlayerController _controller;
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
     _controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(videoURL),

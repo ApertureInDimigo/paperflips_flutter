@@ -9,7 +9,7 @@ import 'register_page.dart';
 import 'package:provider/provider.dart';
 
 import './common/provider/userProvider.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 
 import 'myRoom_page.dart';
 
@@ -34,7 +34,12 @@ void main() {
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 
+void permission() async {
 
+  Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+  print('per1 : $permissions');
+
+}
 
 
 class MyApp extends StatelessWidget {
@@ -43,12 +48,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    permission();
 //    UserStatus userStatus = Provider.of<UserStatus>(context);
 
 
     return MultiProvider(
-      providers: [ChangeNotifierProvider<UserStatus>(create: (_) => UserStatus()),],
+      providers: [ChangeNotifierProvider<UserStatus>(create: (_) => UserStatus())],
       child: MaterialApp(
         navigatorKey: navigatorKey,
         title: 'Flutter Demo',

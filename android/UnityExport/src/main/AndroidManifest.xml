@@ -8,7 +8,7 @@
     <meta-data android:name="unity.splash-mode" android:value="0" />
     <meta-data android:name="unity.splash-enable" android:value="True" />
     <meta-data android:name="notch.config" android:value="portrait|landscape" />
-    <meta-data android:name="unity.build-id" android:value="72419959-a8fd-4dcc-81b0-57ed9ff44798" />
+    <meta-data android:name="unity.build-id" android:value="2a67607b-93b8-40d6-85d2-21c432eb500f" />
   </application>
   <uses-feature android:glEsVersion="0x00020000" />
   <uses-permission android:name="android.permission.CAMERA" />

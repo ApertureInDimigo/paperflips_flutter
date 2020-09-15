@@ -84,13 +84,16 @@ class UserStatus with ChangeNotifier {
         "${IP.address}/User/login",
         body: {"id": id, "password" : pw});
     print(res.body);
-    Map<String, dynamic> resData = jsonDecode(res.body);
+
 
     print("!!!!!!!!1");
 
     if(res.statusCode != 200){
       return false;
     }
+
+    Map<String, dynamic> resData = jsonDecode(res.body);
+
     var token = res.headers["set-cookie"].split("user=")[1].split(";")[0];
     print(token);
 
@@ -155,20 +158,24 @@ class UserStatus with ChangeNotifier {
         headers: {"Cookie" : "user=" + await getToken()}
     );
 
-    Map<String, dynamic> resData = jsonDecode(res.body);
+
     if(res.statusCode != 200){
+
       storage.write(key: "token", value: "");
       token = null;
+      isLogined = false;
+      notifyListeners();
+      return;
     }
 
-
+    Map<String, dynamic> resData = jsonDecode(res.body);
 
 
     if(token != null){
       isLogined = true;
       userInfo["name"] = resData["name"];
     }else{
-      isLogined = false;
+
     }
 
 

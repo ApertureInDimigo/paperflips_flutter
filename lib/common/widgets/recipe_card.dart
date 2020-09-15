@@ -48,6 +48,7 @@ Widget buildRarityText(rarity) {
 
 // RecipeCard 클래스를 받아 메인 페이지, 검색 페이지 등에 쓰일 레시피 카드 반환
 Widget buildRecipeCard(RecipeCard recipe) {
+  print(recipe.path);
   return Container(
       margin: EdgeInsets.only(top: 5),
       height: 100,
@@ -69,8 +70,7 @@ Widget buildRecipeCard(RecipeCard recipe) {
                       alignment: Alignment.center,
                       padding: EdgeInsets.only(
                           left: 10, right: 15, top: 20, bottom: 20),
-                      child: Image.network('${IP.address}/img/image/${recipe
-                          .recipeName}.png' /*recipe.iconPath*/),
+                      child: Image.network(recipe.path),
                     ),
                     Flexible(
                       child: Container(
@@ -262,7 +262,7 @@ Widget buildRecipeCollection(collection) {
               children: <Widget>[
 
                 Image.network(
-                    '${IP.address}/img/image/${collection.recipeName}.png',
+                    collection.path,
                     width: 80,
                     height: 80),
 

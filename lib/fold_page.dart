@@ -91,8 +91,13 @@ class _FoldPageState extends State<FoldPage> {
 
   bool _isSpeakingTTS ;
 
+  @override
+  void dispose() {
+    _unityWidgetController.pause();
+    print("Called dispose");
+    super.dispose();
 
-
+  }
   Map<String, dynamic> _readingWord;
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -169,7 +174,9 @@ class _FoldPageState extends State<FoldPage> {
             cancelButtonAction: () {
               Navigator.pop(context);
             },
-            confirmButtonAction: () {
+            confirmButtonAction: () async{
+              print("SD");
+
               Navigator.pop(context);
               Navigator.pop(context);
 
@@ -205,7 +212,8 @@ class _FoldPageState extends State<FoldPage> {
           body: Container(
             child: Stack(children: [
               UnityWidget(
-                onUnityViewCreated: onUnityCreated
+                onUnityViewCreated: onUnityCreated,
+                isARScene: false,
               ),
               Container(
 

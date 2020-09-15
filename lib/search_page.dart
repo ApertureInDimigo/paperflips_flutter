@@ -133,11 +133,24 @@ class _SearchPageState extends State<SearchPage> {
       _inAsyncCall = true;
     });
     print(searchQuery);
-    final res = await http.post(
-      "https://paperflips-server.herokuapp.com/rec/Search",
-      body: jsonEncode({"recipe" : searchQuery}), headers: {"Content-Type": "application/json"},
+    final res = await http.get(
+      "https://paperflips-server.herokuapp.com/rec/Search?q=${searchQuery.trim()}",
     ); //그냥 임의 주소로 http 요청 해둠
+
+    if(res.statusCode != 200){
+      setState(() {
+        _officialRecipeList = [];
+        _customRecipeList = [];
+        _isGetSearchData = false;
+        _inAsyncCall = false;
+      });
+      return;
+    }
+
+
+
     Map<String, dynamic> data = jsonDecode(res.body);
+
     var recipeList = data["data"];
     print(recipeList);
 

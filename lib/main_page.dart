@@ -11,6 +11,7 @@ import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
 import 'package:flutter_front/register_page.dart';
 import 'package:flutter_front/test_page.dart';
+import 'package:flutter_front/myRoom_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
@@ -25,7 +26,7 @@ import 'common/data_class.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'myRoom_page.dart';
+import 'editMyRoom_page.dart';
 import 'request.dart';
 import './common/ip.dart';
 import './common/data_class.dart';

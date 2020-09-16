@@ -1,6 +1,7 @@
 //import 'dart:html';
 
 import 'dart:developer';
+import 'package:flutter_front/common/provider/otherProvider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -280,11 +281,19 @@ class PlaceStatus with ChangeNotifier {
     final res = await http
         .get("https://paperflips-server.herokuapp.com/User/GetCollection", headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
+
+    if(res.statusCode != 200){
+      stickerList = [];
+
+      notifyListeners();
+      return;
+    }
+
     Map<String, dynamic> resData = jsonDecode(res.body);
     var data = resData["data"];
 
     if (data == null) {
-      stickerList = [];
+
     } else {
       var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
@@ -361,15 +370,19 @@ class PlaceStatus with ChangeNotifier {
     double renderBoxWidth = renderBox.size.width;
     double renderBoxHeight = renderBox.size.height;
     final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
-//    var loaded = jsonDecode(
-//        '{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":87.62323288690476,"dy":245.82061434659056},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":81.32886904761901,"dy":159.5325947641472},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":2,"initPos":{"dx":165.03841145833331,"dy":97.2551115052189},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":3,"initPos":{"dx":243.04287574404785,"dy":241.18461681547592},"initScale":1.0,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-//    var loaded = jsonDecode(
-//        '{"backgroundColor":9999, "renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":154.18154761904762,"dy":159.79871144480478},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":156.19047619047618,"dy":214.66896814123345},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":2,"initPos":{"dx":158.47563244047618,"dy":267.2422103287334},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":3,"initPos":{"dx":154.4789806547619,"dy":325.8209597195037},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":4,"initPos":{"dx":105.33556547619045,"dy":325.79515056771817},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":5,"initPos":{"dx":43.90001860119045,"dy":330.1052789159327},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":6,"initPos":{"dx":210.18908110119045,"dy":327.8082644070038},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":7,"initPos":{"dx":266.1754092261907,"dy":326.9307532462897},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":8,"initPos":{"dx":128.6974621414766,"dy":84.27572665040529},"initScale":1.9627674369599777,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-
+    print("hello?");
     final res = await http
-        .get("https://paperflips-server.herokuapp.com/User/myRoom", headers: {"Cookie": "user=" + await getToken()});
-    print(await getToken());
-    print(res.body);
+        .get("https://paperflips-server.herokuapp.com/User/myRoom", headers: {"Cookie": "user=" + await getToken(), "Accept" : "*/*"});
+
+
+    if(res.statusCode != 200){
+      print("!!!!!");
+      isLoading = false;
+      return;
+    }
+
+
+
     var res_body = jsonDecode(res.body);
     print(res_body);
 
@@ -707,7 +720,47 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () {},
+                    onTap: () async {
+                      var storage = FlutterSecureStorage();
+                      final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
+                      double renderBoxWidth = renderBox.size.width;
+                      double renderBoxHeight = renderBox.size.height;
+
+
+
+
+
+
+
+
+                      var data = {
+                        "title" : "나의 방",
+                        "data" : {
+                          "renderBoxWidth": renderBoxWidth,
+                          "renderBoxHeight": renderBoxHeight,
+                          "data": [
+                          ],
+                          "backgroundColor": 503
+                        }
+                      };
+                      final res = await http.post("https://paperflips-server.herokuapp.com/User/NewRoom",
+                          headers: {"Cookie": "user=" + await getToken(), "Content-Type": 'application/json'},
+                          body: jsonEncode(data
+                          ));
+                      print(res.headers);
+
+                      print(res.statusCode);
+                      if(res.statusCode == 200){
+                        storage.write(key: "loadData", value: jsonEncode(data["data"]));
+                      }
+
+                      await Navigator.push(
+                          context,
+                          FadeRoute(page: EditMyRoomPage(placeStatus.loadData)));
+                      placeStatus.setStickerList();
+
+
+                    },
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                         child: Text("새로 만들기", style: TextStyle(fontSize: 15),)
@@ -737,14 +790,14 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () {
+                    onTap: () async {
                       var storage = FlutterSecureStorage();
                       storage.write(key: "loadData", value: jsonEncode(placeStatus.loadData));
 
-                      Navigator.push(
+                      await Navigator.push(
                           context,
                           FadeRoute(page: EditMyRoomPage(placeStatus.loadData)));
-
+                      placeStatus.setStickerList();
 
                     },
                     child: Container(

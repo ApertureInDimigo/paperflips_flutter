@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_front/size.dart';
 import '../../common/color.dart';
@@ -10,7 +12,8 @@ import 'package:intl/intl.dart';
 import '../../foldReady_page.dart';
 import '../../introduce.dart';
 import '../../main.dart';
-
+import '../auth.dart';
+import 'package:http/http.dart' as http;
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
 Widget buildRarityText(rarity) {
@@ -325,7 +328,17 @@ void goFoldReadyPage(RecipeCard recipe) {
 }
 
 
-void goIntroducePage(RecipeCard recipe) {
-  navigatorKey.currentState.push(FadeRoute(page: IntroducePage(recipe),
+void goIntroducePage(RecipeCard recipe) async{
+  final res = await http.get(
+      "https://paperflips-server.herokuapp.com/rec/GetDetail/${recipe.recipeName}",
+      headers: {"Cookie" : "user=" + await getToken()}
+  );
+
+  if(res.statusCode != 200){
+    return;
+  }
+
+
+  navigatorKey.currentState.push(FadeRoute(page: IntroducePage(recipe, jsonDecode(res.body)),
   ));
 }

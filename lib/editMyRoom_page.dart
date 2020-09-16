@@ -1,6 +1,7 @@
 //import 'dart:html';
-
-import 'dart:developer';
+//import 'dart:math';
+//import 'dart:developer';
+import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,15 @@ GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
+
+
+
+
   String tempSaveData;
   var loadData;
+
+  int count;
+
 
   bool isLoading;
 
@@ -279,10 +287,9 @@ class PlaceStatus with ChangeNotifier {
         .get("https://paperflips-server.herokuapp.com/User/GetCollection", headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
 
-    if(res.statusCode != 200){
+    if (res.statusCode != 200) {
       stickerList = [];
-
-    }else{
+    } else {
       Map<String, dynamic> resData = jsonDecode(res.body);
       var data = resData["data"];
 
@@ -290,18 +297,14 @@ class PlaceStatus with ChangeNotifier {
 
       stickerList = collectionList
           .map<Sticker>((x) => Sticker(
-          id: x.recipeSeq,
-          name: x.recipeName,
+              id: x.recipeSeq,
+              name: x.recipeName,
 //              path: x.path,
-          path : "https://orangemushroom.files.wordpress.com/2017/09/maplestory-256x256.png",
-          limit: 9,
-          count: 0))
+              path: "https://orangemushroom.files.wordpress.com/2017/09/maplestory-256x256.png",
+              limit: 9,
+              count: 0))
           .toList();
     }
-
-
-
-
 
     isCollectionLoading = false;
 
@@ -324,12 +327,12 @@ class PlaceStatus with ChangeNotifier {
     double renderBoxHeight = renderBox.size.height;
 
     var data = placedStickerList.where((x) => x.visible == true).toList().map((x) => x.toJson()).toList();
-    log(jsonEncode({
-      "renderBoxWidth": renderBoxWidth,
-      "renderBoxHeight": renderBoxHeight,
-      "data": data,
-      "backgroundColor": backgruondColor.id
-    }));
+//    log(jsonEncode({
+//      "renderBoxWidth": renderBoxWidth,
+//      "renderBoxHeight": renderBoxHeight,
+//      "data": data,
+//      "backgroundColor": backgruondColor.id
+//    }));
 
     var tempSaveData2 = jsonEncode({
       "renderBoxWidth": renderBoxWidth,
@@ -341,29 +344,31 @@ class PlaceStatus with ChangeNotifier {
     return tempSaveData2;
   }
 
-
-
-
   Future<bool> saveCurrentStatus() async {
-
-
-    var saveData =  getSave();
-
+    var saveData = getSave();
 
     var storage = FlutterSecureStorage();
     var loadData = await storage.read(key: "loadData");
     int seq = jsonDecode(loadData)["seq"];
     print(seq);
 
-    print(saveData);
+    print(jsonDecode(saveData));
 
-    final res = await http
-        .put("https://paperflips-server.herokuapp.com/User/RoomDataChange/${seq}", headers: {"Cookie": "user=" + await getToken()}, body:{"Data" : saveData});
+    final res = await http.put("https://paperflips-server.herokuapp.com/User/RoomDataChange/${seq}",
+        headers: {"Cookie": "user=" + await getToken(), "Content-Type": 'application/json'},
+        body: jsonEncode({"Data": jsonDecode(saveData)}));
     print(res.headers);
 
     print(res.statusCode);
+    if(res.statusCode == 200){
+      tempSaveData = saveData;
 
-    tempSaveData = saveData;
+      var loadData2 = jsonDecode(loadData);
+      loadData2["Data"] = jsonDecode(saveData);
+      storage.write(key: "loadData", value: jsonEncode(loadData2));
+    }
+
+
 
     return true;
   }
@@ -388,20 +393,39 @@ class PlaceStatus with ChangeNotifier {
     print(heightRatio);
 
     List<PlacedSticker> data = loaded["data"].map<PlacedSticker>((x) => PlacedSticker.fromJson(x)).toList();
-
+    List<int> temp = [];
     for (int i = 0; i < stickerList.length; i++) {
       try {
         stickerList[i].limit = data.where((x) => x.sticker.id == stickerList[i].id).toList()[0].sticker.limit;
       } catch (e) {}
 
       stickerList[i].count = 0;
+
     }
+
+
+
+
+
+
     for (int i = 0; i < data.length; i++) {
       data[i].sticker = stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
       data[i].sticker.count += 1;
 
       data[i].position = Offset(data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
+
+      temp.add(data[i].id);
     }
+
+    if(temp.length > 0){
+      count = temp.reduce(max) + 1;
+    }else{
+      count = 1;
+    }
+
+
+
+
 
     for (int i = 0; i < data.length; i++) {
       print(data[i].position);
@@ -566,9 +590,12 @@ class PlacedSticker extends StatefulWidget {
 
     sticker = Sticker(
         id: json["sticker"]["seq"],
-        name: json["sticker"]["name"],
-        path: json["sticker"]["path"],
-        limit: json["sticker"]["limit"],
+//        name: json["sticker"]["name"],
+//        path: json["sticker"]["path"],
+//        limit: json["sticker"]["limit"],
+        limit: 9,
+        name: "임시",
+        path: "임시",
         count: 0);
   }
 
@@ -589,8 +616,10 @@ class PlacedSticker extends StatefulWidget {
 
     data['sticker'] = {
       "seq": this.sticker.id,
+//      "name" : this.sticker.name,
+//      "path" : this.sticker.path,
+//      "limit" : this.sticker.limit
     };
-
 
     print(data);
     return data;
@@ -630,6 +659,8 @@ class _PlacedStickerState extends State<PlacedSticker> {
   void initState() {
     super.initState();
     _isPanelOpen = _pc.isPanelOpen;
+
+
   }
 
   @override
@@ -644,8 +675,9 @@ class _PlacedStickerState extends State<PlacedSticker> {
         visible: widget.visible,
         child: GestureDetector(
           onScaleStart: (details) {},
-          onTap: () {
+          onTap: () async {
             placeStatus.selectSticker(id);
+
           },
           child: Container(
             decoration: BoxDecoration(
@@ -714,7 +746,6 @@ class _PlacedStickerState extends State<PlacedSticker> {
 }
 
 class EditMyRoomPage extends StatefulWidget {
-
   var loadData;
 
   EditMyRoomPage(this.loadData);
@@ -724,11 +755,9 @@ class EditMyRoomPage extends StatefulWidget {
 }
 
 class _EditMyRoomPageState extends State<EditMyRoomPage> {
-
-  _EditMyRoomPageState(_loadData){
+  _EditMyRoomPageState(_loadData) {
     loadData = _loadData;
   }
-
 
   var loadData;
   List<Sticker> _stickerList;
@@ -742,9 +771,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
   int count = 0;
 
   bool _inAsyncCall = false;
-
-
-
 
   @override
   void initState() {
@@ -770,8 +796,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
 //      )
     ];
 
-
-
 //    _getMySongList();
   }
 
@@ -796,8 +820,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
-
-
                         showCustomDialog(
                             context: context,
                             title: "저장할까요?",
@@ -810,14 +832,10 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                             confirmButtonAction: () async {
                               bool saveResult = await placeStatus.saveCurrentStatus();
                               Navigator.pop(context);
-                              if(saveResult == true){
-                                showCustomAlert(context:context, title:"저장 됐어요!", duration: Duration(seconds: 1));
+                              if (saveResult == true) {
+                                showCustomAlert(context: context, title: "저장 됐어요!", duration: Duration(seconds: 1));
                               }
                             });
-                        
-                        
-                        
-              
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
@@ -849,7 +867,7 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                             confirmButtonAction: () {
                               placeStatus.clear();
                               Navigator.pop(context);
-                              showCustomAlert(context:context, title:"모두 지워졌어요!", duration: Duration(seconds: 1));
+                              showCustomAlert(context: context, title: "모두 지워졌어요!", duration: Duration(seconds: 1));
                             });
                       },
                       child: Container(
@@ -1046,125 +1064,121 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
     }
 
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<PlaceStatus>(create: (_) => PlaceStatus()),
-      ],
-      child: Builder(
-        builder: (context){
-          PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-          return WillPopScope(
-            onWillPop: (){
+        providers: [
+          ChangeNotifierProvider<PlaceStatus>(create: (_) => PlaceStatus()),
+        ],
+        child: Builder(
+          builder: (context) {
+            PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+            return WillPopScope(
+              onWillPop: () {
+                if (placeStatus.getSave() != placeStatus.tempSaveData) {
+                  showCustomDialog(
+                      context: context,
+                      title: "정말로 나가실래요?",
+                      content: "저장하지 않은 변경 사항은 사라집니다.",
+                      cancelButtonText: "취소",
+                      confirmButtonText: "나가기",
+                      cancelButtonAction: () {
+                        Navigator.pop(context);
+                      },
+                      confirmButtonAction: () async {
+                        print("SD");
 
-              if(placeStatus.getSave() != placeStatus.tempSaveData){
-                showCustomDialog(
-                    context: context,
-                    title: "정말로 나가실래요?",
-                    content: "저장하지 않은 변경 사항은 사라집니다.",
-                    cancelButtonText: "취소",
-                    confirmButtonText: "나가기",
-                    cancelButtonAction: () {
-                      Navigator.pop(context);
-                    },
-                    confirmButtonAction: () async{
-                      print("SD");
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      });
+                } else {
+                  Navigator.pop(context);
+                }
 
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-
-                    });
-              }else{
-                Navigator.pop(context);
-              }
-
-
-
-              return;
-            },
-            child: ModalProgressHUD(
-              inAsyncCall: placeStatus.isLoading,
-              progressIndicator: CircularProgressIndicator(),
-              opacity : 0.8,
-              child: Scaffold(
-                  appBar: DefaultAppBar(title: "방 꾸미기"),
-                  // 2-1. 상세 화면 (전체 화면 세팅1)
-                  body: SwipeDetector(
-                    onSwipeDown: () {
-                      _pc.close();
-                    },
-                    onSwipeUp: () {
-                      _pc.open();
-                    },
-                    child: Stack(
-                      children: <Widget>[
-                        ModalProgressHUD(
-                            inAsyncCall: _inAsyncCall,
-                            progressIndicator: CircularProgressIndicator(),
-                            opacity: 0.1,
-                            child: Container(
+                return;
+              },
+              child: ModalProgressHUD(
+                inAsyncCall: placeStatus.isLoading,
+                progressIndicator: CircularProgressIndicator(),
+                opacity: 0.8,
+                child: Scaffold(
+                    appBar: DefaultAppBar(title: "방 꾸미기"),
+                    // 2-1. 상세 화면 (전체 화면 세팅1)
+                    body: SwipeDetector(
+                      onSwipeDown: () {
+                        _pc.close();
+                      },
+                      onSwipeUp: () {
+                        _pc.open();
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          ModalProgressHUD(
+                              inAsyncCall: _inAsyncCall,
+                              progressIndicator: CircularProgressIndicator(),
+                              opacity: 0.1,
+                              child: Container(
 //                      color : Colors.red,
 //                  height: double.infinity,
 //                        alignment: Alignment.center,
-                                child: Align(
-                                  alignment: Alignment.topCenter,
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Container(
+                                  child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Container(
 //                                alignment: Alignment.center,
-                                        child: DragTarget(
-                                          builder: (context, List<Sticker> candidateData, rejectedData) {
-                                            PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-                                            return GestureDetector(
-                                              onScaleStart: (details) {},
-                                              onScaleUpdate: (details) {
-                                                print(details.scale);
-                                                if (placeStatus.selectedSticker == null) {
-                                                  return;
-                                                }
+                                      child: DragTarget(
+                                        builder: (context, List<Sticker> candidateData, rejectedData) {
+                                          PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                                          return GestureDetector(
+                                            onScaleStart: (details) {},
+                                            onScaleUpdate: (details) {
+                                              print(details.scale);
+                                              if (placeStatus.selectedSticker == null) {
+                                                return;
+                                              }
 
-                                                placeStatus.updateStickerScale(details.scale);
+                                              placeStatus.updateStickerScale(details.scale);
+                                            },
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                placeStatus.selectSticker(placeStatus.selectedSticker.id);
                                               },
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  placeStatus.selectSticker(placeStatus.selectedSticker.id);
-                                                },
-                                                child: Container(
-                                                  key: _keyStickerBackground,
-                                                  decoration: placeStatus.backgruondColor.decoration,
-                                                  child: AspectRatio(
-                                                      aspectRatio: 3 / 5,
-                                                      child: Stack(
-                                                          children: placeStatus.placedStickerList.map((x) {
+                                              child: Container(
+                                                key: _keyStickerBackground,
+                                                decoration: placeStatus.backgruondColor.decoration,
+                                                child: AspectRatio(
+                                                    aspectRatio: 3 / 5,
+                                                    child: Stack(
+                                                        children: placeStatus.placedStickerList.map((x) {
 //                                                          print(x.sticker.path);
-                                                            return x;
-                                                          }).toList())),
-                                                ),
+                                                      return x;
+                                                    }).toList())),
                                               ),
-                                            );
-                                          },
-                                          onWillAccept: (data) {
-                                            return true;
-                                          },
-                                          onAccept: (data) {},
-                                        ),
+                                            ),
+                                          );
+                                        },
+                                        onWillAccept: (data) {
+                                          return true;
+                                        },
+                                        onAccept: (data) {},
                                       ),
-                                    ],
-                                  ),
-                                ))),
-                        Builder(
-                          builder: (context) {
-                            PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-                            return SlidingUpPanel(
-                              defaultPanelState: PanelState.OPEN,
-                              minHeight: _panelHeightClosed,
-                              maxHeight: _panelHeightOpen,
-                              controller: _pc,
-                              panel: placeStatus.isStickerPanel ? _buildUnderStickerBox() : _buildUnderColorBox(),
-                              onPanelSlide: (double pos) => setState(() {
-                                _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
-                              }),
-                            );
-                          },
-                        ),
+                                    ),
+                                  ],
+                                ),
+                              ))),
+                          Builder(
+                            builder: (context) {
+                              PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                              return SlidingUpPanel(
+                                defaultPanelState: PanelState.OPEN,
+                                minHeight: _panelHeightClosed,
+                                maxHeight: _panelHeightOpen,
+                                controller: _pc,
+                                panel: placeStatus.isStickerPanel ? _buildUnderStickerBox() : _buildUnderColorBox(),
+                                onPanelSlide: (double pos) => setState(() {
+                                  _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
+                                }),
+                              );
+                            },
+                          ),
 
 //                Positioned.fill(
 //                  bottom : _fabHeight,
@@ -1172,19 +1186,18 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
 //
 //                ),
 
-                        Positioned(
-                          right: 0.0,
-                          bottom: _fabHeight,
-                          child: _buildUtilButtons(),
-                        ),
-                      ],
-                    ),
-                  )),
-            ),
-          );
-        },
-      )
-    );
+                          Positioned(
+                            right: 0.0,
+                            bottom: _fabHeight,
+                            child: _buildUtilButtons(),
+                          ),
+                        ],
+                      ),
+                    )),
+              ),
+            );
+          },
+        ));
   }
 
   Widget _buildUnderColor(BackgroundColor backgroundColor) {
@@ -1266,7 +1279,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                   return Expanded(
                     child: Material(
                       color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
-
                       borderRadius: BorderRadius.all(Radius.circular(1000)),
                       child: InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(1000)),
@@ -1277,8 +1289,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
 //                          alignment: Alignment.center,
 //                          height : 30,
 
-
-
                           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -1286,13 +1296,15 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                               Container(
                                 width: 8,
                                 height: 8,
-                                decoration:
-                                    BoxDecoration(
-                                        border : placeStatus.selectedColorTab == x["name"] && x["name"] == "하양" ? Border.all(
-                                          color : Colors.black,
-                                          width : 1,
-                                        ) : null,
-                                        borderRadius: BorderRadius.all(Radius.circular(1000)), color: x["color"]),
+                                decoration: BoxDecoration(
+                                    border: placeStatus.selectedColorTab == x["name"] && x["name"] == "하양"
+                                        ? Border.all(
+                                            color: Colors.black,
+                                            width: 1,
+                                          )
+                                        : null,
+                                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                    color: x["color"]),
                               ),
                               SizedBox(
                                 width: 5,

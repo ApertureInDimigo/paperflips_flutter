@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_front/foldComplete_page.dart';
 import '../color.dart';
 import '../font.dart';
 import '../asset_path.dart';
@@ -93,7 +94,7 @@ class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateM
 
 class FoldAppBar extends StatefulWidget implements PreferredSizeWidget {
 
-  FoldAppBar({this.onPrevButtonPressed, this.onNextButtonPressed, this.onExitButtonPressed, this.title, this.step});
+  FoldAppBar({this.onPrevButtonPressed, this.onNextButtonPressed, this.onExitButtonPressed, this.title, this.step, this.recipe});
 
   var onPrevButtonPressed;
   var onNextButtonPressed;
@@ -101,9 +102,10 @@ class FoldAppBar extends StatefulWidget implements PreferredSizeWidget {
   var title;
 
   var step;
+  var recipe;
 
   @override
-  _FoldAppBarState createState() => _FoldAppBarState(onPrevButtonPressed, onNextButtonPressed, onExitButtonPressed, title, step);
+  _FoldAppBarState createState() => _FoldAppBarState(onPrevButtonPressed, onNextButtonPressed, onExitButtonPressed, title, step, recipe);
 
   @override
   // TODO: implement preferredSize
@@ -117,13 +119,15 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
   var onExitButtonPressed;
   var title;
   var step;
+  var recipe;
 
-  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed, _onExitButtonPressed, _title, _step) {
+  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed, _onExitButtonPressed, _title, _step, _recipe) {
     onPrevButtonPressed = _onPrevButtonPressed;
     onNextButtonPressed = _onNextButtonPressed;
     onExitButtonPressed = _onExitButtonPressed;
     title = _title;
     step = _step;
+    recipe = _recipe;
   }
 
   @override
@@ -139,7 +143,22 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         child: InkWell(
           splashColor: navColor,
           onTap: () {
-            foldStatus.nextStep();
+            if(foldStatus.nextStep() == false){
+//              Navigator.pop(context);
+              Navigator.push(
+                context,
+                FadeRoute(page: FoldCompletePage(recipe)),
+              );
+
+
+
+
+            }
+
+
+
+
+
           },
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
           child: Container(
@@ -166,10 +185,10 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
     void _showExitWarningDialog() {
       showCustomDialog(
           context: context,
-          title: "진짜 나가요?",
-          content: "ㄹㅇ?",
+          title: "그만 접으실래요?",
+          content: "",
           cancelButtonText: "취소",
-          confirmButtonText: "나가용",
+          confirmButtonText: "나가기",
           cancelButtonAction: () {
             Navigator.pop(context);
           },
@@ -305,4 +324,30 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
 //      ),
     );
   }
+}
+
+
+
+class FadeRoute extends PageRouteBuilder {
+  final Widget page;
+
+  FadeRoute({this.page})
+      : super(
+    pageBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        ) =>
+    page,
+    transitionsBuilder: (
+        BuildContext context,
+        Animation<double> animation,
+        Animation<double> secondaryAnimation,
+        Widget child,
+        ) =>
+        FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
+  );
 }

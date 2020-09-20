@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
+import 'package:flutter_front/common/provider/otherProvider.dart';
 import 'package:flutter_front/common/widgets/dialog.dart';
 import 'package:flutter_front/search_page.dart';
 import 'package:flutter_front/collection_page.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_front/register_page.dart';
 import 'package:flutter_front/test_page.dart';
 import 'package:flutter_front/myRoom_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 
@@ -115,27 +117,32 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     UserStatus userStatus = Provider.of<UserStatus>(context);
-
+    OtherStatus otherStatus = Provider.of<OtherStatus>(context);
     _isLogined = userStatus.isLogined;
 
-    return Scaffold(
-        appBar: DefaultAppBar(onActionButtonPressed: () {
-          setState(() {
-            _isUserButtonToggle = !_isUserButtonToggle;
+    return ModalProgressHUD(
+      inAsyncCall: otherStatus.isLoading,
+      opacity: 0.5,
+      progressIndicator: CircularProgressIndicator(),
+      child: Scaffold(
+          appBar: DefaultAppBar(onActionButtonPressed: () {
+            setState(() {
+              _isUserButtonToggle = !_isUserButtonToggle;
 //            print(_isUserButtonToggle);
-          });
-          userStatus.setIsUserButtonToggled(!userStatus.isUserButtonToggled);
-          print(userStatus.isUserButtonToggled);
-        }),
-        body: SafeArea(
-          child: Column(
-            children: <Widget>[
-              _buildUpperMenu(), //앱바 아래 메뉴까지
-              _buildBottomMenu(), //MVP 카드 추천 종이접기
-              _buildSearchBar(), //클릭 시 검색바 열림
-            ],
-          ),
-        ));
+            });
+            userStatus.setIsUserButtonToggled(!userStatus.isUserButtonToggled);
+            print(userStatus.isUserButtonToggled);
+          }),
+          body: SafeArea(
+            child: Column(
+              children: <Widget>[
+                _buildUpperMenu(), //앱바 아래 메뉴까지
+                _buildBottomMenu(), //MVP 카드 추천 종이접기
+                _buildSearchBar(), //클릭 시 검색바 열림
+              ],
+            ),
+          )),
+    );
   }
 
   Widget _buildBottomMenu() {
@@ -148,7 +155,7 @@ class _MainPageState extends State<MainPage> {
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(left: 5),
             child: Text(
-              "7월 MVP",
+              "8월 MVP",
               style: TextStyle(
                   fontSize: 22,
 //                  fontWeight: FontWeight.bold,
@@ -266,11 +273,13 @@ class _MainPageState extends State<MainPage> {
               decoration: BoxDecoration(),
               child: Row(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.only(left: 10, right: 20, top: 20, bottom: 20),
-                    child: Image.network('${IP.address}/img/image/종이배.png' /*recipe.iconPath*/),
-                  ),
+                  SizedBox(width :15),
+
+//                  Container(
+//                    alignment: Alignment.center,
+//                    padding: EdgeInsets.only(left: 10, right: 20, top: 20, bottom: 20),
+//                    child: Image.network('${IP.address}/img/image/종이배.png' /*recipe.iconPath*/),
+//                  ),
                   Flexible(
                     child: Container(
                       alignment: Alignment.bottomLeft,
@@ -278,16 +287,16 @@ class _MainPageState extends State<MainPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            "김수한무님의",
-                            style: TextStyle(fontFamily: Font.bold, fontSize: 12),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(height: 5),
-                          Text("종이배",
+//                          Text(
+//                            "김수한무님의",
+//                            style: TextStyle(fontFamily: Font.bold, fontSize: 12),
+//                            textAlign: TextAlign.left,
+//                          ),
+                          SizedBox(height: 0),
+                          Text("아직 MVP가 없습니다",
                               style: TextStyle(
                                 fontFamily: Font.extraBold,
-                                fontSize: 23,
+                                fontSize: 21,
                               ),
                               textAlign: TextAlign.left),
                         ],
@@ -302,7 +311,7 @@ class _MainPageState extends State<MainPage> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              Text("클릭하여 구경해보세요", style: TextStyle(fontSize: 13, fontFamily: Font.bold)),
+                              Text("곧 공개됩니다", style: TextStyle(fontSize: 13, fontFamily: Font.bold)),
                               Icon(
                                 Icons.arrow_forward,
                                 size: 13,
@@ -321,34 +330,34 @@ class _MainPageState extends State<MainPage> {
   Widget _buildMapMenu() {
     return Row(
         children: [
-      Expanded(
-          flex: 1,
-          child: Material(
-            color: navColor,
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                    ),
-                child: Column(
-                  children: <Widget>[
-//                      SizedBox(height: 1),
-                    SizedBox(height: 8),
-                    Flexible(
-                      child: Image.asset(IconPath.letter_p),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "레시피공유",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    SizedBox(height: 14),
-                  ],
-                ),
-              ),
-            ),
-          )),
+//      Expanded(
+//          flex: 1,
+//          child: Material(
+//            color: navColor,
+//            child: InkWell(
+//              onTap: () {},
+//              child: Container(
+//                decoration: BoxDecoration(
+////                    border: Border.all(width: 0.1),
+//                    ),
+//                child: Column(
+//                  children: <Widget>[
+////                      SizedBox(height: 1),
+//                    SizedBox(height: 8),
+//                    Flexible(
+//                      child: Image.asset(IconPath.letter_p),
+//                    ),
+//                    SizedBox(height: 4),
+//                    Text(
+//                      "레시피공유",
+//                      style: TextStyle(fontSize: 12),
+//                    ),
+//                    SizedBox(height: 14),
+//                  ],
+//                ),
+//              ),
+//            ),
+//          )),
       Expanded(
           flex: 1,
           child: Material(
@@ -412,36 +421,36 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           )),
-      Expanded(
-          flex: 1,
-          child: Material(
-            color: navColor,
-            child: InkWell(
-              onTap: () {
-                goTestPage();
-              },
-              child: Container(
-                decoration: BoxDecoration(
-//                    border: Border.all(width: 0.1),
-                    ),
-                child: Column(
-                  children: <Widget>[
-//                      SizedBox(height: 1),
-                    SizedBox(height: 8),
-                    Flexible(
-                      child: Image.asset(IconPath.letter_p),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      "커뮤니티",
-                      style: TextStyle(fontSize: 12),
-                    ),
-                    SizedBox(height: 14),
-                  ],
-                ),
-              ),
-            ),
-          )),
+//      Expanded(
+//          flex: 1,
+//          child: Material(
+//            color: navColor,
+//            child: InkWell(
+//              onTap: () {
+//                goTestPage();
+//              },
+//              child: Container(
+//                decoration: BoxDecoration(
+////                    border: Border.all(width: 0.1),
+//                    ),
+//                child: Column(
+//                  children: <Widget>[
+////                      SizedBox(height: 1),
+//                    SizedBox(height: 8),
+//                    Flexible(
+//                      child: Image.asset(IconPath.letter_p),
+//                    ),
+//                    SizedBox(height: 4),
+//                    Text(
+//                      "커뮤니티",
+//                      style: TextStyle(fontSize: 12),
+//                    ),
+//                    SizedBox(height: 14),
+//                  ],
+//                ),
+//              ),
+//            ),
+//          )),
     ]);
   }
 
@@ -696,7 +705,7 @@ class _MainPageState extends State<MainPage> {
 
           if (snapshot.hasError) {
             return Center(
-              child: Text("아니 에러가 왜 나!!!!!!!!!!!!!!!"),
+              child: Text("레시피를 찾을 수 없습니다."),
             );
           } else if (snapshot.hasData == false) {
             return Container(

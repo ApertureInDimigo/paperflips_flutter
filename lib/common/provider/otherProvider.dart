@@ -60,7 +60,12 @@ String _decodeBase64(String str) {
 class OtherStatus with ChangeNotifier {
 
 //  var loaded =
+  bool isLoading = false;
 
+  setIsLoading(bool value){
+    isLoading = value;
+    notifyListeners();
+  }
 
 
 }

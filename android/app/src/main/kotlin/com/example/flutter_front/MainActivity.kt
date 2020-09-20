@@ -1,4 +1,4 @@
-package com.example.flutter_front
+package com.aperture.paperflips
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'common/ad_manager.dart';
+import 'common/provider/otherProvider.dart';
 import 'main_page.dart';
 import 'introduce.dart';
 import './common/color.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
 
 
     return MultiProvider(
-      providers: [ChangeNotifierProvider<UserStatus>(create: (_) => UserStatus())],
+      providers: [ChangeNotifierProvider<UserStatus>(create: (_) => UserStatus()), ChangeNotifierProvider<OtherStatus>(create: (_) => OtherStatus())],
       child: MaterialApp(
         navigatorKey: navigatorKey,
         title: 'Flutter Demo',

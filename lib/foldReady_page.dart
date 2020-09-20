@@ -77,7 +77,7 @@ class _FoldReadyPageState extends State<FoldReadyPage> {
                               children: <Widget>[
                                 FractionallySizedBox(
                                     widthFactor: 2/7,
-                                    child: Image.network('${IP.address}/img/image/${recipeCard.recipeName}.png')),
+                                    child: Image.network(recipeCard.path)),
                                 SizedBox(height : 25),
                                 buildRarityBox(recipeCard.rarity),
                                 SizedBox(height : 10),
@@ -167,16 +167,15 @@ class _FoldReadyPageState extends State<FoldReadyPage> {
     Navigator.push(
       context,
       FadeRoute(page: FoldPage(recipeCard, [
-        FoldProcess(subtitleExplainText: "동해물과 백두산이", ttsExplainText: "상처를 치료해줄 사람 어디 없나"),
-        FoldProcess(subtitleExplainText: "마르고 닳도록", ttsExplainText: "가만히 놔두다간 끊임없이 덧나"),
-        FoldProcess(subtitleExplainText: "하느님이 보우하사", ttsExplainText: "사랑도 사람도 너무나도 겁나"),
-        FoldProcess(subtitleExplainText: "우리나라 만세", ttsExplainText: "혼자인게 무서워 난 잊혀질까 두려워"),
-        FoldProcess(subtitleExplainText: "무궁화 삼천리", ttsExplainText: "언제나 외톨이 맘의 문을 닫고"),
-        FoldProcess(subtitleExplainText: "화려강산", ttsExplainText: "슬픔을 등에 지고 살아가는 바보"),
-        FoldProcess(subtitleExplainText: "대한사람 대한으로", ttsExplainText: "두 눈을 감고 두 귀를 막고"),
-        FoldProcess(subtitleExplainText: "길이 보전하세", ttsExplainText: "캄캄한 어둠속에 내 자신을 가둬"),
-        FoldProcess(subtitleExplainText: "", ttsExplainText: "hello"),
-        FoldProcess(subtitleExplainText: "안녕하세요", ttsExplainText: "안녕하세요")
+        FoldProcess(imgPath: "images/golden_frog_icon.png", subtitleExplainText: "동해물과 백두산이", ttsExplainText: "상처를 치료해줄 사람 어디 없나"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "마르고 닳도록", ttsExplainText: "가만히 놔두다간 끊임없이 덧나"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "하느님이 보우하사", ttsExplainText: "사랑도 사람도 너무나도 겁나"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "우리나라 만세", ttsExplainText: "혼자인게 무서워 난 잊혀질까 두려워"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "무궁화 삼천리", ttsExplainText: "언제나 외톨이 맘의 문을 닫고"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "화려강산", ttsExplainText: "슬픔을 등에 지고 살아가는 바보"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "대한사람 대한으로", ttsExplainText: "두 눈을 감고 두 귀를 막고"),
+        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "길이 보전하세", ttsExplainText: "캄캄한 어둠속에 내 자신을 가둬"),
+
       ])),
     );
 

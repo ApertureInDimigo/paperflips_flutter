@@ -32,8 +32,8 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _inAsyncCall = false;
-    _idController.text = "test123";
-    _pwController.text = "test1234!";
+    _idController.text = "TESTid1357";
+    _pwController.text = "TESTpwd!1357";
   }
 //
 //  void login() async{

@@ -300,7 +300,7 @@ class PlaceStatus with ChangeNotifier {
               id: x.recipeSeq,
               name: x.recipeName,
 //              path: x.path,
-              path: "https://orangemushroom.files.wordpress.com/2017/09/maplestory-256x256.png",
+              path: "https://paperflips.s3.amazonaws.com/recipe_img/${x.recipeSeq}.png",
               limit: 9,
               count: 0))
           .toList();

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:81236584595:android:7e2edce326f88c5148c566",
+        "mobilesdk_app_id": "1:81236584595:android:008ae0352db8b4a648c566",
         "android_client_info": {
-          "package_name": "com.example.flutter_front"
+          "package_name": "com.aperture.paperflips"
         }
       },
       "oauth_client": [
@@ -33,8 +33,7 @@
             }
           ]
         }
-      },
-      "admob_app_id" : "ca-app-pub-2755450101712612~6034855966"
+      }
     }
   ],
   "configuration_version": "1"

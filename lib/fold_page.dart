@@ -13,7 +13,7 @@ import 'common/data_class.dart';
 import 'main.dart';
 
 import 'package:flutter_tts_improved/flutter_tts_improved.dart';
-import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+//import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 //import 'package:flutter_tts/flutter_tts.dart';
 
 class FoldStatus with ChangeNotifier {
@@ -40,13 +40,19 @@ class FoldStatus with ChangeNotifier {
     return _step;
   }
 
-  void nextStep() {
+  bool nextStep() {
 
     if (_step + 1 <= maxStep) {
       _step += 1;
+      notifyListeners(); //must be inserted
+      return true;
+    }else{
+      return false;
+
+
     }
 
-    notifyListeners(); //must be inserted
+
   }
 
   void prevStep() {
@@ -75,7 +81,7 @@ class _FoldPageState extends State<FoldPage> {
 
   FoldProcess _currentFoldProcess;
 
-  UnityWidgetController _unityWidgetController;
+//  UnityWidgetController _unityWidgetController;
 
   String _platformVersion = 'Unknown';
   FlutterTtsImproved tts = FlutterTtsImproved();
@@ -93,7 +99,7 @@ class _FoldPageState extends State<FoldPage> {
 
   @override
   void dispose() {
-    _unityWidgetController.pause();
+//    _unityWidgetController.pause();
     print("Called dispose");
     super.dispose();
 
@@ -167,10 +173,10 @@ class _FoldPageState extends State<FoldPage> {
         tts.stop();
         showCustomDialog(
             context: context,
-            title: "진짜 나가요?",
-            content: "ㄹㅇ?",
+            title: "그만 접으실래요?",
+            content: "",
             cancelButtonText: "취소",
-            confirmButtonText: "나가용",
+            confirmButtonText: "나가기",
             cancelButtonAction: () {
               Navigator.pop(context);
             },
@@ -189,11 +195,12 @@ class _FoldPageState extends State<FoldPage> {
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider<FoldStatus>(
-              builder: (_) => FoldStatus(8, foldProcessList)),
+              builder: (_) => FoldStatus(foldProcessList.length, foldProcessList)),
         ],
         child: Scaffold(
             appBar: FoldAppBar(
               title: recipeCard.recipeName,
+              recipe: recipeCard,
               onPrevButtonPressed: () {
                 tts.stop();
               },
@@ -211,10 +218,27 @@ class _FoldPageState extends State<FoldPage> {
           ),
           body: Container(
             child: Stack(children: [
-              UnityWidget(
-                onUnityViewCreated: onUnityCreated,
-                isARScene: false,
+//              UnityWidget(
+//                onUnityViewCreated: onUnityCreated,
+//                isARScene: false,
+//              ),
+              Builder(
+                builder: (context){
+                  FoldStatus foldStatus = Provider.of<FoldStatus>(context);
+                  return Container(
+                      child: Center(
+                        child: FractionallySizedBox(
+                          widthFactor: 8/10,
+                          child: Image.asset(foldStatus
+                              .getCurrentProcess()
+                              .imgPath, fit: BoxFit.fill,),
+                        ),
+                      )
+                  );
+                },
               ),
+
+
               Container(
 
 //                  color: Colors.blue,
@@ -322,7 +346,7 @@ class _FoldPageState extends State<FoldPage> {
     );
   }
 
-  void onUnityCreated(controller) {
-    this._unityWidgetController = controller;
-  }
+//  void onUnityCreated(controller) {
+//    this._unityWidgetController = controller;
+//  }
 }

@@ -73,10 +73,13 @@ class CollectionCard {
 
 
 class FoldProcess {
+
+  String imgPath;
+
   String subtitleExplainText;
   String ttsExplainText;
 
-  FoldProcess({this.subtitleExplainText, this.ttsExplainText});
+  FoldProcess({this.imgPath, this.subtitleExplainText, this.ttsExplainText});
 }
 
 
@@ -99,7 +102,7 @@ class RecipeCard {
     recipeName = json['recipeName'];
     rarity = json['rarity'];
 //    path = json["path"];
-    path = "https://orangemushroom.files.wordpress.com/2017/09/maplestory-256x256.png";
+    path = "https://paperflips.s3.amazonaws.com/recipe_img/${json["seq"]}.png";
 
     summary = json['summary'];
 

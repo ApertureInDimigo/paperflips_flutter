@@ -1,6 +1,7 @@
 import 'dart:convert';
-
+import 'package:flutter_front/common/provider/otherProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'common/widgets/appbar.dart';
@@ -16,13 +17,7 @@ class SearchPage extends StatefulWidget {
   _SearchPageState createState() => _SearchPageState();
 }
 
-
-
-
-
 class _SearchPageState extends State<SearchPage> {
-
-
   String _searchQuery; //사용자 입력 검색 쿼리
   List<RecipeCard> _officialRecipeList; //공식 레시피 리스트
   List<RecipeCard> _customRecipeList; //커스텀 레시피 리스트
@@ -41,21 +36,26 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(),
-      body: ModalProgressHUD(
-        inAsyncCall : _inAsyncCall,
+    OtherStatus otherStatus = Provider.of<OtherStatus>(context);
+    return ModalProgressHUD(
+        inAsyncCall: otherStatus.isLoading,
+        opacity: 0.5,
         progressIndicator: CircularProgressIndicator(),
-        opacity: 0,
-        child: Container(
-            child: Column(
-          children: <Widget>[
-            _buildSearchBar(),
-            _buildSearchList(),
-          ],
-        )),
-      ),
-    );
+        child: Scaffold(
+          appBar: DefaultAppBar(),
+          body: ModalProgressHUD(
+            inAsyncCall: _inAsyncCall,
+            progressIndicator: CircularProgressIndicator(),
+            opacity: 0,
+            child: Container(
+                child: Column(
+              children: <Widget>[
+                _buildSearchBar(),
+                _buildSearchList(),
+              ],
+            )),
+          ),
+        ));
   }
 
   //공식 레시피 & 나만의 레시피 검색 결과
@@ -70,11 +70,9 @@ class _SearchPageState extends State<SearchPage> {
             padding: EdgeInsets.symmetric(horizontal: 8),
             children: <Widget>[
               SizedBox(height: 15),
-              Visibility(
-                  visible: _isGetSearchData, child: _buildOfficialRecipeList()),
+              Visibility(visible: _isGetSearchData, child: _buildOfficialRecipeList()),
               SizedBox(height: 25),
-              Visibility(
-                  visible: _isGetSearchData, child: _buildCustomRecipeList()),
+              Visibility(visible: _isGetSearchData, child: _buildCustomRecipeList()),
               SizedBox(height: 15)
             ],
           )),
@@ -97,7 +95,9 @@ class _SearchPageState extends State<SearchPage> {
         ),
         SizedBox(height: 15),
         Column(
-          children: _officialRecipeList.length != 0 ? _officialRecipeList.map((x) => buildRecipeCard(x)).toList() : [Text("레시피를 찾을 수 없어요.")],
+          children: _officialRecipeList.length != 0
+              ? _officialRecipeList.map((x) => buildRecipeCard(x)).toList()
+              : [Text("레시피를 찾을 수 없어요.")],
         )
       ],
     );
@@ -137,7 +137,7 @@ class _SearchPageState extends State<SearchPage> {
       "https://paperflips-server.herokuapp.com/rec/Search?q=${searchQuery.trim()}",
     ); //그냥 임의 주소로 http 요청 해둠
 
-    if(res.statusCode != 200){
+    if (res.statusCode != 200) {
       setState(() {
         _officialRecipeList = [];
         _customRecipeList = [];
@@ -147,14 +147,13 @@ class _SearchPageState extends State<SearchPage> {
       return;
     }
 
-
-
     Map<String, dynamic> data = jsonDecode(res.body);
 
     var recipeList = data["data"];
     print(recipeList);
 
-    var officialRecipeList = recipeList != null ? recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList() : <RecipeCard>[];
+    var officialRecipeList =
+        recipeList != null ? recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList() : <RecipeCard>[];
 
 //    print(recipe);
 
@@ -168,12 +167,8 @@ class _SearchPageState extends State<SearchPage> {
 //            summary: "${searchQuery}의 소개 좀 들어보세요"))
 //        .toList();
 
-    List<RecipeCard> customRecipeList = [6, 7, 8, 9, 10]
-        .map((x) => RecipeCard(
-            recipeName: "더미데이터",
-            rarity: "rare",
-            summary: "터미네이터 아님 ㅋㅋ"))
-        .toList();
+    List<RecipeCard> customRecipeList =
+        [6, 7, 8, 9, 10].map((x) => RecipeCard(recipeName: "더미데이터", rarity: "rare", summary: "터미네이터 아님 ㅋㅋ")).toList();
 
     setState(() {
       _officialRecipeList = officialRecipeList;
@@ -194,8 +189,7 @@ class _SearchPageState extends State<SearchPage> {
           padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.3),
@@ -248,8 +242,8 @@ class _SearchPageState extends State<SearchPage> {
                   color: Colors.white,
                   child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Container(
-                        padding: EdgeInsets.only(left : 3, top : 3, bottom : 3, right: 3), child: Icon(Icons.search)),
+                    child:
+                        Container(padding: EdgeInsets.only(left: 3, top: 3, bottom: 3, right: 3), child: Icon(Icons.search)),
                     onTap: () async {
                       getRecipeSearchData(_searchQuery);
                       FocusScope.of(context).unfocus();

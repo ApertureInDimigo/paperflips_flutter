@@ -8,7 +8,7 @@ class IconPath {
   static const String gear = "images/gear.png";
   static const String letter_p = "images/p_icon.png";
   static const String fold = "images/fold_icon.png";
-  static const String golden_frog = "/image/golden_frog";
+  static const String golden_frog = "images/golden_frog_icon.png";
 
 
   static const String green_success = "images/green_success.png";

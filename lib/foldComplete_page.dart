@@ -11,6 +11,7 @@ import 'common/asset_path.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
 import 'dart:core';
+import 'package:glitters/glitters.dart';
 
 import 'common/font.dart';
 import 'common/ip.dart';
@@ -59,9 +60,8 @@ class _FoldCompletePageState extends State<FoldCompletePage> {
           inAsyncCall: _inAsyncCall,
           progressIndicator: CircularProgressIndicator(),
           opacity: 0.1,
-          child: Container()
+          child: _buildCompletePage(),
         )
-
     );
   }
 
@@ -77,14 +77,14 @@ class _FoldCompletePageState extends State<FoldCompletePage> {
     Navigator.push(
       context,
       FadeRoute(page: FoldPage(recipeCard, [
-        FoldProcess(imgPath: "images/golden_frog_icon.png", subtitleExplainText: "동해물과 백두산이", ttsExplainText: "상처를 치료해줄 사람 어디 없나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "마르고 닳도록", ttsExplainText: "가만히 놔두다간 끊임없이 덧나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "하느님이 보우하사", ttsExplainText: "사랑도 사람도 너무나도 겁나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "우리나라 만세", ttsExplainText: "혼자인게 무서워 난 잊혀질까 두려워"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "무궁화 삼천리", ttsExplainText: "언제나 외톨이 맘의 문을 닫고"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "화려강산", ttsExplainText: "슬픔을 등에 지고 살아가는 바보"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "대한사람 대한으로", ttsExplainText: "두 눈을 감고 두 귀를 막고"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "길이 보전하세", ttsExplainText: "캄캄한 어둠속에 내 자신을 가둬"),
+        FoldProcess(imgPath: IconPath.golden_frog, subtitleExplainText: "동해물과 백두산이", ttsExplainText: "상처를 치료해줄 사람 어디 없나"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "마르고 닳도록", ttsExplainText: "가만히 놔두다간 끊임없이 덧나"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "하느님이 보우하사", ttsExplainText: "사랑도 사람도 너무나도 겁나"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "우리나라 만세", ttsExplainText: "혼자인게 무서워 난 잊혀질까 두려워"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "무궁화 삼천리", ttsExplainText: "언제나 외톨이 맘의 문을 닫고"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "화려강산", ttsExplainText: "슬픔을 등에 지고 살아가는 바보"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "대한사람 대한으로", ttsExplainText: "두 눈을 감고 두 귀를 막고"),
+        FoldProcess(imgPath: IconPath.fold, subtitleExplainText: "길이 보전하세", ttsExplainText: "캄캄한 어둠속에 내 자신을 가둬"),
 
       ])),
     );
@@ -116,5 +116,101 @@ class FadeRoute extends PageRouteBuilder {
           opacity: animation,
           child: child,
         ),
+  );
+}
+
+Widget _columnStar() {
+  return Column(
+    children: [
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+    ],
+  );
+}
+
+Widget _rowStar() {
+  return Row(
+    children: [
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+      Icon(Icons.star, color: Colors.yellow, size: 40,),
+    ],
+  );
+}
+
+Widget _buildCompletePage() {
+  return Container(
+    color: Colors.grey,
+    child: Center(
+        child:
+        Column(
+          children: [
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: Stack(
+                children: [
+                  SizedBox.expand(
+                    child: ColoredBox(color: Colors.grey),
+                  ),
+                  Center(child: Image.asset(IconPath.golden_frog)),
+                  Glitters(
+                    minSize: 25,
+                    maxSize: 40,
+                    interval: Duration(milliseconds: 100),
+                    maxOpacity: 0.9,
+                    color: Colors.orange,
+                  ),
+                  Glitters(
+                    minSize: 25,
+                    maxSize: 40,
+                    duration: Duration(milliseconds: 200),
+                    outDuration: Duration(milliseconds: 500),
+                    interval: Duration.zero,
+                    color: Colors.green,
+                    maxOpacity: 0.7,
+                  ),
+                  Glitters(
+                    minSize: 25,
+                    maxSize: 40,
+                    interval: Duration(milliseconds: 100),
+                    maxOpacity: 0.9,
+                    color: Colors.yellowAccent,
+                  ),
+                  Glitters(
+                    minSize: 25,
+                    maxSize: 40,
+                    duration: Duration(milliseconds: 200),
+                    outDuration: Duration(milliseconds: 500),
+                    interval: Duration.zero,
+                    color: Colors.white,
+                    maxOpacity: 0.7,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 80),
+                child: Text('테스트', style: TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.bold),)
+            ),
+            InkWell(
+              child: Container(
+                margin: EdgeInsets.only(top: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.horizontal(left: Radius.circular(100), right: Radius.circular(100)),
+                ),
+                width: 250,
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                child: Center(child: Text('완성', style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),)),
+              ),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        )
+    ),
   );
 }

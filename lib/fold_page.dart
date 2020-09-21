@@ -1,5 +1,6 @@
 //import 'dart:html';
 import 'package:flutter/material.dart';
+import 'package:flutter_front/common/asset_path.dart';
 import 'common/font.dart';
 import 'common/ip.dart';
 import 'common/widgets/appbar.dart';
@@ -332,7 +333,7 @@ class _FoldPageState extends State<FoldPage> {
                               padding: EdgeInsets.all(25),
                               child: Column(
                                 children: <Widget>[
-                                  Image.asset('images/fold_icon.png', width: 100, height: 100,),
+                                  Image.asset(IconPath.fold, width: 100, height: 100,),
                                 ],
                               ),
                             )

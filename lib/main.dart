@@ -10,9 +10,11 @@ import 'register_page.dart';
 import 'package:provider/provider.dart';
 
 import './common/provider/userProvider.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:permission_handler/permission_handler.dart';
 
 import 'myRoom_page.dart';
+import 'foldComplete_page.dart';
+import 'common/data_class.dart';
 
 
 import 'package:firebase_admob/firebase_admob.dart';
@@ -37,8 +39,8 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 void permission() async {
 
-  Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.camera]);
-  print('per1 : $permissions');
+  //Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+  //print('per1 : $permissions');
 
 }
 
@@ -79,8 +81,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  RecipeCard testRecipeCard;
+
   @override
   Widget build(BuildContext context) {
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -88,8 +94,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-//      body: MyRoomPage(),
-      body: MainPage(),
+      body: FoldCompletePage(testRecipeCard),
+      //body: MainPage(),
     );
   }
 }

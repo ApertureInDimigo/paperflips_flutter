@@ -122,12 +122,9 @@ class UserStatus with ChangeNotifier {
       },
     );
 
-    Map<String, dynamic> data = jsonDecode(res.body);
 
 
 
-
-    print(data);
 
 
     if(res.statusCode == 200){

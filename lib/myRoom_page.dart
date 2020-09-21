@@ -31,11 +31,35 @@ import 'fold_page.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:vibration/vibration.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 
 GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
+
+  void shareRoom() async{
+    print('inside');
+    RenderRepaintBoundary boundary =
+    _keyStickerBackground.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+    ByteData byteData =
+    await image.toByteData(format: ui.ImageByteFormat.png);
+    var pngBytes = byteData.buffer.asUint8List();
+    var bs64 = base64Encode(pngBytes);
+    print(pngBytes);
+    print(bs64);
+    await  Share.file('나만의 방', '나만의 방.png', pngBytes, 'image/jpg');
+//    Share.text('my text title', 'This is my text to share with other applications.', 'text/plain');
+  }
+
+
+
+
+
   String tempSaveData;
 
   bool isLoading;
@@ -652,7 +676,7 @@ class _PlacedStickerState extends State<PlacedSticker> {
         child: GestureDetector(
           onScaleStart: (details) {},
           onTap: () {
-            placeStatus.selectSticker(id);
+//            placeStatus.selectSticker(id);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -735,7 +759,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
                       var data = {
                         "title" : "나의 방",
-                        "data" : {
+                        "Data" : {
                           "renderBoxWidth": renderBoxWidth,
                           "renderBoxHeight": renderBoxHeight,
                           "data": [
@@ -750,7 +774,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                       print(res.headers);
 
                       print(res.statusCode);
-                      storage.write(key: "loadData", value: jsonEncode(data["data"]));
+                      storage.write(key: "loadData", value: jsonEncode(data));
 
 
                       await Navigator.push(
@@ -778,7 +802,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 borderRadius: BorderRadius.all(Radius.circular(5)),
                 child: InkWell(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () {},
+                    onTap: () {placeStatus.shareRoom();},
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                         child: Text("공유하기", style: TextStyle(fontSize: 15),)
@@ -985,16 +1009,19 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                         child: DragTarget(
                                           builder: (context, List<Sticker> candidateData, rejectedData) {
                                             PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-                                            return Container(
+                                            return RepaintBoundary(
                                               key: _keyStickerBackground,
-                                              decoration: placeStatus.backgruondColor.decoration,
-                                              child: AspectRatio(
-                                                  aspectRatio: 3 / 5,
-                                                  child: Stack(
-                                                      children: placeStatus.placedStickerList.map((x) {
+                                              child: Container(
+
+                                                decoration: placeStatus.backgruondColor.decoration,
+                                                child: AspectRatio(
+                                                    aspectRatio: 3 / 5,
+                                                    child: Stack(
+                                                        children: placeStatus.placedStickerList.map((x) {
 //                                                          print(x.sticker.path);
-                                                        return x;
-                                                      }).toList())),
+                                                          return x;
+                                                        }).toList())),
+                                              ),
                                             );
                                           },
                                           onWillAccept: (data) {

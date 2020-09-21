@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: cardColor,
 //                    focusColor: Colors.grey,
 
-                            hintText: "아이디를 입력하시던가요ㅋㅋㅋㅋㅋㅋ",
+                            hintText: "아이디를 입력해주세요.",
                             hintStyle: TextStyle(fontSize: 13, color: Colors.black),
                           ),
                         ),
@@ -194,7 +194,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: cardColor,
 //                    focusColor: Colors.grey,
 
-                            hintText: "비밀번호를 입력하시던가요ㅋㅋㅋㅋㅋㅋ",
+                            hintText: "비밀번호를 입력해주세요.",
                             hintStyle: TextStyle(fontSize: 13, color: Colors.black),
                           ),
                         ),
@@ -215,7 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Container(
                       alignment: Alignment.center,
                       width : 80,
-                      child: Text("이름"),
+                      child: Text("별명"),
                     ),
                     Flexible(
                       child: Container(
@@ -230,7 +230,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             setState(() {
                               var reg = RegExp(r'^[A-Z0-9a-z가-힣]+$');
                               if(reg.hasMatch(_nameController.text) == true){
-                                _buildHint["name"] = Text("좋은 이름입니다.", style: TextStyle(color: Colors.green),);
+                                _buildHint["name"] = Text("좋은 별명입니다.", style: TextStyle(color: Colors.green),);
                               }else{
                                 _buildHint["name"] =Text("한글, 영문, 숫자만 사용가능합니다.", style: TextStyle(color: Colors.red),);
                               }
@@ -249,7 +249,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             fillColor: cardColor,
 //                    focusColor: Colors.grey,
 
-                            hintText: "이름을 입력하시던가요ㅋㅋㅋㅋㅋㅋ",
+                            hintText: "별명을 입력해주세요.",
                             hintStyle: TextStyle(fontSize: 13, color: Colors.black),
                           ),
                         ),
@@ -292,24 +292,31 @@ class _RegisterPageState extends State<RegisterPage> {
                             title : "로그인 성공!",
                             duration: Duration(seconds: 1),
                           );
+                          setState(() {
+                            _inAsyncCall = false;
+                          });
 
 
 //                          goMainPage();
                         }else{
-
+                          setState(() {
+                            _inAsyncCall = false;
+                          });
                         }
+
+
+
+                      }else{
 
                         setState(() {
                           _inAsyncCall = false;
                         });
 
 
+                        showCustomAlert(context: context, title: "이미 존재하는 아이디나 별명입니다.", duration: Duration(seconds: 3), isSuccess: false, width: 400);
                       }
 
 
-                      setState(() {
-                        _inAsyncCall = false;
-                      });
 
 
 //                    request.register(id, pw, name);
@@ -323,7 +330,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(10.0),
 //                      border: Border.all(width: 0.4),
                       ),
-                      child: Text("회원가입 하던가 ㅋㅋㅋㅋㅋ"),
+                      child: Text("회원가입"),
                     ),
                   ),
                 ),

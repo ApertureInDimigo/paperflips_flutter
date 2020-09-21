@@ -28,7 +28,7 @@ import 'dart:core';
 import 'common/font.dart';
 import 'common/ip.dart';
 import 'fold_page.dart';
-
+import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:vibration/vibration.dart';
@@ -267,6 +267,11 @@ class PlaceStatus with ChangeNotifier {
   PlaceStatus() {
     setStickerList();
   }
+
+
+
+
+
 
   void setSelectedColorTab(value) {
     selectedColorTab = value;

@@ -10,6 +10,8 @@ void showCustomAlert({
   BuildContext context,
   String title,
   Duration duration,
+  bool isSuccess,
+  double width,
 }) {
 //  return;
   showDialog(
@@ -27,13 +29,13 @@ void showCustomAlert({
               borderRadius: BorderRadius.all(Radius.circular(8)),
               color: Colors.white,
             ),
-            width: 200,
+            width: width == null ? 200 : width,
             height: 150,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(IconPath.green_success, width: 60),
+                isSuccess != false ? Image.asset(IconPath.green_success, width: 60) : Container(),
                 SizedBox(height: 15),
                 Text(
                   title,

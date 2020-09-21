@@ -263,7 +263,7 @@ class _MainPageState extends State<MainPage> {
         child: InkWell(
           borderRadius: BorderRadius.all(Radius.circular(20)),
           onTap: () {
-            showInterstitialAd();
+//            showInterstitialAd();
           },
 //          splashColor: Colors.white,
           child: Container(

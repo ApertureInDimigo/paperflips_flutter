@@ -1,9 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 import './common/ip.dart';
 
-class request {
+class Request {
   static req(Map<String, String> payload, String api) async {
     Uri apiUrl = Uri.parse(IP.address + api);
     HttpClient client = HttpClient();
@@ -23,7 +22,6 @@ class request {
     }
     return d;
   }
-
 
   static register(String id, String pwd, String name) async {
     //회원 가입
@@ -67,5 +65,3 @@ class Respond {
     return Respond(json['status'] as int, json['error'] as int);
   }
 }
-
-

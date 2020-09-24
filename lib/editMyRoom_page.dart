@@ -1,16 +1,10 @@
-//import 'dart:html';
-//import 'dart:math';
-//import 'dart:developer';
 import 'dart:math';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/common/widgets/appbar.dart';
-import 'package:flutter_front/common/widgets/recipe_card.dart';
-
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swipedetector/swipedetector.dart';
@@ -18,35 +12,19 @@ import 'dart:convert';
 import 'common/auth.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
-
-import 'common/provider/userProvider.dart';
-
 import 'common/widgets/dialog.dart';
-
 import 'dart:core';
-
-import 'common/font.dart';
-import 'common/ip.dart';
-import 'fold_page.dart';
 import 'package:flutter/rendering.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
 import 'package:vibration/vibration.dart';
 
 GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
-
-
-
-
   String tempSaveData;
   var loadData;
-
   int count;
-
-
   bool isLoading;
 
   List<PlacedSticker> placedStickerList = [];
@@ -114,11 +92,8 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
-
     ],
     "노랑": [
-
       BackgroundColor(
         id: 201,
         kind: "노랑",
@@ -137,8 +112,6 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
-
     ],
     "초록": [
       BackgroundColor(
@@ -298,11 +271,8 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
-
     ],
     "갈색": [
-
       BackgroundColor(
         id: 801,
         kind: "갈색",
@@ -321,10 +291,8 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
     ],
     "검정": [
-
       BackgroundColor(
         id: 901,
         kind: "검정",
@@ -334,12 +302,8 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
-
     ],
     "하양": [
-
-
       BackgroundColor(
         id: 1001,
         kind: "하양",
@@ -349,7 +313,6 @@ class PlaceStatus with ChangeNotifier {
         ),
         isAvailable: true,
       ),
-
     ],
     "흑우": [
       BackgroundColor(
@@ -359,7 +322,13 @@ class PlaceStatus with ChangeNotifier {
         color: Colors.red,
         decoration: BoxDecoration(
           gradient: SweepGradient(
-            colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.blue],
+            colors: [
+              Colors.blue,
+              Colors.green,
+              Colors.yellow,
+              Colors.red,
+              Colors.blue
+            ],
             stops: [0.0, 0.25, 0.5, 0.75, 1],
           ),
         ),
@@ -378,11 +347,6 @@ class PlaceStatus with ChangeNotifier {
     setStickerList();
   }
 
-
-
-
-
-
   void setSelectedColorTab(value) {
     selectedColorTab = value;
     notifyListeners();
@@ -398,8 +362,9 @@ class PlaceStatus with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final res = await http
-        .get("https://paperflips-server.herokuapp.com/User/GetCollection", headers: {"Cookie": "user=" + await getToken()});
+    final res = await http.get(
+        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
 
     if (res.statusCode != 200) {
@@ -408,26 +373,21 @@ class PlaceStatus with ChangeNotifier {
       Map<String, dynamic> resData = jsonDecode(res.body);
       var data = resData["data"];
 
-      var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
+      var collectionList =
+          data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
       stickerList = collectionList
           .map<Sticker>((x) => Sticker(
               id: x.recipeSeq,
               name: x.recipeName,
-//              path: x.path,
-              path: "https://paperflips.s3.amazonaws.com/recipe_img/${x.recipeSeq}.png",
+              path:
+                  "https://paperflips.s3.amazonaws.com/recipe_img/${x.recipeSeq}.png",
               limit: 9,
               count: 0))
           .toList();
     }
 
     isCollectionLoading = false;
-
-//    stickerList = [
-//      Sticker(id: 1, name: "종이배", path: '${IP.address}/img/image/종이배.png', limit: 9, count: 0),
-//      Sticker(id: 2, name: "코끼리", path: '${IP.address}/img/image/코끼리.png', limit: 5, count: 0),
-//      Sticker(id: 3, name: "황구리", path: '${IP.address}/img/image/황금개구리.png', limit: 1, count: 0),
-//    ];
 
     loadStatus();
 
@@ -437,17 +397,16 @@ class PlaceStatus with ChangeNotifier {
   PlacedSticker selectedSticker;
 
   getSave() {
-    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
+    final RenderBox renderBox =
+        _keyStickerBackground.currentContext.findRenderObject();
     double renderBoxWidth = renderBox.size.width;
     double renderBoxHeight = renderBox.size.height;
 
-    var data = placedStickerList.where((x) => x.visible == true).toList().map((x) => x.toJson()).toList();
-//    log(jsonEncode({
-//      "renderBoxWidth": renderBoxWidth,
-//      "renderBoxHeight": renderBoxHeight,
-//      "data": data,
-//      "backgroundColor": backgruondColor.id
-//    }));
+    var data = placedStickerList
+        .where((x) => x.visible == true)
+        .toList()
+        .map((x) => x.toJson())
+        .toList();
 
     var tempSaveData2 = jsonEncode({
       "renderBoxWidth": renderBoxWidth,
@@ -469,13 +428,17 @@ class PlaceStatus with ChangeNotifier {
 
     print(jsonDecode(saveData));
 
-    final res = await http.put("https://paperflips-server.herokuapp.com/User/RoomDataChange/${seq}",
-        headers: {"Cookie": "user=" + await getToken(), "Content-Type": 'application/json'},
+    final res = await http.put(
+        "https://paperflips-server.herokuapp.com/User/RoomDataChange/${seq}",
+        headers: {
+          "Cookie": "user=" + await getToken(),
+          "Content-Type": 'application/json'
+        },
         body: jsonEncode({"Data": jsonDecode(saveData)}));
     print(res.headers);
 
     print(res.statusCode);
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       tempSaveData = saveData;
 
       var loadData2 = jsonDecode(loadData);
@@ -483,20 +446,14 @@ class PlaceStatus with ChangeNotifier {
       storage.write(key: "loadData", value: jsonEncode(loadData2));
     }
 
-
-
     return true;
   }
 
   void loadStatus() async {
-    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
+    final RenderBox renderBox =
+        _keyStickerBackground.currentContext.findRenderObject();
     double renderBoxWidth = renderBox.size.width;
     double renderBoxHeight = renderBox.size.height;
-    final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
-//    var loaded = jsonDecode(
-//        '{"renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":87.62323288690476,"dy":245.82061434659056},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":81.32886904761901,"dy":159.5325947641472},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":2,"initPos":{"dx":165.03841145833331,"dy":97.2551115052189},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":3,"initPos":{"dx":243.04287574404785,"dy":241.18461681547592},"initScale":1.0,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
-//    var loaded = jsonDecode(
-//        '{"backgroundColor":9999, "renderBoxWidth":358.85714285714283,"renderBoxHeight":717.7142857142857,"data":[{"id":0,"initPos":{"dx":154.18154761904762,"dy":159.79871144480478},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":1,"initPos":{"dx":156.19047619047618,"dy":214.66896814123345},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":2,"initPos":{"dx":158.47563244047618,"dy":267.2422103287334},"initScale":1.0,"sticker":{"id":2,"name":"코끼리","path":"https://paperflips-server.herokuapp.com/img/image/코끼리.png","limit":5}},{"id":3,"initPos":{"dx":154.4789806547619,"dy":325.8209597195037},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":4,"initPos":{"dx":105.33556547619045,"dy":325.79515056771817},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":5,"initPos":{"dx":43.90001860119045,"dy":330.1052789159327},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":6,"initPos":{"dx":210.18908110119045,"dy":327.8082644070038},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":7,"initPos":{"dx":266.1754092261907,"dy":326.9307532462897},"initScale":1.0,"sticker":{"id":1,"name":"종이배","path":"https://paperflips-server.herokuapp.com/img/image/종이배.png","limit":9}},{"id":8,"initPos":{"dx":128.6974621414766,"dy":84.27572665040529},"initScale":1.9627674369599777,"sticker":{"id":3,"name":"황구리","path":"https://paperflips-server.herokuapp.com/img/image/황금개구리.png","limit":1}}]}');
 
     var storage = FlutterSecureStorage();
     var loaded = jsonDecode(await storage.read(key: "loadData"))["Data"];
@@ -507,40 +464,38 @@ class PlaceStatus with ChangeNotifier {
     print(widthRatio);
     print(heightRatio);
 
-    List<PlacedSticker> data = loaded["data"].map<PlacedSticker>((x) => PlacedSticker.fromJson(x)).toList();
+    List<PlacedSticker> data = loaded["data"]
+        .map<PlacedSticker>((x) => PlacedSticker.fromJson(x))
+        .toList();
     List<int> temp = [];
     for (int i = 0; i < stickerList.length; i++) {
       try {
-        stickerList[i].limit = data.where((x) => x.sticker.id == stickerList[i].id).toList()[0].sticker.limit;
+        stickerList[i].limit = data
+            .where((x) => x.sticker.id == stickerList[i].id)
+            .toList()[0]
+            .sticker
+            .limit;
       } catch (e) {}
 
       stickerList[i].count = 0;
-
     }
 
-
-
-
-
-
     for (int i = 0; i < data.length; i++) {
-      data[i].sticker = stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
+      data[i].sticker =
+          stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
       data[i].sticker.count += 1;
 
-      data[i].position = Offset(data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
+      data[i].position = Offset(
+          data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
 
       temp.add(data[i].id);
     }
 
-    if(temp.length > 0){
+    if (temp.length > 0) {
       count = temp.reduce(max) + 1;
-    }else{
+    } else {
       count = 1;
     }
-
-
-
-
 
     for (int i = 0; i < data.length; i++) {
       print(data[i].position);
@@ -572,7 +527,6 @@ class PlaceStatus with ChangeNotifier {
   }
 
   void moveSticker(int id, Offset offset) {
-    PlacedSticker temp;
     placedStickerList.where((x) => x.id == id).toList().every((x) {
       x.position = offset;
 
@@ -586,12 +540,17 @@ class PlaceStatus with ChangeNotifier {
     double currentScale = selectedSticker.scale;
     double afterScale = currentScale * (scaleFactor >= 1 ? 1.02 : 0.98);
     afterScale = defualtStickerWidth * afterScale <= 150
-        ? (defualtStickerWidth * afterScale >= 20 ? afterScale : 20 / defualtStickerWidth)
+        ? (defualtStickerWidth * afterScale >= 20
+            ? afterScale
+            : 20 / defualtStickerWidth)
         : 150 / defualtStickerWidth;
 
     selectedSticker.scale = afterScale;
-    selectedSticker.position = Offset(selectedSticker.position.dx - (defualtStickerWidth * (afterScale - currentScale) / 2),
-        selectedSticker.position.dy - (defualtStickerWidth * (afterScale - currentScale) / 2));
+    selectedSticker.position = Offset(
+        selectedSticker.position.dx -
+            (defualtStickerWidth * (afterScale - currentScale) / 2),
+        selectedSticker.position.dy -
+            (defualtStickerWidth * (afterScale - currentScale) / 2));
     notifyListeners();
   }
 
@@ -647,7 +606,6 @@ class Sticker {
   Sticker({this.id, this.name, this.path, this.limit, this.count});
 }
 
-
 class PlacedSticker extends StatefulWidget {
   int id;
 
@@ -671,14 +629,7 @@ class PlacedSticker extends StatefulWidget {
     scale = initScale;
 
     sticker = Sticker(
-        id: json["sticker"]["seq"],
-//        name: json["sticker"]["name"],
-//        path: json["sticker"]["path"],
-//        limit: json["sticker"]["limit"],
-        limit: 9,
-        name: "임시",
-        path: "임시",
-        count: 0);
+        id: json["sticker"]["seq"], limit: 9, name: "임시", path: "임시", count: 0);
   }
 
   Map<String, dynamic> toJson() {
@@ -689,18 +640,8 @@ class PlacedSticker extends StatefulWidget {
     data['initScale'] = this.scale;
     print(this.scale);
 
-//    data['sticker'] = {
-//      "id": this.sticker.id,
-//      "name": this.sticker.name,
-//      "path": this.sticker.path,
-//      "limit": this.sticker.limit
-//    };
-
     data['sticker'] = {
       "seq": this.sticker.id,
-//      "name" : this.sticker.name,
-//      "path" : this.sticker.path,
-//      "limit" : this.sticker.limit
     };
 
     print(data);
@@ -716,7 +657,8 @@ class PlacedSticker extends StatefulWidget {
   }
 
   @override
-  _PlacedStickerState createState() => _PlacedStickerState(id, initPos, initScale, sticker);
+  _PlacedStickerState createState() =>
+      _PlacedStickerState(id, initPos, initScale, sticker);
 }
 
 class _PlacedStickerState extends State<PlacedSticker> {
@@ -725,12 +667,10 @@ class _PlacedStickerState extends State<PlacedSticker> {
   double initScale;
 
   Sticker sticker;
-
-  double _scaleFactor = 1.0;
-
   bool _isPanelOpen;
 
-  _PlacedStickerState(int _id, Offset _initPos, double _initScale, Sticker _sticker) {
+  _PlacedStickerState(
+      int _id, Offset _initPos, double _initScale, Sticker _sticker) {
     id = _id;
     initPos = _initPos;
     initScale = _initScale;
@@ -741,13 +681,10 @@ class _PlacedStickerState extends State<PlacedSticker> {
   void initState() {
     super.initState();
     _isPanelOpen = _pc.isPanelOpen;
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-//    print(id);
     PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
     return Positioned(
       key: GlobalKey(),
@@ -759,16 +696,12 @@ class _PlacedStickerState extends State<PlacedSticker> {
           onScaleStart: (details) {},
           onTap: () async {
             placeStatus.selectSticker(id);
-
           },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               color: widget.selected ? Colors.white.withOpacity(0.8) : null,
             ),
-
-//        width: 0,
-//        height: 50,
             child: Draggable(
                 onDragStarted: () {
                   if (_pc.isPanelOpen == true) {
@@ -777,8 +710,6 @@ class _PlacedStickerState extends State<PlacedSticker> {
                   } else {
                     _isPanelOpen = false;
                   }
-
-//                  Vibration.vibrate(duration: 80);
                 },
                 feedbackOffset: Offset.fromDirection(10),
                 dragAnchor: DragAnchor.child,
@@ -797,25 +728,17 @@ class _PlacedStickerState extends State<PlacedSticker> {
                   }
 
                   if (data.wasAccepted == true) {
-                    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
-                    final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
-
-//                    setState(() {
-//                      _position = Offset(
-//                          data.offset.dx - positionStickerBackground.dx,
-//                          data.offset.dy - positionStickerBackground.dy);
-//                    });
+                    final RenderBox renderBox =
+                        _keyStickerBackground.currentContext.findRenderObject();
+                    final positionStickerBackground =
+                        renderBox.localToGlobal(Offset.zero);
                     placeStatus.moveSticker(
                         id,
-                        Offset(
-                            data.offset.dx - positionStickerBackground.dx, data.offset.dy - positionStickerBackground.dy));
-//                    widget.position = Offset(
-//                        data.offset.dx - positionStickerBackground.dx,
-//                        data.offset.dy - positionStickerBackground.dy);
+                        Offset(data.offset.dx - positionStickerBackground.dx,
+                            data.offset.dy - positionStickerBackground.dy));
                     print(widget.position);
                   } else {
                     PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-
                     placeStatus.retrieveSticker(id);
                   }
                 },
@@ -859,26 +782,7 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
     super.initState();
     _inAsyncCall = false;
     _fabHeight = 300;
-    _placedStickerList = [
-//      PlacedSticker(
-//        Offset(50, 50),
-//        Sticker(
-//            id: 1,
-//            name: "종이배",
-//            path: '${IP.address}/img/image/종이배.png',
-//            limit: 9),
-//      ),
-//      PlacedSticker(
-//        Offset(50, 150),
-//        Sticker(
-//            id: 1,
-//            name: "종이배",
-//            path: '${IP.address}/img/image/종이배.png',
-//            limit: 9),
-//      )
-    ];
-
-//    _getMySongList();
+    _placedStickerList = [];
   }
 
   @override
@@ -889,7 +793,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
           PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
           return Container(
             height: 40,
-//            width : 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
@@ -912,15 +815,20 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                               Navigator.pop(context);
                             },
                             confirmButtonAction: () async {
-                              bool saveResult = await placeStatus.saveCurrentStatus();
+                              bool saveResult =
+                                  await placeStatus.saveCurrentStatus();
                               Navigator.pop(context);
                               if (saveResult == true) {
-                                showCustomAlert(context: context, title: "저장 됐어요!", duration: Duration(seconds: 1));
+                                showCustomAlert(
+                                    context: context,
+                                    title: "저장 됐어요!",
+                                    duration: Duration(seconds: 1));
                               }
                             });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                         child: Icon(Icons.save, size: 20),
                       ),
                     ),
@@ -935,8 +843,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
-//                        placeStatus.loadStatus();
-
                         showCustomDialog(
                             context: context,
                             title: "스티커를 모두 지울까요?",
@@ -949,11 +855,15 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                             confirmButtonAction: () {
                               placeStatus.clear();
                               Navigator.pop(context);
-                              showCustomAlert(context: context, title: "모두 지워졌어요!", duration: Duration(seconds: 1));
+                              showCustomAlert(
+                                  context: context,
+                                  title: "모두 지워졌어요!",
+                                  duration: Duration(seconds: 1));
                             });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                         child: Icon(
                           Icons.delete_forever,
                           size: 20,
@@ -962,38 +872,24 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                     ),
                   ),
                 ),
-//                Container(
-//                  width : 30,
-//                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-//                  child: Material(
-//                    color: Colors.white.withOpacity(0.8),
-//                    borderRadius: BorderRadius.all(Radius.circular(5)),
-//                    child: InkWell(
-//                      borderRadius: BorderRadius.all(Radius.circular(5)),
-//                      onTap: () {
-//                        placeStatus.loadStatus();
-//                      },
-//                      child: Container(
-//                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
-//                        child:  Icon(Icons.cloud_download, size: 20,),
-//                      ),
-//                    ),
-//                  ),
-//                ),
                 Container(
                   width: 30,
                   margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: Material(
-                    color: placeStatus.isStickerPanel ? Colors.white.withOpacity(0.8) : Colors.grey[400].withOpacity(0.8),
+                    color: placeStatus.isStickerPanel
+                        ? Colors.white.withOpacity(0.8)
+                        : Colors.grey[400].withOpacity(0.8),
                     borderRadius: BorderRadius.all(Radius.circular(5)),
                     child: InkWell(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       onTap: () {
                         _pc.open();
-                        placeStatus.isStickerPanel = !placeStatus.isStickerPanel;
+                        placeStatus.isStickerPanel =
+                            !placeStatus.isStickerPanel;
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 0),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 0),
                         child: placeStatus.isStickerPanel
                             ? Icon(
                                 Icons.format_paint,
@@ -1058,13 +954,19 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                                 onDragEnd: (data) {
                                   _pc.open();
                                   if (data.wasAccepted == true) {
-                                    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
-                                    final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
+                                    final RenderBox renderBox =
+                                        _keyStickerBackground.currentContext
+                                            .findRenderObject();
+                                    final positionStickerBackground =
+                                        renderBox.localToGlobal(Offset.zero);
 
                                     placeStatus.addSticker(PlacedSticker(
                                         count++,
-                                        Offset(data.offset.dx - positionStickerBackground.dx,
-                                            data.offset.dy - positionStickerBackground.dy),
+                                        Offset(
+                                            data.offset.dx -
+                                                positionStickerBackground.dx,
+                                            data.offset.dy -
+                                                positionStickerBackground.dy),
                                         1.0,
                                         sticker));
 
@@ -1081,7 +983,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                     Container(
                       alignment: Alignment.bottomRight,
                       child: Builder(builder: (context) {
-                        PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
                         return Text((sticker.limit - sticker.count).toString());
                       }),
                     )
@@ -1100,7 +1001,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
           PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
           return Column(children: [
             Container(
-//                      color: Colors.green,
               margin: EdgeInsets.all(8),
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -1109,31 +1009,30 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                   Container(
                     width: 35,
                     height: 4,
-                    decoration:
-                        BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
                   ),
                 ],
               ),
             ),
             Container(
-//              color: Colors.red,
               height: 270,
               child: Column(children: [
                 Flexible(
                   child: !placeStatus.isCollectionLoading
                       ? Container(
-//            height : 250,
-                          padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
-
+                          padding: EdgeInsets.only(
+                              left: 10, top: 2, right: 10, bottom: 10),
                           child: GridView.count(
-//        physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             //스크롤 방향 조절
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
                             crossAxisCount: 5,
-
-                            children: placeStatus.stickerList.map((x) => _buildUnderSticker(x)).toList(),
+                            children: placeStatus.stickerList
+                                .map((x) => _buildUnderSticker(x))
+                                .toList(),
                           ),
                         )
                       : Center(child: CircularProgressIndicator()),
@@ -1182,7 +1081,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                 opacity: 0.8,
                 child: Scaffold(
                     appBar: DefaultAppBar(title: "방 꾸미기"),
-                    // 2-1. 상세 화면 (전체 화면 세팅1)
                     body: SwipeDetector(
                       onSwipeDown: () {
                         _pc.close();
@@ -1197,40 +1095,45 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                               progressIndicator: CircularProgressIndicator(),
                               opacity: 0.1,
                               child: Container(
-//                      color : Colors.red,
-//                  height: double.infinity,
-//                        alignment: Alignment.center,
                                   child: Align(
                                 alignment: Alignment.topCenter,
                                 child: Stack(
                                   children: <Widget>[
                                     Container(
-//                                alignment: Alignment.center,
                                       child: DragTarget(
-                                        builder: (context, List<Sticker> candidateData, rejectedData) {
-                                          PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                                        builder: (context,
+                                            List<Sticker> candidateData,
+                                            rejectedData) {
+                                          PlaceStatus placeStatus =
+                                              Provider.of<PlaceStatus>(context);
                                           return GestureDetector(
                                             onScaleStart: (details) {},
                                             onScaleUpdate: (details) {
                                               print(details.scale);
-                                              if (placeStatus.selectedSticker == null) {
+                                              if (placeStatus.selectedSticker ==
+                                                  null) {
                                                 return;
                                               }
 
-                                              placeStatus.updateStickerScale(details.scale);
+                                              placeStatus.updateStickerScale(
+                                                  details.scale);
                                             },
                                             child: GestureDetector(
                                               onTap: () {
-                                                placeStatus.selectSticker(placeStatus.selectedSticker.id);
+                                                placeStatus.selectSticker(
+                                                    placeStatus
+                                                        .selectedSticker.id);
                                               },
                                               child: Container(
                                                 key: _keyStickerBackground,
-                                                decoration: placeStatus.backgruondColor.decoration,
+                                                decoration: placeStatus
+                                                    .backgruondColor.decoration,
                                                 child: AspectRatio(
                                                     aspectRatio: 3 / 5,
                                                     child: Stack(
-                                                        children: placeStatus.placedStickerList.map((x) {
-//                                                          print(x.sticker.path);
+                                                        children: placeStatus
+                                                            .placedStickerList
+                                                            .map((x) {
                                                       return x;
                                                     }).toList())),
                                               ),
@@ -1248,27 +1151,26 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                               ))),
                           Builder(
                             builder: (context) {
-                              PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                              PlaceStatus placeStatus =
+                                  Provider.of<PlaceStatus>(context);
                               return SlidingUpPanel(
                                 defaultPanelState: PanelState.OPEN,
                                 minHeight: _panelHeightClosed,
                                 maxHeight: _panelHeightOpen,
                                 controller: _pc,
                                 color: Colors.white.withOpacity(0.9),
-                                panel: placeStatus.isStickerPanel ? _buildUnderStickerBox() : _buildUnderColorBox(),
+                                panel: placeStatus.isStickerPanel
+                                    ? _buildUnderStickerBox()
+                                    : _buildUnderColorBox(),
                                 onPanelSlide: (double pos) => setState(() {
-                                  _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;
+                                  _fabHeight = pos *
+                                          (_panelHeightOpen -
+                                              _panelHeightClosed) +
+                                      _initFabHeight;
                                 }),
                               );
                             },
                           ),
-
-//                Positioned.fill(
-//                  bottom : _fabHeight,
-//                  child:
-//
-//                ),
-
                           Positioned(
                             right: 0.0,
                             bottom: _fabHeight,
@@ -1316,7 +1218,8 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: Builder(builder: (context) {
-                      PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                      PlaceStatus placeStatus =
+                          Provider.of<PlaceStatus>(context);
                       return Text(
                         backgroundColor.name,
                         style: TextStyle(fontSize: 11),
@@ -1339,7 +1242,6 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
 
         return Column(children: [
           Container(
-//                      color: Colors.green,
             margin: EdgeInsets.all(8),
             alignment: Alignment.bottomCenter,
             child: Row(
@@ -1348,7 +1250,9 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                 Container(
                   width: 35,
                   height: 4,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
               ],
             ),
@@ -1361,7 +1265,9 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                 children: placeStatus.colorTabList.map<Widget>((x) {
                   return Expanded(
                     child: Material(
-                      color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
+                      color: placeStatus.selectedColorTab == x["name"]
+                          ? Colors.white
+                          : navColor,
                       borderRadius: BorderRadius.all(Radius.circular(1000)),
                       child: InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(1000)),
@@ -1369,10 +1275,8 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                           placeStatus.setSelectedColorTab(x["name"]);
                         },
                         child: Container(
-//                          alignment: Alignment.center,
-//                          height : 30,
-
-                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -1380,13 +1284,16 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                                 width: 8,
                                 height: 8,
                                 decoration: BoxDecoration(
-                                    border: placeStatus.selectedColorTab == x["name"] && x["name"] == "하양"
+                                    border: placeStatus.selectedColorTab ==
+                                                x["name"] &&
+                                            x["name"] == "하양"
                                         ? Border.all(
                                             color: Colors.black,
                                             width: 1,
                                           )
                                         : null,
-                                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(1000)),
                                     color: x["color"]),
                               ),
                               SizedBox(
@@ -1410,19 +1317,18 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
             child: Column(children: [
               Flexible(
                 child: Container(
-//            height : 250,
-                  padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-
+                  padding:
+                      EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
                   child: GridView.count(
-//        physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     //스크롤 방향 조절
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     crossAxisCount: 5,
-
-                    children:
-                        placeStatus.colorList[placeStatus.selectedColorTab].map<Widget>((x) => _buildUnderColor(x)).toList(),
+                    children: placeStatus
+                        .colorList[placeStatus.selectedColorTab]
+                        .map<Widget>((x) => _buildUnderColor(x))
+                        .toList(),
                   ),
                 ),
               ),

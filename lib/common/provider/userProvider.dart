@@ -1,12 +1,11 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../auth.dart';
 import '../ip.dart';
 import 'package:http/http.dart' as http;
 
 import 'dart:convert';
+
 Map<String, dynamic> parseJwtPayLoad(String token) {
   final parts = token.split('.');
   if (parts.length != 3) {
@@ -56,40 +55,32 @@ String _decodeBase64(String str) {
   return utf8.decode(base64Url.decode(output));
 }
 
-
 class UserStatus with ChangeNotifier {
-
   bool isLogined = false;
 
   bool isUserButtonToggled = false;
 
-  void setIsUserButtonToggled(value){
+  void setIsUserButtonToggled(value) {
     isUserButtonToggled = value;
     notifyListeners();
   }
 
-
-
-
   Map<String, dynamic> userInfo = {};
 
-  UserStatus(){
+  UserStatus() {
     init();
-
   }
 
-  Future<bool> login(String id, String pw) async{
+  Future<bool> login(String id, String pw) async {
     print(id.trim());
     print(pw.trim());
-    final res = await http.post(
-        "${IP.address}/User/login",
-        body: {"id": id.trim(), "password" : pw.trim()});
+    final res = await http.post("${IP.address}/User/login",
+        body: {"id": id.trim(), "password": pw.trim()});
     print(res.body);
-
 
     print("!!!!!!!!1");
 
-    if(res.statusCode != 200){
+    if (res.statusCode != 200) {
       return false;
     }
 
@@ -105,36 +96,21 @@ class UserStatus with ChangeNotifier {
     userInfo["name"] = resData["name"];
 
     notifyListeners();
-//  print();
     return true;
   }
 
-  Future<bool> register(String id, String pw, String name) async{
-
-
-
-
+  Future<bool> register(String id, String pw, String name) async {
     final res = await http.post(
       "${IP.address}/User/Adduser",
-      body: {
-        'id': id,
-        'password': pw,
-        'name': name
-      },
+      body: {'id': id, 'password': pw, 'name': name},
     );
 
-
-
-
-
-
-    if(res.statusCode == 200){
+    if (res.statusCode == 200) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-
 
   void logout() {
     var storage = FlutterSecureStorage();
@@ -145,20 +121,16 @@ class UserStatus with ChangeNotifier {
     notifyListeners();
   }
 
-
-  init() async{
+  init() async {
     final storage = new FlutterSecureStorage();
     var token = await storage.read(key: "token");
 
     //jwt 토큰이 유효한지 서버에서 가져와야할 것 같은데 일단 생략
     final res = await http.get(
         "https://paperflips-server.herokuapp.com/User/GetMyInfo",
-        headers: {"Cookie" : "user=" + await getToken()}
-    );
+        headers: {"Cookie": "user=" + await getToken()});
 
-
-    if(res.statusCode != 200){
-
+    if (res.statusCode != 200) {
       storage.write(key: "token", value: "");
       token = null;
       isLogined = false;
@@ -168,18 +140,12 @@ class UserStatus with ChangeNotifier {
 
     Map<String, dynamic> resData = jsonDecode(res.body);
 
-
-    if(token != null){
+    if (token != null) {
       isLogined = true;
       userInfo["name"] = resData["name"];
-    }else{
-
-    }
-
+    } else {}
 
     print(token);
     notifyListeners();
   }
-
-
 }

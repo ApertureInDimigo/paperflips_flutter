@@ -1,12 +1,8 @@
-import 'package:flutter_front/request.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'ip.dart';
 
 import 'package:flutter/material.dart';
-
-
-
 
 //import 'package:json_annotation/json_annotation.dart'; //이건 어떻게 쓸 지 모르겠어요.. 일단 기존 방법을 택할게요..ㅠㅠ
 
@@ -24,14 +20,6 @@ class Sticker {
   Sticker({this.id, this.name, this.path, this.limit, this.count});
 }
 
-
-
-
-
-
-
-
-
 class CollectionCard {
   List<RecipeCard> rec;
   List<DateTime> obtainDate;
@@ -43,9 +31,7 @@ class CollectionCard {
   }
 }
 
-
 class FoldProcess {
-
   String imgPath;
 
   String subtitleExplainText;
@@ -53,8 +39,6 @@ class FoldProcess {
 
   FoldProcess({this.imgPath, this.subtitleExplainText, this.ttsExplainText});
 }
-
-
 
 class BackgroundColor {
   int id;
@@ -65,7 +49,14 @@ class BackgroundColor {
   BoxDecoration decoration;
   bool isAvailable;
 
-  BackgroundColor({int id, String kind, String name, Color color, int price, BoxDecoration decoration, bool isAvailable}) {
+  BackgroundColor(
+      {int id,
+      String kind,
+      String name,
+      Color color,
+      int price,
+      BoxDecoration decoration,
+      bool isAvailable}) {
     this.id = id;
     this.kind = kind;
     this.name = name;
@@ -91,7 +82,6 @@ class BackgroundColor {
 }
 
 class RecipeCard {
-
   int recipeSeq;
   String recipeName;
   String rarity;
@@ -99,8 +89,13 @@ class RecipeCard {
   String path;
   String date;
 
-
-  RecipeCard({this.recipeSeq, this.recipeName, this.rarity, this.summary, this.path, this.date = ""});
+  RecipeCard(
+      {this.recipeSeq,
+      this.recipeName,
+      this.rarity,
+      this.summary,
+      this.path,
+      this.date = ""});
 
   RecipeCard.fromJson(Map<String, dynamic> json) {
     recipeSeq = json["seq"];
@@ -112,7 +107,6 @@ class RecipeCard {
     summary = json['summary'];
 
     date = json["Date"];
-
   }
 
   Map<String, dynamic> toJson() {
@@ -125,7 +119,7 @@ class RecipeCard {
   }
 }
 
-class GetRecipeCard{
+class GetRecipeCard {
   static Future<RecipeCard> fetchPost(int n) async {
     final response = await http.get('${IP.address}/rec/data/' + n.toString());
 

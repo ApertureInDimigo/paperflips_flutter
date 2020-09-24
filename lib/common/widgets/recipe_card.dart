@@ -2,19 +2,16 @@ import 'dart:convert';
 import 'package:flutter_front/common/provider/otherProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_front/size.dart';
 import '../../common/color.dart';
 import '../../common/font.dart';
 import '../../common/asset_path.dart';
 import '../../common/data_class.dart';
-import '../../common/ip.dart';
 import 'package:intl/intl.dart';
-
 import '../../foldReady_page.dart';
 import '../../introduce.dart';
 import '../../main.dart';
-import '../auth.dart';
 import 'package:http/http.dart' as http;
+
 // rarity 를 받고 해당 Text 위젯 반환
 // rarity 가 null 일 경우, 빈 Container() 위젯 반환
 Widget buildRarityText(rarity) {
@@ -62,7 +59,7 @@ Widget buildRarityText(rarity) {
 Widget buildRecipeCard(RecipeCard recipe) {
   print(recipe.path);
   return Builder(
-    builder: (context){
+    builder: (context) {
       return Container(
           margin: EdgeInsets.only(top: 5),
           height: 100,
@@ -72,11 +69,13 @@ Widget buildRecipeCard(RecipeCard recipe) {
           child: Row(
             children: <Widget>[
               Flexible(
-                flex : 7,
+                flex: 7,
                 child: Material(
                   color: cardColor,
                   child: InkWell(
-                    onTap: () {   goIntroducePage(context, recipe);},
+                    onTap: () {
+                      goIntroducePage(context, recipe);
+                    },
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -102,8 +101,11 @@ Widget buildRecipeCard(RecipeCard recipe) {
                                     ),
                                     textAlign: TextAlign.left),
                                 Container(height: 4),
-                                Text(recipe.summary,
-                                  style: TextStyle(fontSize: 13), overflow: TextOverflow.ellipsis,),
+                                Text(
+                                  recipe.summary,
+                                  style: TextStyle(fontSize: 13),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ],
                             ),
                           ),
@@ -114,20 +116,17 @@ Widget buildRecipeCard(RecipeCard recipe) {
                 ),
               ),
               Flexible(
-                flex : 1,
+                flex: 1,
                 child: Material(
                   color: primaryColor,
                   child: InkWell(
-//                splashColor: Colors.white,
-
                     onTap: () {
                       goFoldReadyPage(recipe);
                     },
                     child: Container(
                         decoration: BoxDecoration(),
-//                    width: 50,
-                        padding:
-                        EdgeInsets.only(top: 15, bottom: 15, left: 12, right: 12),
+                        padding: EdgeInsets.only(
+                            top: 15, bottom: 15, left: 12, right: 12),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,7 +137,6 @@ Widget buildRecipeCard(RecipeCard recipe) {
                           ],
                         )),
                   ),
-
                 ),
               )
             ],
@@ -244,9 +242,8 @@ Widget buildRarityBox(String rarity) {
 
 Widget buildRecipeCollection(collection) {
   return Builder(
-    builder: (context){
+    builder: (context) {
       return Container(
-
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           boxShadow: [
@@ -264,17 +261,12 @@ Widget buildRecipeCollection(collection) {
           child: InkWell(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
             onTap: () {
-
-
-
-
-
               goIntroducePage(context, collection);
             },
             child: Padding(
-              padding: const EdgeInsets.only(left : 4, right : 4, bottom : 4, top : 10),
+              padding:
+                  const EdgeInsets.only(left: 4, right: 4, bottom: 4, top: 10),
               child: Container(
-
                 decoration: BoxDecoration(
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -283,12 +275,7 @@ Widget buildRecipeCollection(collection) {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-
-                    Image.network(
-                        collection.path,
-                        width: 80,
-                        height: 80),
-
+                    Image.network(collection.path, width: 80, height: 80),
                     buildRarityBox(collection.rarity),
                     SizedBox(height: 3),
                     Text(
@@ -300,16 +287,15 @@ Widget buildRecipeCollection(collection) {
                       ),
                     ),
                     SizedBox(height: 2),
-
                     Text(
-                      DateFormat('yyyy년 MM월 dd일 H시').format(DateTime.parse(collection.date)),
+                      DateFormat('yyyy년 MM월 dd일 H시')
+                          .format(DateTime.parse(collection.date)),
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.normal,
                         fontFamily: Font.normal,
                       ),
                     ),
-
                     SizedBox(height: 5),
                   ],
                 ),
@@ -320,54 +306,51 @@ Widget buildRecipeCollection(collection) {
       );
     },
   );
-
-
 }
 
-void goIntroducePage(BuildContext context, RecipeCard recipe) async{
+void goIntroducePage(BuildContext context, RecipeCard recipe) async {
   OtherStatus otherStatus = Provider.of<OtherStatus>(context);
   otherStatus.setIsLoading(true);
   final res = await http.get(
-      "https://paperflips-server.herokuapp.com/rec/GetDetail/${recipe.recipeName}",
+    "https://paperflips-server.herokuapp.com/rec/GetDetail/${recipe.recipeName}",
   );
 
-  if(res.statusCode != 200){
+  if (res.statusCode != 200) {
     return;
   }
 
   otherStatus.setIsLoading(false);
-  navigatorKey.currentState.push(FadeRoute(page: IntroducePage(recipe, jsonDecode(res.body)),
+  navigatorKey.currentState.push(FadeRoute(
+    page: IntroducePage(recipe, jsonDecode(res.body)),
   ));
 }
-
-
-
 
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
 
   FadeRoute({this.page})
       : super(
-    pageBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,) =>
-    page,
-    transitionsBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }
-
 
 void goFoldReadyPage(RecipeCard recipe) {
-  navigatorKey.currentState.push(FadeRoute(page: FoldReadyPage(recipe)),
-
+  navigatorKey.currentState.push(
+    FadeRoute(page: FoldReadyPage(recipe)),
   );
 }
-
-

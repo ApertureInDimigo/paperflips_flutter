@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class size {
   double height;
   double width;

@@ -1,19 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_front/introduce.dart';
-import './common/font.dart';
-import './common/color.dart';
-import './common/asset_path.dart';
 import 'common/auth.dart';
 import 'common/provider/otherProvider.dart';
-import 'main_page.dart';
 import './common/data_class.dart';
 import './common/widgets/recipe_card.dart';
-import './common/ip.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-import 'dart:math';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'common/widgets/appbar.dart';
 import 'package:provider/provider.dart';
@@ -40,34 +31,22 @@ class _CollectionPageState extends State<CollectionPage> {
       _collectionList = [];
       _inAsyncCall = true;
     });
-//    print("Bearer " +await getToken());
 
     print("!@@@@@@@@@@@@@@@@@@@");
 
     final res = await http.get(
-      "https://paperflips-server.herokuapp.com/User/GetCollection",
-      headers: {"Cookie" : "user=" + await getToken()}
-    );
+        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
     Map<String, dynamic> resData = jsonDecode(res.body);
     var data = resData["data"];
 
-    if(data == null){
+    if (data == null) {
       return null;
     }
 
-    var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
-
-//    List<RecipeCard> collectionList = [1,2,3,4,5,6,7,8,9,10].map((x) {
-//      var rng = new Random();
-//      int rndInt = rng.nextInt(1000);
-//      return RecipeCard(
-//          recipeName: "코끼리",
-//          rarity: rndInt % 4 == 0 ? "normal" : rndInt % 4 == 1 ? "rare" : rndInt % 4 == 2 ? "legend" : "limited",
-//          summary : "SFDA",
-//
-//          );
-//    }).toList();
+    var collectionList =
+        data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
     print(collectionList);
     setState(() {
       _collectionList = collectionList;
@@ -84,7 +63,7 @@ class _CollectionPageState extends State<CollectionPage> {
       opacity: 0.5,
       progressIndicator: CircularProgressIndicator(),
       child: Scaffold(
-        appBar: DefaultAppBar(title : "내 컬렉션"),
+        appBar: DefaultAppBar(title: "내 컬렉션"),
         body: _buildCollectionMenu(),
       ),
     );
@@ -102,7 +81,7 @@ class _CollectionPageState extends State<CollectionPage> {
           crossAxisSpacing: 15,
           mainAxisSpacing: 15,
           crossAxisCount: 2,
-          childAspectRatio: 9/10,
+          childAspectRatio: 9 / 10,
           //로우 혹은 컬럼수 조절 (필수값)
           children:
               _collectionList.map((x) => buildRecipeCollection(x)).toList(),
@@ -112,27 +91,26 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 }
 
-
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
 
   FadeRoute({this.page})
       : super(
-    pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        ) =>
-    page,
-    transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-        ) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }

@@ -1,16 +1,10 @@
-//import 'dart:html';
-
 import 'dart:developer';
-import 'package:flutter_front/common/provider/otherProvider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/common/widgets/appbar.dart';
-import 'package:flutter_front/common/widgets/recipe_card.dart';
-
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swipedetector/swipedetector.dart';
@@ -18,20 +12,10 @@ import 'dart:convert';
 import 'common/auth.dart';
 import 'common/color.dart';
 import 'common/data_class.dart';
-
-import 'common/widgets/dialog.dart';
-
 import 'dart:core';
-
 import 'common/font.dart';
-import 'common/ip.dart';
 import 'editMyRoom_page.dart';
-
-
-import 'fold_page.dart';
-
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
 import 'package:vibration/vibration.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:typed_data';
@@ -42,30 +26,22 @@ GlobalKey _keyStickerBackground = GlobalKey();
 PanelController _pc = new PanelController();
 
 class PlaceStatus with ChangeNotifier {
-
-  void shareRoom() async{
+  void shareRoom() async {
     print('inside');
     RenderRepaintBoundary boundary =
-    _keyStickerBackground.currentContext.findRenderObject();
+        _keyStickerBackground.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-    ByteData byteData =
-    await image.toByteData(format: ui.ImageByteFormat.png);
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     var pngBytes = byteData.buffer.asUint8List();
     var bs64 = base64Encode(pngBytes);
     print(pngBytes);
     print(bs64);
-    await  Share.file('나만의 방', '나만의 방.png', pngBytes, 'image/jpg');
-//    Share.text('my text title', 'This is my text to share with other applications.', 'text/plain');
+    await Share.file('나만의 방', '나만의 방.png', pngBytes, 'image/jpg');
   }
-
-
-
-
 
   String tempSaveData;
 
   bool isLoading;
-
 
   List<PlacedSticker> placedStickerList = [];
   List<Sticker> stickerList = [];
@@ -102,9 +78,8 @@ class PlaceStatus with ChangeNotifier {
 
   var loadData = null;
 
-
   PlaceStatus() {
-    colorList  =  {
+    colorList = {
       "빨강": [
         BackgroundColor(
           id: 1,
@@ -144,11 +119,8 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
-
       ],
       "노랑": [
-
         BackgroundColor(
           id: 201,
           kind: "노랑",
@@ -167,8 +139,6 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
-
       ],
       "초록": [
         BackgroundColor(
@@ -328,11 +298,8 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
-
       ],
       "갈색": [
-
         BackgroundColor(
           id: 801,
           kind: "갈색",
@@ -351,10 +318,8 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
       ],
       "검정": [
-
         BackgroundColor(
           id: 901,
           kind: "검정",
@@ -364,12 +329,8 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
-
       ],
       "하양": [
-
-
         BackgroundColor(
           id: 1001,
           kind: "하양",
@@ -379,7 +340,6 @@ class PlaceStatus with ChangeNotifier {
           ),
           isAvailable: true,
         ),
-
       ],
       "흑우": [
         BackgroundColor(
@@ -389,7 +349,13 @@ class PlaceStatus with ChangeNotifier {
           color: Colors.red,
           decoration: BoxDecoration(
             gradient: SweepGradient(
-              colors: [Colors.blue, Colors.green, Colors.yellow, Colors.red, Colors.blue],
+              colors: [
+                Colors.blue,
+                Colors.green,
+                Colors.yellow,
+                Colors.red,
+                Colors.blue
+              ],
               stops: [0.0, 0.25, 0.5, 0.75, 1],
             ),
           ),
@@ -415,11 +381,12 @@ class PlaceStatus with ChangeNotifier {
     isLoading = true;
     notifyListeners();
 
-    final res = await http
-        .get("https://paperflips-server.herokuapp.com/User/GetCollection", headers: {"Cookie": "user=" + await getToken()});
+    final res = await http.get(
+        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
 
-    if(res.statusCode != 200){
+    if (res.statusCode != 200) {
       stickerList = [];
 
       notifyListeners();
@@ -430,17 +397,16 @@ class PlaceStatus with ChangeNotifier {
     var data = resData["data"];
 
     if (data == null) {
-
     } else {
-      var collectionList = data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
+      var collectionList =
+          data.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
 
       stickerList = collectionList
-          .map<Sticker>((x) =>
-          Sticker(
+          .map<Sticker>((x) => Sticker(
               id: x.recipeSeq,
               name: x.recipeName,
-//              path: x.path,
-              path: "https://paperflips.s3.amazonaws.com/recipe_img/${x.recipeSeq}.png",
+              path:
+                  "https://paperflips.s3.amazonaws.com/recipe_img/${x.recipeSeq}.png",
               limit: 9,
               count: 0))
           .toList();
@@ -448,14 +414,7 @@ class PlaceStatus with ChangeNotifier {
 
     isCollectionLoading = false;
 
-//    stickerList = [
-//      Sticker(id: 1, name: "종이배", path: '${IP.address}/img/image/종이배.png', limit: 9, count: 0),
-//      Sticker(id: 2, name: "코끼리", path: '${IP.address}/img/image/코끼리.png', limit: 5, count: 0),
-//      Sticker(id: 3, name: "황구리", path: '${IP.address}/img/image/황금개구리.png', limit: 1, count: 0),
-//    ];
-
     await loadStatus();
-
 
     notifyListeners();
   }
@@ -468,11 +427,16 @@ class PlaceStatus with ChangeNotifier {
       pattern.allMatches(text).forEach((match) => print(match.group(0)));
     }
 
-    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
+    final RenderBox renderBox =
+        _keyStickerBackground.currentContext.findRenderObject();
     double renderBoxWidth = renderBox.size.width;
     double renderBoxHeight = renderBox.size.height;
 
-    var data = placedStickerList.where((x) => x.visible == true).toList().map((x) => x.toJson()).toList();
+    var data = placedStickerList
+        .where((x) => x.visible == true)
+        .toList()
+        .map((x) => x.toJson())
+        .toList();
     log(jsonEncode({
       "renderBoxWidth": renderBoxWidth,
       "renderBoxHeight": renderBoxHeight,
@@ -492,7 +456,7 @@ class PlaceStatus with ChangeNotifier {
 
   loadStatus() async {
     RenderBox renderBox;
-    for (int i = 0; i < 5; i ++) {
+    for (int i = 0; i < 5; i++) {
       await Future.delayed(const Duration(seconds: 1), () {});
       if (_keyStickerBackground.currentContext == null) {
         if (i == 4) {
@@ -506,26 +470,22 @@ class PlaceStatus with ChangeNotifier {
 
     double renderBoxWidth = renderBox.size.width;
     double renderBoxHeight = renderBox.size.height;
-    final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
     print("hello?");
-    final res = await http
-        .get("https://paperflips-server.herokuapp.com/User/myRoom", headers: {"Cookie": "user=" + await getToken(), "Accept" : "*/*"});
+    final res = await http.get(
+        "https://paperflips-server.herokuapp.com/User/myRoom",
+        headers: {"Cookie": "user=" + await getToken(), "Accept": "*/*"});
 
-
-    if(res.statusCode != 200){
+    if (res.statusCode != 200) {
       print("!!!!!");
       isLoading = false;
       return;
     }
-
-
 
     var res_body = jsonDecode(res.body);
     print(res_body);
 
     loadData = res_body[0];
     notifyListeners();
-
 
     var loaded = res_body[0]["Data"];
     print(loaded);
@@ -534,20 +494,28 @@ class PlaceStatus with ChangeNotifier {
     print(widthRatio);
     print(heightRatio);
     print(stickerList);
-    List<PlacedSticker> data = loaded["data"].map<PlacedSticker>((x) => PlacedSticker.fromJson(x)).toList();
+    List<PlacedSticker> data = loaded["data"]
+        .map<PlacedSticker>((x) => PlacedSticker.fromJson(x))
+        .toList();
 
     for (int i = 0; i < stickerList.length; i++) {
       try {
-        stickerList[i].limit = data.where((x) => x.sticker.id == stickerList[i].id).toList()[0].sticker.limit;
+        stickerList[i].limit = data
+            .where((x) => x.sticker.id == stickerList[i].id)
+            .toList()[0]
+            .sticker
+            .limit;
       } catch (e) {}
 
       stickerList[i].count = 0;
     }
     for (int i = 0; i < data.length; i++) {
-      data[i].sticker = stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
+      data[i].sticker =
+          stickerList.where((x) => x.id == data[i].sticker.id).toList()[0];
       data[i].sticker.count += 1;
 
-      data[i].position = Offset(data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
+      data[i].position = Offset(
+          data[i].initPos.dx * widthRatio, data[i].initPos.dy * heightRatio);
     }
 
     for (int i = 0; i < data.length; i++) {
@@ -580,7 +548,6 @@ class PlaceStatus with ChangeNotifier {
   }
 
   void moveSticker(int id, Offset offset) {
-    PlacedSticker temp;
     placedStickerList.where((x) => x.id == id).toList().every((x) {
       x.position = offset;
 
@@ -594,12 +561,17 @@ class PlaceStatus with ChangeNotifier {
     double currentScale = selectedSticker.scale;
     double afterScale = currentScale * (scaleFactor >= 1 ? 1.02 : 0.98);
     afterScale = defualtStickerWidth * afterScale <= 150
-        ? (defualtStickerWidth * afterScale >= 20 ? afterScale : 20 / defualtStickerWidth)
+        ? (defualtStickerWidth * afterScale >= 20
+            ? afterScale
+            : 20 / defualtStickerWidth)
         : 150 / defualtStickerWidth;
 
     selectedSticker.scale = afterScale;
-    selectedSticker.position = Offset(selectedSticker.position.dx - (defualtStickerWidth * (afterScale - currentScale) / 2),
-        selectedSticker.position.dy - (defualtStickerWidth * (afterScale - currentScale) / 2));
+    selectedSticker.position = Offset(
+        selectedSticker.position.dx -
+            (defualtStickerWidth * (afterScale - currentScale) / 2),
+        selectedSticker.position.dy -
+            (defualtStickerWidth * (afterScale - currentScale) / 2));
     notifyListeners();
   }
 
@@ -655,40 +627,6 @@ class Sticker {
   Sticker({this.id, this.name, this.path, this.limit, this.count});
 }
 
-//class BackgroundColor {
-//  int id;
-//  String kind;
-//  String name;
-//  Color color;
-//  int price;
-//  BoxDecoration decoration;
-//  bool isAvailable;
-//
-//  BackgroundColor({int id, String kind, String name, Color color, int price, BoxDecoration decoration, bool isAvailable}) {
-//    this.id = id;
-//    this.kind = kind;
-//    this.name = name;
-//    if (price != null) {
-//      this.price = price;
-//    } else {
-//      this.price = null;
-//    }
-//
-//    if (color != null) {
-//      this.color = color;
-//    } else {
-//      this.color = null;
-//    }
-//    if (decoration != null) {
-//      this.decoration = decoration;
-//    } else {
-//      this.decoration = null;
-//    }
-//
-//    this.isAvailable = isAvailable;
-//  }
-//}
-
 class PlacedSticker extends StatefulWidget {
   int id;
 
@@ -727,13 +665,6 @@ class PlacedSticker extends StatefulWidget {
     data['initScale'] = this.scale;
     print(this.scale);
 
-//    data['sticker'] = {
-//      "id": this.sticker.id,
-//      "name": this.sticker.name,
-//      "path": this.sticker.path,
-//      "limit": this.sticker.limit
-//    };
-
     data['sticker'] = {
       "seq": this.sticker.id,
     };
@@ -751,7 +682,8 @@ class PlacedSticker extends StatefulWidget {
   }
 
   @override
-  _PlacedStickerState createState() => _PlacedStickerState(id, initPos, initScale, sticker);
+  _PlacedStickerState createState() =>
+      _PlacedStickerState(id, initPos, initScale, sticker);
 }
 
 class _PlacedStickerState extends State<PlacedSticker> {
@@ -763,8 +695,8 @@ class _PlacedStickerState extends State<PlacedSticker> {
 
   double _scaleFactor = 1.0;
 
-
-  _PlacedStickerState(int _id, Offset _initPos, double _initScale, Sticker _sticker) {
+  _PlacedStickerState(
+      int _id, Offset _initPos, double _initScale, Sticker _sticker) {
     id = _id;
     initPos = _initPos;
     initScale = _initScale;
@@ -778,7 +710,6 @@ class _PlacedStickerState extends State<PlacedSticker> {
 
   @override
   Widget build(BuildContext context) {
-//    print(id);
     PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
     return Positioned(
       key: GlobalKey(),
@@ -788,17 +719,12 @@ class _PlacedStickerState extends State<PlacedSticker> {
         visible: widget.visible,
         child: GestureDetector(
           onScaleStart: (details) {},
-          onTap: () {
-//            placeStatus.selectSticker(id);
-          },
+          onTap: () {},
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               color: widget.selected ? Colors.white.withOpacity(0.8) : null,
             ),
-
-//        width: 0,
-//        height: 50,
             child: Image.network(
               sticker.path,
               width: placeStatus.defualtStickerWidth * widget.scale,
@@ -813,15 +739,6 @@ class _PlacedStickerState extends State<PlacedSticker> {
 class MyRoomPage extends StatefulWidget {
   @override
   _MyRoomPageState createState() => _MyRoomPageState();
-
-
-//  @override
-  void onLoad(BuildContext context) {
-//    PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
-//    placeStatus.loadStatus();
-  }
-
-
 }
 
 class _MyRoomPageState extends State<MyRoomPage> {
@@ -836,10 +753,6 @@ class _MyRoomPageState extends State<MyRoomPage> {
   void initState() {
     super.initState();
     _inAsyncCall = false;
-
-    widget.onLoad(context);
-
-//    _getMySongList();
   }
 
   @override
@@ -848,117 +761,115 @@ class _MyRoomPageState extends State<MyRoomPage> {
       return Builder(builder: (context) {
         PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
         return Row(
-          children:
-          placeStatus.loadData == null ?
-          <Widget>[
-            SizedBox(width: 8),
-            Material(
-                color: primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () async {
-                      var storage = FlutterSecureStorage();
-                      final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
-                      double renderBoxWidth = renderBox.size.width;
-                      double renderBoxHeight = renderBox.size.height;
+          children: placeStatus.loadData == null
+              ? <Widget>[
+                  SizedBox(width: 8),
+                  Material(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      child: InkWell(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          onTap: () async {
+                            var storage = FlutterSecureStorage();
+                            final RenderBox renderBox = _keyStickerBackground
+                                .currentContext
+                                .findRenderObject();
+                            double renderBoxWidth = renderBox.size.width;
+                            double renderBoxHeight = renderBox.size.height;
 
+                            var data = {
+                              "title": "나의 방",
+                              "data": {
+                                "renderBoxWidth": renderBoxWidth,
+                                "renderBoxHeight": renderBoxHeight,
+                                "data": [],
+                                "backgroundColor": 503
+                              }
+                            };
 
+                            var data2 = {
+                              "title": "나의 방",
+                              "Data": {
+                                "renderBoxWidth": renderBoxWidth,
+                                "renderBoxHeight": renderBoxHeight,
+                                "data": [],
+                                "backgroundColor": 503
+                              }
+                            };
+                            final res = await http.post(
+                                "https://paperflips-server.herokuapp.com/User/NewRoom",
+                                headers: {
+                                  "Cookie": "user=" + await getToken(),
+                                  "Content-Type": 'application/json'
+                                },
+                                body: jsonEncode(data));
+                            print(res.headers);
 
+                            print(res.statusCode);
+                            storage.write(
+                                key: "loadData", value: jsonEncode(data2));
 
+                            await Navigator.push(
+                                context,
+                                FadeRoute(
+                                    page:
+                                        EditMyRoomPage(placeStatus.loadData)));
+                            placeStatus.setStickerList();
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 10),
+                              child: Text(
+                                "새로 만들기",
+                                style: TextStyle(fontSize: 15),
+                              )))),
+                  SizedBox(width: 8),
+                ]
+              : <Widget>[
+                  SizedBox(width: 8),
+                  Material(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      child: InkWell(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          onTap: () {
+                            placeStatus.shareRoom();
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 10),
+                              child: Text(
+                                "공유하기",
+                                style: TextStyle(fontSize: 15),
+                              )))),
+                  SizedBox(width: 8),
+                  Material(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      child: InkWell(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          onTap: () async {
+                            var storage = FlutterSecureStorage();
+                            storage.write(
+                                key: "loadData",
+                                value: jsonEncode(placeStatus.loadData));
 
-
-
-
-                      var data = {
-                        "title" : "나의 방",
-                        "data" : {
-                          "renderBoxWidth": renderBoxWidth,
-                          "renderBoxHeight": renderBoxHeight,
-                          "data": [
-                          ],
-                          "backgroundColor": 503
-                        }
-                      };
-
-
-                      var data2 = {
-                        "title" : "나의 방",
-                        "Data" : {
-                          "renderBoxWidth": renderBoxWidth,
-                          "renderBoxHeight": renderBoxHeight,
-                          "data": [
-                          ],
-                          "backgroundColor": 503
-                        }
-                      };
-                      final res = await http.post("https://paperflips-server.herokuapp.com/User/NewRoom",
-                          headers: {"Cookie": "user=" + await getToken(), "Content-Type": 'application/json'},
-                          body: jsonEncode(data
-                          ));
-                      print(res.headers);
-
-                      print(res.statusCode);
-                      storage.write(key: "loadData", value: jsonEncode(data2));
-
-
-                      await Navigator.push(
-                          context,
-                          FadeRoute(page: EditMyRoomPage(placeStatus.loadData)));
-                      placeStatus.setStickerList();
-
-
-
-
-                    },
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                        child: Text("새로 만들기", style: TextStyle(fontSize: 15),)
-                    ))),
-
-            SizedBox(width: 8),
-          ]
-
-              :
-          <Widget>[
-            SizedBox(width: 8),
-            Material(
-                color: primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () {placeStatus.shareRoom();},
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                        child: Text("공유하기", style: TextStyle(fontSize: 15),)
-                    ))),
-
-            SizedBox(width: 8),
-
-            Material(
-                color: primaryColor,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: InkWell(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    onTap: () async {
-                      var storage = FlutterSecureStorage();
-                      storage.write(key: "loadData", value: jsonEncode(placeStatus.loadData));
-
-                      await Navigator.push(
-                          context,
-                          FadeRoute(page: EditMyRoomPage(placeStatus.loadData)));
-                      placeStatus.setStickerList();
-
-                    },
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                        child: Text("수정하기", style: TextStyle(fontSize: 15),
-
-
-                        )
-                    ))),
-            SizedBox(width: 8),
-          ],
+                            await Navigator.push(
+                                context,
+                                FadeRoute(
+                                    page:
+                                        EditMyRoomPage(placeStatus.loadData)));
+                            placeStatus.setStickerList();
+                          },
+                          child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 10),
+                              child: Text(
+                                "수정하기",
+                                style: TextStyle(fontSize: 15),
+                              )))),
+                  SizedBox(width: 8),
+                ],
         );
       });
     }
@@ -1007,13 +918,19 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                 onDragEnd: (data) {
                                   _pc.open();
                                   if (data.wasAccepted == true) {
-                                    final RenderBox renderBox = _keyStickerBackground.currentContext.findRenderObject();
-                                    final positionStickerBackground = renderBox.localToGlobal(Offset.zero);
+                                    final RenderBox renderBox =
+                                        _keyStickerBackground.currentContext
+                                            .findRenderObject();
+                                    final positionStickerBackground =
+                                        renderBox.localToGlobal(Offset.zero);
 
                                     placeStatus.addSticker(PlacedSticker(
                                         count++,
-                                        Offset(data.offset.dx - positionStickerBackground.dx,
-                                            data.offset.dy - positionStickerBackground.dy),
+                                        Offset(
+                                            data.offset.dx -
+                                                positionStickerBackground.dx,
+                                            data.offset.dy -
+                                                positionStickerBackground.dy),
                                         1.0,
                                         sticker));
 
@@ -1030,7 +947,8 @@ class _MyRoomPageState extends State<MyRoomPage> {
                     Container(
                       alignment: Alignment.bottomRight,
                       child: Builder(builder: (context) {
-                        PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                        PlaceStatus placeStatus =
+                            Provider.of<PlaceStatus>(context);
                         return Text((sticker.limit - sticker.count).toString());
                       }),
                     )
@@ -1049,7 +967,6 @@ class _MyRoomPageState extends State<MyRoomPage> {
           PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
           return Column(children: [
             Container(
-//                      color: Colors.green,
               margin: EdgeInsets.all(8),
               alignment: Alignment.bottomCenter,
               child: Row(
@@ -1058,8 +975,9 @@ class _MyRoomPageState extends State<MyRoomPage> {
                   Container(
                     width: 35,
                     height: 4,
-                    decoration:
-                    BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
                   ),
                 ],
               ),
@@ -1071,20 +989,20 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 Flexible(
                   child: !placeStatus.isCollectionLoading
                       ? Container(
-//            height : 250,
-                    padding: EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 10),
+                          padding: EdgeInsets.only(
+                              left: 10, top: 2, right: 10, bottom: 10),
+                          child: GridView.count(
+                            scrollDirection: Axis.vertical,
+                            //스크롤 방향 조절
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            crossAxisCount: 5,
 
-                    child: GridView.count(
-//        physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      //스크롤 방향 조절
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 5,
-
-                      children: placeStatus.stickerList.map((x) => _buildUnderSticker(x)).toList(),
-                    ),
-                  )
+                            children: placeStatus.stickerList
+                                .map((x) => _buildUnderSticker(x))
+                                .toList(),
+                          ),
+                        )
                       : Center(child: CircularProgressIndicator()),
                 ),
               ]),
@@ -1107,7 +1025,6 @@ class _MyRoomPageState extends State<MyRoomPage> {
               opacity: 0.8,
               child: Scaffold(
                   appBar: DefaultAppBar(title: "방 꾸미기"),
-                  // 2-1. 상세 화면 (전체 화면 세팅1)
                   body: SwipeDetector(
                     onSwipeDown: () {
                       _pc.close();
@@ -1122,31 +1039,33 @@ class _MyRoomPageState extends State<MyRoomPage> {
                             progressIndicator: CircularProgressIndicator(),
                             opacity: 0.1,
                             child: Container(
-                              decoration: placeStatus.backgruondColor.decoration,
-//                      color : Colors.red,
-//                  height: double.infinity,
-//                        alignment: Alignment.center,
+                                decoration:
+                                    placeStatus.backgruondColor.decoration,
                                 child: Align(
                                   alignment: Alignment.center,
                                   child: Stack(
                                     children: <Widget>[
                                       Container(
-//                                alignment: Alignment.center,
                                         child: DragTarget(
-                                          builder: (context, List<Sticker> candidateData, rejectedData) {
-                                            PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                                          builder: (context,
+                                              List<Sticker> candidateData,
+                                              rejectedData) {
+                                            PlaceStatus placeStatus =
+                                                Provider.of<PlaceStatus>(
+                                                    context);
                                             return RepaintBoundary(
                                               key: _keyStickerBackground,
                                               child: Container(
-
-                                                decoration: placeStatus.backgruondColor.decoration,
+                                                decoration: placeStatus
+                                                    .backgruondColor.decoration,
                                                 child: AspectRatio(
                                                     aspectRatio: 3 / 5,
                                                     child: Stack(
-                                                        children: placeStatus.placedStickerList.map((x) {
-//                                                          print(x.sticker.path);
-                                                          return x;
-                                                        }).toList())),
+                                                        children: placeStatus
+                                                            .placedStickerList
+                                                            .map((x) {
+                                                      return x;
+                                                    }).toList())),
                                               ),
                                             );
                                           },
@@ -1159,25 +1078,24 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                     ],
                                   ),
                                 ))),
-
                         Positioned.fill(
                             top: 50,
                             child: Builder(
-
                               builder: (context) {
-                                PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                                PlaceStatus placeStatus =
+                                    Provider.of<PlaceStatus>(context);
                                 return Align(
                                   alignment: Alignment.topCenter,
                                   child: Container(
-                                      child: placeStatus.loadData == null ? null : Text(placeStatus.loadData["title"],
-                                          style: TextStyle(fontFamily: Font.bold, fontSize: 28))
-                                  ),
+                                      child: placeStatus.loadData == null
+                                          ? null
+                                          : Text(placeStatus.loadData["title"],
+                                              style: TextStyle(
+                                                  fontFamily: Font.bold,
+                                                  fontSize: 28))),
                                 );
                               },
-                            )
-
-                        ),
-
+                            )),
                         Positioned(
                           right: 0.0,
                           bottom: 20,
@@ -1188,8 +1106,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                   )),
             );
           },
-        )
-    );
+        ));
   }
 
   Widget _buildUnderColor(BackgroundColor backgroundColor) {
@@ -1225,7 +1142,8 @@ class _MyRoomPageState extends State<MyRoomPage> {
                   Container(
                     alignment: Alignment.bottomCenter,
                     child: Builder(builder: (context) {
-                      PlaceStatus placeStatus = Provider.of<PlaceStatus>(context);
+                      PlaceStatus placeStatus =
+                          Provider.of<PlaceStatus>(context);
                       return Text(
                         backgroundColor.name,
                         style: TextStyle(fontSize: 11),
@@ -1248,7 +1166,6 @@ class _MyRoomPageState extends State<MyRoomPage> {
 
         return Column(children: [
           Container(
-//                      color: Colors.green,
             margin: EdgeInsets.all(8),
             alignment: Alignment.bottomCenter,
             child: Row(
@@ -1257,7 +1174,9 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 Container(
                   width: 35,
                   height: 4,
-                  decoration: BoxDecoration(color: Colors.grey[300], borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
               ],
             ),
@@ -1270,7 +1189,9 @@ class _MyRoomPageState extends State<MyRoomPage> {
                 children: placeStatus.colorTabList.map<Widget>((x) {
                   return Expanded(
                     child: Material(
-                      color: placeStatus.selectedColorTab == x["name"] ? Colors.white : navColor,
+                      color: placeStatus.selectedColorTab == x["name"]
+                          ? Colors.white
+                          : navColor,
                       borderRadius: BorderRadius.all(Radius.circular(1000)),
                       child: InkWell(
                         borderRadius: BorderRadius.all(Radius.circular(1000)),
@@ -1278,10 +1199,8 @@ class _MyRoomPageState extends State<MyRoomPage> {
                           placeStatus.setSelectedColorTab(x["name"]);
                         },
                         child: Container(
-//                          alignment: Alignment.center,
-//                          height : 30,
-
-                          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -1289,13 +1208,16 @@ class _MyRoomPageState extends State<MyRoomPage> {
                                 width: 8,
                                 height: 8,
                                 decoration: BoxDecoration(
-                                    border: placeStatus.selectedColorTab == x["name"] && x["name"] == "하양"
+                                    border: placeStatus.selectedColorTab ==
+                                                x["name"] &&
+                                            x["name"] == "하양"
                                         ? Border.all(
-                                      color: Colors.black,
-                                      width: 1,
-                                    )
+                                            color: Colors.black,
+                                            width: 1,
+                                          )
                                         : null,
-                                    borderRadius: BorderRadius.all(Radius.circular(1000)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(1000)),
                                     color: x["color"]),
                               ),
                               SizedBox(
@@ -1319,19 +1241,19 @@ class _MyRoomPageState extends State<MyRoomPage> {
             child: Column(children: [
               Flexible(
                 child: Container(
-//            height : 250,
-                  padding: EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
-
+                  padding:
+                      EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 10),
                   child: GridView.count(
-//        physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     //스크롤 방향 조절
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     crossAxisCount: 5,
 
-                    children:
-                    placeStatus.colorList[placeStatus.selectedColorTab].map<Widget>((x) => _buildUnderColor(x)).toList(),
+                    children: placeStatus
+                        .colorList[placeStatus.selectedColorTab]
+                        .map<Widget>((x) => _buildUnderColor(x))
+                        .toList(),
                   ),
                 ),
               ),
@@ -1348,17 +1270,21 @@ class FadeRoute extends PageRouteBuilder {
 
   FadeRoute({this.page})
       : super(
-    pageBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,) =>
-    page,
-    transitionsBuilder: (BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }

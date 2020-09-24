@@ -1,12 +1,6 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../auth.dart';
-import '../ip.dart';
-import 'package:http/http.dart' as http;
-
 import 'dart:convert';
+
 Map<String, dynamic> parseJwtPayLoad(String token) {
   final parts = token.split('.');
   if (parts.length != 3) {
@@ -56,16 +50,11 @@ String _decodeBase64(String str) {
   return utf8.decode(base64Url.decode(output));
 }
 
-
 class OtherStatus with ChangeNotifier {
-
-//  var loaded =
   bool isLoading = false;
 
-  setIsLoading(bool value){
+  setIsLoading(bool value) {
     isLoading = value;
     notifyListeners();
   }
-
-
 }

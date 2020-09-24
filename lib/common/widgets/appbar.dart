@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_front/foldComplete_page.dart';
 import '../color.dart';
 import '../font.dart';
-import '../asset_path.dart';
 import 'package:provider/provider.dart';
 import '../../fold_page.dart';
 import '../provider/userProvider.dart';
@@ -15,14 +14,15 @@ class DefaultAppBar extends StatefulWidget implements PreferredSizeWidget {
   var title;
 
   @override
-  _DefaultAppBarState createState() => _DefaultAppBarState(onActionButtonPressed, title);
+  _DefaultAppBarState createState() =>
+      _DefaultAppBarState(onActionButtonPressed, title);
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
-class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateMixin {
+class _DefaultAppBarState extends State<DefaultAppBar>
+    with TickerProviderStateMixin {
   String value;
   var onActionButtonPressed;
   var title;
@@ -47,7 +47,9 @@ class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateM
       Widget temp;
       if (onActionButtonPressed != null) {
         temp = IconButton(
-          icon: userStatus.isUserButtonToggled ? Icon(Icons.dehaze) : Icon(Icons.person_outline),
+          icon: userStatus.isUserButtonToggled
+              ? Icon(Icons.dehaze)
+              : Icon(Icons.person_outline),
           onPressed: () => onActionButtonPressed(),
         );
       } else {
@@ -57,11 +59,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateM
     }
 
     return AppBar(
-      // Here we take the value from the MyHomePage object that was created by
-      // the App.build method, and use it to set our appbar title.
       centerTitle: true,
       title: _buildDefaultAppBarTitle(),
-
       elevation: 0.0,
       flexibleSpace: Container(
         decoration: BoxDecoration(),
@@ -83,7 +82,8 @@ class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateM
       temp = Text(
         title,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: Font.bold),
+        style: TextStyle(
+            fontSize: 18, fontWeight: FontWeight.bold, fontFamily: Font.bold),
       );
     } else {
       temp = Container(width: 135, child: Image.asset("images/nav_logo.png"));
@@ -93,8 +93,13 @@ class _DefaultAppBarState extends State<DefaultAppBar> with TickerProviderStateM
 }
 
 class FoldAppBar extends StatefulWidget implements PreferredSizeWidget {
-
-  FoldAppBar({this.onPrevButtonPressed, this.onNextButtonPressed, this.onExitButtonPressed, this.title, this.step, this.recipe});
+  FoldAppBar(
+      {this.onPrevButtonPressed,
+      this.onNextButtonPressed,
+      this.onExitButtonPressed,
+      this.title,
+      this.step,
+      this.recipe});
 
   var onPrevButtonPressed;
   var onNextButtonPressed;
@@ -105,10 +110,10 @@ class FoldAppBar extends StatefulWidget implements PreferredSizeWidget {
   var recipe;
 
   @override
-  _FoldAppBarState createState() => _FoldAppBarState(onPrevButtonPressed, onNextButtonPressed, onExitButtonPressed, title, step, recipe);
+  _FoldAppBarState createState() => _FoldAppBarState(onPrevButtonPressed,
+      onNextButtonPressed, onExitButtonPressed, title, step, recipe);
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
 
@@ -121,7 +126,8 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
   var step;
   var recipe;
 
-  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed, _onExitButtonPressed, _title, _step, _recipe) {
+  _FoldAppBarState(_onPrevButtonPressed, _onNextButtonPressed,
+      _onExitButtonPressed, _title, _step, _recipe) {
     onPrevButtonPressed = _onPrevButtonPressed;
     onNextButtonPressed = _onNextButtonPressed;
     onExitButtonPressed = _onExitButtonPressed;
@@ -134,8 +140,6 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     FoldStatus foldStatus = Provider.of<FoldStatus>(context);
     print(step);
-//    print( Size.fromHeight(kToolbarHeight));
-
     Widget _buildFoldAppBarNextButton() {
       return Material(
         color: primaryColor,
@@ -143,29 +147,20 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         child: InkWell(
           splashColor: navColor,
           onTap: () {
-            if(foldStatus.nextStep() == false){
-//              Navigator.pop(context);
+            if (foldStatus.nextStep() == false) {
               Navigator.push(
                 context,
                 FadeRoute(page: FoldCompletePage(recipe)),
               );
-
-
-
-
             }
-
-
-
-
-
           },
           borderRadius: BorderRadius.only(bottomRight: Radius.circular(10)),
           child: Container(
-//            width : 70,
             height: 80,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))),
+            decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.only(bottomRight: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Text(
@@ -213,7 +208,9 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
             width: 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
+            decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Icon(Icons.arrow_back),
@@ -244,7 +241,9 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
             width: 80,
             height: 56,
             padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
+            decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.only(bottomLeft: Radius.circular(10))),
             child: Row(
               children: <Widget>[
                 Icon(Icons.arrow_back),
@@ -266,7 +265,9 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            foldStatus.getStep() != 1 ? _buildFoldAppBarPrevButton() : _buildFoldAppBarExitButton(),
+            foldStatus.getStep() != 1
+                ? _buildFoldAppBarPrevButton()
+                : _buildFoldAppBarExitButton(),
             _buildFoldAppBarNextButton(),
           ],
         ),
@@ -276,7 +277,6 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-
               children: <Widget>[
                 Text(
                   title,
@@ -298,56 +298,41 @@ class _FoldAppBarState extends State<FoldAppBar> with TickerProviderStateMixin {
     }
 
     return AppBar(
-      // Here we take the value from the MyHomePage object that was created by
-      // the App.build method, and use it to set our appbar title.
       backgroundColor: primaryColor,
       centerTitle: true,
       title: _buildFoldAppBarTitle(),
-
-//      elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(10),
         ),
       ),
-
       automaticallyImplyLeading: false,
-
       flexibleSpace: Container(),
       titleSpacing: 0.0,
-
-//      leading: Row(
-//        children: <Widget>[
-//          SizedBox(width: 20,),
-//          _buildFoldAppBarLeadingButton(),
-//        ],
-//      ),
     );
   }
 }
-
-
 
 class FadeRoute extends PageRouteBuilder {
   final Widget page;
 
   FadeRoute({this.page})
       : super(
-    pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        ) =>
-    page,
-    transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-        ) =>
-        FadeTransition(
-          opacity: animation,
-          child: child,
-        ),
-  );
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) =>
+              page,
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) =>
+              FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
+        );
 }

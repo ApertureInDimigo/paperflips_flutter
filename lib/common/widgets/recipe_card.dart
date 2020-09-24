@@ -43,6 +43,14 @@ Widget buildRarityText(rarity) {
       );
       break;
 
+    case "limited":
+      rarityTextWidget = Text(
+        "희귀",
+        style: TextStyle(color: limitedRecipeColor, fontFamily: Font.bold),
+        textAlign: TextAlign.left,
+      );
+      break;
+
     default:
       rarityTextWidget = Container();
       break;

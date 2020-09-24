@@ -6,6 +6,7 @@ import './common/font.dart';
 import './common/color.dart';
 import './common/asset_path.dart';
 import 'common/auth.dart';
+import 'common/provider/otherProvider.dart';
 import 'main_page.dart';
 import './common/data_class.dart';
 import './common/widgets/recipe_card.dart';
@@ -15,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'dart:math';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'common/widgets/appbar.dart';
-
+import 'package:provider/provider.dart';
 
 class CollectionPage extends StatefulWidget {
   @override
@@ -77,13 +78,15 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: DefaultAppBar(title : "내 컬렉션"),
-      body: ModalProgressHUD(
-          inAsyncCall : _inAsyncCall,
-          progressIndicator: CircularProgressIndicator(),
-          opacity: 0,
-          child: _buildCollectionMenu()),
+    OtherStatus otherStatus = Provider.of<OtherStatus>(context);
+    return ModalProgressHUD(
+      inAsyncCall: otherStatus.isLoading | _inAsyncCall,
+      opacity: 0.5,
+      progressIndicator: CircularProgressIndicator(),
+      child: Scaffold(
+        appBar: DefaultAppBar(title : "내 컬렉션"),
+        body: _buildCollectionMenu(),
+      ),
     );
   }
 

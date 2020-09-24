@@ -110,7 +110,7 @@ void showCustomDialog(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Expanded(
+                    cancelButtonText != null ? Expanded(
                       child: Material(
                         color: cardColor,
                         child: InkWell(
@@ -123,7 +123,7 @@ void showCustomDialog(
                           ),
                         ),
                       ),
-                    ),
+                    ) : Container(),
                     Expanded(
                       child: Material(
                         color: primaryColor,

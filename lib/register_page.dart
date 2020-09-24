@@ -26,7 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Map<String, dynamic> _buildHint = {"id" : Container(), "pw": Container(), "name" : Container()};
 
-
+  var _required = {"id" : false, "pw" : false, "name" : false};
 
   @override
   void initState() {
@@ -109,11 +109,13 @@ class _RegisterPageState extends State<RegisterPage> {
                           onSubmitted: (_) => FocusScope.of(context).nextFocus(),
                           onChanged: (value) {
                             setState(() {
-                              var reg = RegExp(r'^[A-Za-z0-9]{6,12}$');
+                              var reg = RegExp(r'^[A-Za-z]{1}[A-Za-z0-9]{6,12}$');
                               if(reg.hasMatch(_idController.text) == true){
                                 _buildHint["id"] = Text("좋은 ID입니다.", style: TextStyle(color: Colors.green),);
+                                _required["id"] = true;
                               }else{
                                 _buildHint["id"] =Text("대/소문자, 숫자로 된 6~12글자여야 합니다.", style: TextStyle(color: Colors.red),);
+                                _required["id"] = false;
                               }
                             });
 
@@ -138,6 +140,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     SizedBox(width : 80),
@@ -161,6 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                         height: 45,
                         child: TextField(
+                          obscureText: true,
                           controller: _pwController,
                           textInputAction: TextInputAction.next,
                           onSubmitted: (_) => FocusScope.of(context).nextFocus(),
@@ -170,6 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               var reg = RegExp(r'^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$');
                               if(reg.hasMatch(_pwController.text) == true){
                                 _buildHint["pw"] = Text("좋은 비밀번호입니다.", style: TextStyle(color: Colors.green),);
+                                _required["pw"] = true;
                               }else{
                                   reg = RegExp(r'^.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$');
                                   if(reg.hasMatch(_pwController.text) == true){
@@ -177,7 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   }else{
                                     _buildHint["pw"] =Text("특수문자, 영문, 숫자를 모두 포함해야합니다.", style: TextStyle(color: Colors.red),);
                                   }
-
+                                  _required["pw"] = false;
                               }
                             });
 
@@ -202,6 +207,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     SizedBox(width : 80),
@@ -231,8 +237,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               var reg = RegExp(r'^[A-Z0-9a-z가-힣]+$');
                               if(reg.hasMatch(_nameController.text) == true){
                                 _buildHint["name"] = Text("좋은 별명입니다.", style: TextStyle(color: Colors.green),);
+                                _required["name"] = true;
                               }else{
                                 _buildHint["name"] =Text("한글, 영문, 숫자만 사용가능합니다.", style: TextStyle(color: Colors.red),);
+                                _required["name"] = false;
                               }
                             });
 
@@ -257,6 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     SizedBox(width : 80),
@@ -266,11 +275,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 SizedBox(height: 15),
                 Material(
-                  color: Color(0xFFE1E1E1),
+                  color: _required["id"] && _required["pw"] && _required["name"] ? primaryColor :Color(0xFFE1E1E1),
                   borderRadius: BorderRadius.circular(10.0),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10.0),
-                    onTap: () async {
+                    onTap: _required["id"] && _required["pw"] && _required["name"] ? () async {
                       setState(() {
                         _inAsyncCall = true;
                       });
@@ -320,7 +329,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
 //                    request.register(id, pw, name);
-                    },
+                    } : null,
 
                     child: Container(
                       width: double.infinity,

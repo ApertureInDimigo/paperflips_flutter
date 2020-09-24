@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_front/common/data_class.dart';
 import 'package:flutter_front/common/widgets/appbar.dart';
+import 'package:flutter_front/common/widgets/dialog.dart';
 import 'package:flutter_front/common/widgets/recipe_card.dart';
 import 'package:flutter_tts_improved/flutter_tts_improved.dart';
 
@@ -157,6 +158,26 @@ class _FoldReadyPageState extends State<FoldReadyPage> {
 
 
   void goFoldPage(recipeCard) async{
+    
+    if(recipeCard.recipeName != "곰"){
+      showCustomDialog(
+          context: context,
+          title: "준비중입니다.",
+          content: "곧 공개됩니다!",
+
+          confirmButtonText: "확인",
+
+          confirmButtonAction: () async{
+            print("SD");
+
+            Navigator.pop(context);
+
+
+          });
+      return;
+    }
+    
+    
     setState(() {
       _inAsyncCall = true;
     });
@@ -167,14 +188,15 @@ class _FoldReadyPageState extends State<FoldReadyPage> {
     Navigator.push(
       context,
       FadeRoute(page: FoldPage(recipeCard, [
-        FoldProcess(imgPath: "images/golden_frog_icon.png", subtitleExplainText: "동해물과 백두산이", ttsExplainText: "상처를 치료해줄 사람 어디 없나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "마르고 닳도록", ttsExplainText: "가만히 놔두다간 끊임없이 덧나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "하느님이 보우하사", ttsExplainText: "사랑도 사람도 너무나도 겁나"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "우리나라 만세", ttsExplainText: "혼자인게 무서워 난 잊혀질까 두려워"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "무궁화 삼천리", ttsExplainText: "언제나 외톨이 맘의 문을 닫고"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "화려강산", ttsExplainText: "슬픔을 등에 지고 살아가는 바보"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "대한사람 대한으로", ttsExplainText: "두 눈을 감고 두 귀를 막고"),
-        FoldProcess(imgPath: "images/fold_icon.png", subtitleExplainText: "길이 보전하세", ttsExplainText: "캄캄한 어둠속에 내 자신을 가둬"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/1", subtitleExplainText: "동해물과 백두산이", ttsExplainText: "종이를 대각선으로 반으로 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/2", subtitleExplainText: "마르고 닳도록", ttsExplainText: "접혀진 종이를 다시 한 번 삼각형 모양으로 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/3", subtitleExplainText: "하느님이 보우하사", ttsExplainText: "표시된 선을 따라 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/4", subtitleExplainText: "우리나라 만세", ttsExplainText: "표시된 선을 따라 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/5", subtitleExplainText: "무궁화 삼천리", ttsExplainText: "표시된 선을 따라 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/6", subtitleExplainText: "화려강산", ttsExplainText: "뒤집어 주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/7", subtitleExplainText: "대한사람 대한으로", ttsExplainText: "표시된 선을 따라 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/8", subtitleExplainText: "길이 보전하세", ttsExplainText: "선을 따라 뒷쪽으로 접어주세요"),
+        FoldProcess(imgPath: "http://dimigo.herokuapp.com/paperflips/image/9", subtitleExplainText: "길이 보전하세", ttsExplainText: "얼굴을 그려 완성해주세요"),
 
       ])),
     );

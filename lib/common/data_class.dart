@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'ip.dart';
 
 import 'package:flutter/material.dart';
+
+
+
+
 //import 'package:json_annotation/json_annotation.dart'; //이건 어떻게 쓸 지 모르겠어요.. 일단 기존 방법을 택할게요..ㅠㅠ
 
 //이 파일에 json 파싱 등을 위한 데이터 클래스를 정의할 것
@@ -19,6 +23,38 @@ class Sticker {
 
   Sticker({this.id, this.name, this.path, this.limit, this.count});
 }
+
+
+
+
+
+
+
+
+
+class CollectionCard {
+  List<RecipeCard> rec;
+  List<DateTime> obtainDate;
+  String path;
+
+  addCol(RecipeCard r, DateTime obtain) {
+    rec.add(r);
+    obtainDate.add(obtain);
+  }
+}
+
+
+class FoldProcess {
+
+  String imgPath;
+
+  String subtitleExplainText;
+  String ttsExplainText;
+
+  FoldProcess({this.imgPath, this.subtitleExplainText, this.ttsExplainText});
+}
+
+
 
 class BackgroundColor {
   int id;
@@ -53,37 +89,6 @@ class BackgroundColor {
     this.isAvailable = isAvailable;
   }
 }
-
-
-
-
-
-
-
-class CollectionCard {
-  List<RecipeCard> rec;
-  List<DateTime> obtainDate;
-  String path;
-
-  addCol(RecipeCard r, DateTime obtain) {
-    rec.add(r);
-    obtainDate.add(obtain);
-  }
-}
-
-
-class FoldProcess {
-
-  String imgPath;
-
-  String subtitleExplainText;
-  String ttsExplainText;
-
-  FoldProcess({this.imgPath, this.subtitleExplainText, this.ttsExplainText});
-}
-
-
-
 
 class RecipeCard {
 

@@ -120,28 +120,50 @@ class _MainPageState extends State<MainPage> {
     OtherStatus otherStatus = Provider.of<OtherStatus>(context);
     _isLogined = userStatus.isLogined;
 
-    return ModalProgressHUD(
-      inAsyncCall: otherStatus.isLoading,
-      opacity: 0.5,
-      progressIndicator: CircularProgressIndicator(),
-      child: Scaffold(
-          appBar: DefaultAppBar(onActionButtonPressed: () {
-            setState(() {
-              _isUserButtonToggle = !_isUserButtonToggle;
-//            print(_isUserButtonToggle);
+    return WillPopScope(
+      onWillPop: () {
+        showCustomDialog(
+            context: context,
+            title: "페이퍼플립스를 종료할까요?",
+            content: "",
+            cancelButtonText: "취소",
+            confirmButtonText: "나가기",
+            cancelButtonAction: () {
+              Navigator.pop(context);
+            },
+            confirmButtonAction: () async {
+              print("SD");
+              Navigator.pop(context);
+              exit(0);
             });
-            userStatus.setIsUserButtonToggled(!userStatus.isUserButtonToggled);
-            print(userStatus.isUserButtonToggled);
-          }),
-          body: SafeArea(
-            child: Column(
-              children: <Widget>[
-                _buildUpperMenu(), //앱바 아래 메뉴까지
-                _buildBottomMenu(), //MVP 카드 추천 종이접기
-                _buildSearchBar(), //클릭 시 검색바 열림
-              ],
-            ),
-          )),
+
+        return;
+
+
+      },
+      child: ModalProgressHUD(
+        inAsyncCall: otherStatus.isLoading,
+        opacity: 0.5,
+        progressIndicator: CircularProgressIndicator(),
+        child: Scaffold(
+            appBar: DefaultAppBar(onActionButtonPressed: () {
+              setState(() {
+                _isUserButtonToggle = !_isUserButtonToggle;
+//            print(_isUserButtonToggle);
+              });
+              userStatus.setIsUserButtonToggled(!userStatus.isUserButtonToggled);
+              print(userStatus.isUserButtonToggled);
+            }),
+            body: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  _buildUpperMenu(), //앱바 아래 메뉴까지
+                  _buildBottomMenu(), //MVP 카드 추천 종이접기
+                  _buildSearchBar(), //클릭 시 검색바 열림
+                ],
+              ),
+            )),
+      ),
     );
   }
 
@@ -178,6 +200,10 @@ class _MainPageState extends State<MainPage> {
           ),
           SizedBox(height: 10),
           _buildRecommendRecipeList(),
+
+          SizedBox(height: 18),
+          Center(child: Text("Icons copyright (c) Flaticon."),),
+          SizedBox(height : 12),
         ],
       ),
     );
@@ -542,7 +568,7 @@ class _MainPageState extends State<MainPage> {
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: '123', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(text: '100', style: TextStyle(fontFamily: Font.bold)),
                       TextSpan(text: ' 점', style: TextStyle(fontFamily: Font.normal, fontSize: 12)),
                     ],
                   ),
@@ -558,7 +584,7 @@ class _MainPageState extends State<MainPage> {
                 Text.rich(
                   TextSpan(
                     children: <TextSpan>[
-                      TextSpan(text: '69', style: TextStyle(fontFamily: Font.bold)),
+                      TextSpan(text: '25', style: TextStyle(fontFamily: Font.bold)),
                       TextSpan(text: ' 페인트', style: TextStyle(fontFamily: Font.normal, fontSize: 12)),
                     ],
                   ),
@@ -688,7 +714,7 @@ class _MainPageState extends State<MainPage> {
 //    print(RecipeCard.fromJson(recipe));
 //    setState(() {});
     print(recipeList.map((x) => RecipeCard.fromJson(x)).toList());
-    return recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList();
+    return recipeList.map<RecipeCard>((x) => RecipeCard.fromJson(x)).toList().reversed.toList();
 
     return [
       RecipeCard(recipeName: "종이배", rarity: "normal", summary: "배경을 클릭해 종이이배의 소개를 들어봐요!"),

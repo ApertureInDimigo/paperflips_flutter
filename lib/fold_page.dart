@@ -116,6 +116,9 @@ class _FoldPageState extends State<FoldPage> {
     await tts.setPitch(0.1);
     print('VOICES: ${await tts.getVoices}');
     print('LANGUAGES: ${await tts.getLanguages}');
+
+    tts.setLanguage("ko-KR");
+
 //    tts.setPitch(2.0);
     tts.setStartHandler(() {
 
@@ -218,6 +221,7 @@ class _FoldPageState extends State<FoldPage> {
             },
           ),
           body: Container(
+            color : Colors.white,
             child: Stack(children: [
 //              UnityWidget(
 //                onUnityViewCreated: onUnityCreated,
@@ -230,7 +234,7 @@ class _FoldPageState extends State<FoldPage> {
                       child: Center(
                         child: FractionallySizedBox(
                           widthFactor: 8/10,
-                          child: Image.asset(foldStatus
+                          child: Image.network(foldStatus
                               .getCurrentProcess()
                               .imgPath, fit: BoxFit.fill,),
                         ),
@@ -320,23 +324,23 @@ class _FoldPageState extends State<FoldPage> {
                               ),
 
 
-                            SizedBox(height : 25),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10)
-                                ),
-                                color : navColor,
-                              ),
-//                              width :  MediaQuery.of(context).size.width * 0.3,
-//                              height : 240,
-                              padding: EdgeInsets.all(25),
-                              child: Column(
-                                children: <Widget>[
-                                  Image.asset(IconPath.fold, width: 100, height: 100,),
-                                ],
-                              ),
-                            )
+//                            SizedBox(height : 25),
+//                            Container(
+//                              decoration: BoxDecoration(
+//                                borderRadius: BorderRadius.all(
+//                                    Radius.circular(10)
+//                                ),
+//                                color : navColor,
+//                              ),
+////                              width :  MediaQuery.of(context).size.width * 0.3,
+////                              height : 240,
+//                              padding: EdgeInsets.all(25),
+//                              child: Column(
+//                                children: <Widget>[
+//                                  Image.asset(IconPath.fold, width: 100, height: 100,),
+//                                ],
+//                              ),
+//                            )
                           ]),
                     );
                   })),

@@ -25,6 +25,11 @@ class _LoginPageState extends State<LoginPage> {
 
 
   final TextEditingController _pwController = new TextEditingController();
+
+  var _id = "";
+  var _pw = "";
+
+
 //  final TextEditingController _nameController = new TextEditingController();
   bool _inAsyncCall; //http 요청중이면 true 아니면 false
 
@@ -65,7 +70,9 @@ class _LoginPageState extends State<LoginPage> {
 
                     textInputAction: TextInputAction.next,
                     onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                    onChanged: (value) {},
+                    onChanged: (value) {setState(() {
+                      _id = value.trim();
+                    });},
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -78,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                       fillColor: cardColor,
 //                    focusColor: Colors.grey,
 
-                      hintText: "아이디를 입력하시던가요ㅋㅋㅋㅋㅋㅋ",
+                      hintText: "아이디를 입력해주세요",
                       hintStyle: TextStyle(fontSize: 13, color: Colors.black),
                     ),
                   ),
@@ -87,11 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   height: 45,
                   child: TextField(
-//                    obscureText: true,
+                    obscureText: true,
                     controller: _pwController,
                     textInputAction: TextInputAction.done,
                     onSubmitted: (_) => FocusScope.of(context).nextFocus(),
-                    onChanged: (value) {},
+                    onChanged: (value) {setState(() {
+                      _pw = value.trim();
+                    });},
                     textAlignVertical: TextAlignVertical.center,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
@@ -104,19 +113,19 @@ class _LoginPageState extends State<LoginPage> {
                       fillColor: cardColor,
 //                    focusColor: Colors.grey,
 
-                      hintText: "비밀번호 입력 하시던가요ㅋㅋㅋㅋㅋㅋ",
+                      hintText: "비밀번호를 입력해주세요",
                       hintStyle: TextStyle(fontSize: 13, color: Colors.black),
                     ),
                   ),
                 ),
                 SizedBox(height: 5),
                 Material(
-                  color: Color(0xFFE1E1E1),
+                  color: _id != "" && _pw != ""  ? primaryColor : Color(0xFFE1E1E1),
 
                   borderRadius: BorderRadius.circular(10.0),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(10.0),
-                    onTap: () async {
+                    onTap: _id != "" && _pw != "" ? () async {
                       setState(() {
                         _inAsyncCall = true;
                       });
@@ -134,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                         );
 
                       }else{
-
+                        showCustomAlert(context: context, title: "아이디나 비밀번호가 옳지 않습니다.", duration: Duration(seconds: 1), isSuccess: false, width: 400);
                       }
 
 
@@ -142,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                         _inAsyncCall = false;
                       });
 
-                    },
+                    } : null,
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
@@ -153,28 +162,28 @@ class _LoginPageState extends State<LoginPage> {
 //                          width : 0.4
 //                        ),
                       ),
-                      child: Text("로그인ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ"),
+                      child: Text("로그인"),
                     ),
                   ),
                 ),
                 SizedBox(height: 10),
-                Material(
-                  color: kakaoColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(10.0),
-                    onTap: () {},
-                    child: Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      height: 45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: Text("카카오톡으로 로그인 ㅋㅋㅋㅋ"),
-                    ),
-                  ),
-                ),
+//                Material(
+//                  color: kakaoColor,
+//                  borderRadius: BorderRadius.circular(10.0),
+//                  child: InkWell(
+//                    borderRadius: BorderRadius.circular(10.0),
+//                    onTap: () {},
+//                    child: Container(
+//                      width: double.infinity,
+//                      alignment: Alignment.center,
+//                      height: 45,
+//                      decoration: BoxDecoration(
+//                        borderRadius: BorderRadius.circular(10.0),
+//                      ),
+//                      child: Text("카카오톡으로 로그인"),
+//                    ),
+//                  ),
+//                ),
 
               ],
             ),

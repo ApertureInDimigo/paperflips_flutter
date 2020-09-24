@@ -79,10 +79,11 @@ class UserStatus with ChangeNotifier {
   }
 
   Future<bool> login(String id, String pw) async{
-
+    print(id.trim());
+    print(pw.trim());
     final res = await http.post(
         "${IP.address}/User/login",
-        body: {"id": id, "password" : pw});
+        body: {"id": id.trim(), "password" : pw.trim()});
     print(res.body);
 
 

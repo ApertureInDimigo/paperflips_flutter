@@ -119,7 +119,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         SizedBox(height: 15),
         Column(
-          children: _customRecipeList.map((x) => buildRecipeCard(x)).toList(),
+          children: [Text("레시피를 찾을 수 없어요.")],
         )
       ],
     );
@@ -141,7 +141,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         _officialRecipeList = [];
         _customRecipeList = [];
-        _isGetSearchData = false;
+        _isGetSearchData = true;
         _inAsyncCall = false;
       });
       return;
@@ -167,8 +167,7 @@ class _SearchPageState extends State<SearchPage> {
 //            summary: "${searchQuery}의 소개 좀 들어보세요"))
 //        .toList();
 
-    List<RecipeCard> customRecipeList =
-        [6, 7, 8, 9, 10].map((x) => RecipeCard(recipeName: "더미데이터", rarity: "rare", summary: "터미네이터 아님 ㅋㅋ")).toList();
+    List<RecipeCard> customRecipeList = [];
 
     setState(() {
       _officialRecipeList = officialRecipeList;

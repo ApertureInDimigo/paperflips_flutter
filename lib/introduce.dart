@@ -100,6 +100,11 @@ class _IntroducePageState extends State<IntroducePage> {
               child: YoutubePlayer(
                 controller: _controller,
                 showVideoProgressIndicator: true,
+                bottomActions: [
+                  CurrentPosition(),
+                  ProgressBar(isExpanded: true),
+                  RemainingDuration(),
+                ],
               ),
             ),
             Container(

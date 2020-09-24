@@ -79,24 +79,67 @@ class PlaceStatus with ChangeNotifier {
       BackgroundColor(
         id: 1,
         kind: "빨강",
-        name: "개빨감",
+        name: "빨강",
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: Color(0xFFeb4034),
         ),
         isAvailable: true,
       ),
       BackgroundColor(
         id: 2,
         kind: "빨강",
-        name: "좀빨감",
+        name: "분홍",
         decoration: BoxDecoration(
           color: Colors.red[300],
         ),
         isAvailable: true,
       ),
     ],
-    "주황": [],
-    "노랑": [],
+    "주황": [
+      BackgroundColor(
+        id: 101,
+        kind: "주황",
+        name: "주황",
+        decoration: BoxDecoration(
+          color: Colors.orange,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id: 102,
+        kind: "주황",
+        name: "연주황",
+        decoration: BoxDecoration(
+          color: Colors.orange[300],
+        ),
+        isAvailable: true,
+      ),
+
+
+    ],
+    "노랑": [
+
+      BackgroundColor(
+        id: 201,
+        kind: "노랑",
+        name: "노랑",
+        decoration: BoxDecoration(
+          color: Colors.yellow,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id: 202,
+        kind: "노랑",
+        name: "연노랑",
+        decoration: BoxDecoration(
+          color: Colors.yellow[300],
+        ),
+        isAvailable: true,
+      ),
+
+
+    ],
     "초록": [
       BackgroundColor(
         id: 500,
@@ -218,29 +261,96 @@ class PlaceStatus with ChangeNotifier {
     ],
     "파랑": [
       BackgroundColor(
-        id: 3,
+        id: 601,
         kind: "파랑",
-        name: "개파람",
+        name: "파랑",
         decoration: BoxDecoration(
           color: Colors.blue,
         ),
         isAvailable: true,
       ),
       BackgroundColor(
-        id: 4,
+        id: 602,
         kind: "파랑",
-        name: "좀파람",
-        color: Colors.red,
+        name: "하늘",
         decoration: BoxDecoration(
           color: Colors.blue[300],
         ),
         isAvailable: true,
       ),
     ],
-    "보라": [],
-    "갈색": [],
-    "검정": [],
-    "하양": [],
+    "보라": [
+      BackgroundColor(
+        id: 701,
+        kind: "보라",
+        name: "보라",
+        decoration: BoxDecoration(
+          color: Colors.purple,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id: 702,
+        kind: "파랑",
+        name: "연보라",
+        decoration: BoxDecoration(
+          color: Colors.purple[300],
+        ),
+        isAvailable: true,
+      ),
+
+
+    ],
+    "갈색": [
+
+      BackgroundColor(
+        id: 801,
+        kind: "갈색",
+        name: "갈색",
+        decoration: BoxDecoration(
+          color: Colors.brown,
+        ),
+        isAvailable: true,
+      ),
+      BackgroundColor(
+        id: 802,
+        kind: "갈색",
+        name: "연갈색",
+        decoration: BoxDecoration(
+          color: Colors.brown[300],
+        ),
+        isAvailable: true,
+      ),
+
+    ],
+    "검정": [
+
+      BackgroundColor(
+        id: 901,
+        kind: "검정",
+        name: "검정",
+        decoration: BoxDecoration(
+          color: Colors.black,
+        ),
+        isAvailable: true,
+      ),
+
+
+    ],
+    "하양": [
+
+
+      BackgroundColor(
+        id: 1001,
+        kind: "하양",
+        name: "하양",
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        isAvailable: true,
+      ),
+
+    ],
     "흑우": [
       BackgroundColor(
         id: 9999,
@@ -537,39 +647,6 @@ class Sticker {
   Sticker({this.id, this.name, this.path, this.limit, this.count});
 }
 
-class BackgroundColor {
-  int id;
-  String kind;
-  String name;
-  Color color;
-  int price;
-  BoxDecoration decoration;
-  bool isAvailable;
-
-  BackgroundColor({int id, String kind, String name, Color color, int price, BoxDecoration decoration, bool isAvailable}) {
-    this.id = id;
-    this.kind = kind;
-    this.name = name;
-    if (price != null) {
-      this.price = price;
-    } else {
-      this.price = null;
-    }
-
-    if (color != null) {
-      this.color = color;
-    } else {
-      this.color = null;
-    }
-    if (decoration != null) {
-      this.decoration = decoration;
-    } else {
-      this.decoration = null;
-    }
-
-    this.isAvailable = isAvailable;
-  }
-}
 
 class PlacedSticker extends StatefulWidget {
   int id;
@@ -828,7 +905,7 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                         showCustomDialog(
                             context: context,
                             title: "저장할까요?",
-                            content: "저장하면 좋아용",
+                            content: "저장하면 다음에 불러올 수 있어요",
                             cancelButtonText: "취소",
                             confirmButtonText: "저장",
                             cancelButtonAction: () {
@@ -1039,7 +1116,7 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
               ),
             ),
             Container(
-              color: Color(0xFFFFFFFF),
+//              color: Colors.red,
               height: 270,
               child: Column(children: [
                 Flexible(
@@ -1177,6 +1254,7 @@ class _EditMyRoomPageState extends State<EditMyRoomPage> {
                                 minHeight: _panelHeightClosed,
                                 maxHeight: _panelHeightOpen,
                                 controller: _pc,
+                                color: Colors.white.withOpacity(0.9),
                                 panel: placeStatus.isStickerPanel ? _buildUnderStickerBox() : _buildUnderColorBox(),
                                 onPanelSlide: (double pos) => setState(() {
                                   _fabHeight = pos * (_panelHeightOpen - _panelHeightClosed) + _initFabHeight;

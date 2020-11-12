@@ -363,7 +363,7 @@ class PlaceStatus with ChangeNotifier {
     notifyListeners();
 
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        "https://paperflips.com/User/GetCollection",
         headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
 
@@ -429,7 +429,7 @@ class PlaceStatus with ChangeNotifier {
     print(jsonDecode(saveData));
 
     final res = await http.put(
-        "https://paperflips-server.herokuapp.com/User/RoomDataChange/${seq}",
+        "https://paperflips.com/User/RoomDataChange/${seq}",
         headers: {
           "Cookie": "user=" + await getToken(),
           "Content-Type": 'application/json'

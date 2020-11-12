@@ -382,7 +382,7 @@ class PlaceStatus with ChangeNotifier {
     notifyListeners();
 
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        "https://paperflips.com/User/GetCollection",
         headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
 
@@ -472,7 +472,7 @@ class PlaceStatus with ChangeNotifier {
     double renderBoxHeight = renderBox.size.height;
     print("hello?");
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/myRoom",
+        "https://paperflips.com/User/myRoom",
         headers: {"Cookie": "user=" + await getToken(), "Accept": "*/*"});
 
     if (res.statusCode != 200) {
@@ -797,7 +797,7 @@ class _MyRoomPageState extends State<MyRoomPage> {
                               }
                             };
                             final res = await http.post(
-                                "https://paperflips-server.herokuapp.com/User/NewRoom",
+                                "https://paperflips.com/User/NewRoom",
                                 headers: {
                                   "Cookie": "user=" + await getToken(),
                                   "Content-Type": 'application/json'

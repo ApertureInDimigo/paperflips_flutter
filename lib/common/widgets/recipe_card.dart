@@ -312,7 +312,7 @@ void goIntroducePage(BuildContext context, RecipeCard recipe) async {
   OtherStatus otherStatus = Provider.of<OtherStatus>(context);
   otherStatus.setIsLoading(true);
   final res = await http.get(
-    "https://paperflips-server.herokuapp.com/rec/GetDetail/${recipe.recipeName}",
+    "https://paperflips.com/rec/GetDetail/${recipe.recipeName}",
   );
 
   if (res.statusCode != 200) {

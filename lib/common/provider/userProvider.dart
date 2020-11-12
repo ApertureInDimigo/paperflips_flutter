@@ -127,7 +127,7 @@ class UserStatus with ChangeNotifier {
 
     //jwt 토큰이 유효한지 서버에서 가져와야할 것 같은데 일단 생략
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/GetMyInfo",
+        "https://paperflips.com/User/GetMyInfo",
         headers: {"Cookie": "user=" + await getToken()});
 
     if (res.statusCode != 200) {

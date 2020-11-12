@@ -117,7 +117,7 @@ class _FoldCompletePageState extends State<FoldCompletePage> {
                     return;
                   } else {
                     final res = await http.get(
-                        "https://paperflips-server.herokuapp.com/User/GetCollection",
+                        "https://paperflips.com/User/GetCollection",
                         headers: {"Cookie": "user=" + await getToken()});
                     print(res.headers);
 
@@ -146,7 +146,7 @@ class _FoldCompletePageState extends State<FoldCompletePage> {
                       }
                       print("add");
                       final res2 = await http.post(
-                          "https://paperflips-server.herokuapp.com/User/AddCollection/${recipeCard.recipeSeq}",
+                          "https://paperflips.com/User/AddCollection/${recipeCard.recipeSeq}",
                           headers: {"Cookie": "user=" + await getToken()});
                       print(res2.headers);
 

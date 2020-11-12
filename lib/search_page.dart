@@ -128,7 +128,7 @@ class _SearchPageState extends State<SearchPage> {
     });
     print(searchQuery);
     final res = await http.get(
-      "https://paperflips-server.herokuapp.com/rec/Search?q=${searchQuery.trim()}",
+      "https://paperflips.com/rec/Search?q=${searchQuery.trim()}",
     ); //그냥 임의 주소로 http 요청 해둠
 
     if (res.statusCode != 200) {

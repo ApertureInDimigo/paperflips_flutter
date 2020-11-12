@@ -589,7 +589,7 @@ class _MainPageState extends State<MainPage> {
 
   Future<List<RecipeCard>> fetchRecommendRecipeList() async {
     final res =
-        await http.get("https://paperflips-server.herokuapp.com/rec/AllData");
+        await http.get("https://paperflips.com/rec/AllData");
 
     Map<String, dynamic> data = jsonDecode(res.body);
 

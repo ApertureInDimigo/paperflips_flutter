@@ -35,7 +35,7 @@ class _CollectionPageState extends State<CollectionPage> {
     print("!@@@@@@@@@@@@@@@@@@@");
 
     final res = await http.get(
-        "https://paperflips-server.herokuapp.com/User/GetCollection",
+        "https://paperflips.com/User/GetCollection",
         headers: {"Cookie": "user=" + await getToken()});
     print(res.headers);
     Map<String, dynamic> resData = jsonDecode(res.body);
